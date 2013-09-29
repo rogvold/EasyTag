@@ -4,6 +4,7 @@ import com.easytag.core.entity.jpa.Album;
 import com.easytag.core.enums.AlbumStatus;
 import com.easytag.core.enums.AlbumType;
 import com.easytag.exceptions.TagException;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -33,9 +34,9 @@ public class AlbumManager implements AlbumManagerLocal {
         Query q = em.createQuery("select a from Album a where a.creatorId = :userId").setParameter("userId", userId);
         List<Album> list = q.getResultList();
         if (list == null || list.isEmpty()) {
-            return null;
+            return Collections.EMPTY_LIST;
         }
-        return null;
+        return list;
     }
 
     private Album getAlbumByUserIdAndName(Long userId, String name) throws TagException {
