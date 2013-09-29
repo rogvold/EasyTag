@@ -30,11 +30,12 @@ public class Album implements Serializable {
     private AlbumStatus status;
     @Enumerated(EnumType.STRING)
     private AlbumType type;
+    private String avatarSrc;
 
     public Album() {
     }
 
-    public Album(Long creatorId, String name, String description, String tags, String categories, Long parentId, AlbumStatus status, AlbumType type) {
+    public Album(Long creatorId, String name, String description, String tags, String categories, Long parentId, AlbumStatus status, AlbumType type, String avatarSrc) {
         this.creatorId = creatorId;
         this.name = name;
         this.description = description;
@@ -43,6 +44,7 @@ public class Album implements Serializable {
         this.parentId = parentId;
         this.status = status;
         this.type = type;
+        this.avatarSrc = avatarSrc;
     }
 
     public Long getId() {
@@ -51,6 +53,14 @@ public class Album implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getAvatarSrc() {
+        return avatarSrc;
+    }
+
+    public void setAvatarSrc(String avatarSrc) {
+        this.avatarSrc = avatarSrc;
     }
 
     public Long getCreatorId() {

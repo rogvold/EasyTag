@@ -25,17 +25,19 @@ public class Photo implements Serializable {
     private PhotoStatus status;
     private Integer number;
     private Long albumId;
+    private Long fileId;
 
     public Photo() {
     }
 
-    public Photo(String name, String description, String tags, PhotoStatus status, Integer number, Long albumId) {
+    public Photo(String name, String description, String tags, PhotoStatus status, Integer number, Long albumId, Long fileId) {
         this.name = name;
         this.description = description;
         this.tags = tags;
         this.status = status;
         this.number = number;
         this.albumId = albumId;
+        this.fileId = fileId;
     }
 
     public Long getId() {
@@ -44,6 +46,14 @@ public class Photo implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(Long fileId) {
+        this.fileId = fileId;
     }
 
     public Long getAlbumId() {

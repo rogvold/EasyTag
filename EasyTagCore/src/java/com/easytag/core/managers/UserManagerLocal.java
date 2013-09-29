@@ -3,6 +3,7 @@ package com.easytag.core.managers;
 import com.easytag.core.entity.jpa.User;
 import com.easytag.core.enums.UserType;
 import com.easytag.exceptions.TagException;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -27,5 +28,7 @@ public interface UserManagerLocal {
     public void checkAuthorisationData(String email, String password) throws TagException;
     
     public User getUserByEmail(String email);
+    
+    public List<User> getAllUsers();
     
 }

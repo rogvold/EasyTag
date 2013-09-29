@@ -127,4 +127,13 @@ public class UserManager implements UserManagerLocal {
         }
         return list.get(0);
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        List<User> list = em.createQuery("select u from User u where u.userType = :tp").setParameter("tp", UserType.USER).getResultList();
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+        return list;
+    }
 }
