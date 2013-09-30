@@ -7,6 +7,7 @@ import com.easytag.exceptions.TagException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,6 +22,9 @@ public class PhotoManager implements PhotoManagerLocal {
 
     @PersistenceContext(unitName = "EasyTagCorePU")
     EntityManager em;
+    
+    @EJB
+    AlbumManagerLocal aMan;
 
     @Override
     public Photo getPhotoById(Long photoId) {
@@ -103,5 +107,14 @@ public class PhotoManager implements PhotoManagerLocal {
             lp.add(photo);
         }
         return lp;        
+    }
+
+    @Override
+    public Album getAlbumByPhotoId(Long photoId) throws TagException {     
+        Photo p = getPhotoById(photoId);
+        if (p == null){
+            throw new TagException("Photo is not specified");
+        }
+        return aMan.getAlbumById(p.getAlbumId());
     }
 }
