@@ -70,7 +70,7 @@ public class TagManager implements TagManagerLocal {
             if((((tag.getX() == x) && (tag.getY() == y)) && (tag.getWidth() == width)) &&
                (tag.getHeight() == height)){
                 throw new TagException("There is a tag in such place");
-            } 
+            }
         }
     }
 
