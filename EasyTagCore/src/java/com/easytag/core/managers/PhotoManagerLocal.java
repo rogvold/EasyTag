@@ -26,4 +26,6 @@ public interface PhotoManagerLocal {
     public Album getAlbumByPhotoId(Long photoId) throws TagException;
     
     //TODO find by tag
+    
+    //TODO deletePhoto
 }

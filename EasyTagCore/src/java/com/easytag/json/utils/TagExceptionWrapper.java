@@ -1,4 +1,4 @@
-package ru.patient.sport.json.utils;
+package com.easytag.json.utils;
 
 import com.easytag.exceptions.TagException;
 import com.easytag.json.utils.JsonError;

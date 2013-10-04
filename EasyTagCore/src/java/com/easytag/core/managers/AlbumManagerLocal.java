@@ -18,4 +18,6 @@ public interface AlbumManagerLocal {
     public Album createAlbum(Long creatorId, String name, String description, String tags, String categories, Long parentId, String avatarSrc) throws TagException;
     public Album updateAlbum(Album album) throws TagException;
     
+    //TODO remove Album
+    
 }

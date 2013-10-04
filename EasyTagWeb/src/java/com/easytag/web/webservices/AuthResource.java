@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import ru.patient.sport.json.utils.TagExceptionWrapper;
+import com.easytag.json.utils.TagExceptionWrapper;
 
 /**
  * REST Web Service

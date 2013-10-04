@@ -4,7 +4,19 @@
  */
 package com.easytag.web.webservices;
 
+import com.easytag.core.entity.jpa.Photo;
+import com.easytag.core.managers.PhotoManagerLocal;
+import com.easytag.exceptions.TagException;
+import com.easytag.json.utils.JsonResponse;
+import com.easytag.json.utils.ResponseConstants;
+import com.easytag.json.utils.SimpleResponseWrapper;
+import com.easytag.json.utils.TagExceptionWrapper;
+import com.easytag.web.utils.SessionUtils;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -13,6 +25,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 /**
  * REST Web Service
@@ -25,11 +38,41 @@ public class PhotoResource {
 
     @Context
     private UriInfo context;
+    @EJB
+    PhotoManagerLocal phMan;
 
     /**
      * Creates a new instance of PhotoResource
      */
     public PhotoResource() {
+    }
+    
+    @GET
+    @Path("getPhoto")
+    public String getPhotoById(@Context HttpServletRequest req, @QueryParam("photoId") Long photoId){
+        HttpSession session = req.getSession(false);
+        Long currentUserId = SessionUtils.getUserId(session);
+        Photo photo = phMan.getPhotoById(photoId);
+        JsonResponse<Photo> jr = new JsonResponse<Photo>(ResponseConstants.OK, null, photo);
+        return SimpleResponseWrapper.getJsonResponse(jr);
+    }
+    
+    @GET
+    @Path("getPhotos")
+    public String getPhotosInAlbum(@Context HttpServletRequest req,  @QueryParam("albumId") Long albumId) {
+        try {
+            HttpSession session = req.getSession(false);
+            Long currentUserId = SessionUtils.getUserId(session);
+
+            if (currentUserId == null) {
+                throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            List<Photo> photos = phMan.getPhotosInAlbum(albumId);
+            JsonResponse<List<Photo>> jr = new JsonResponse<List<Photo>>(ResponseConstants.OK, null, photos);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException e) {
+            return TagExceptionWrapper.wrapException(e);
+        }
     }
 
     /**
@@ -37,8 +80,8 @@ public class PhotoResource {
      * @return an instance of java.lang.String
      */
     @GET
-    @Produces("application/xml")
-    public String getXml() {
+    @Produces("application/json")
+    public String getJson() {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
@@ -49,7 +92,7 @@ public class PhotoResource {
      * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
-    @Consumes("application/xml")
-    public void putXml(String content) {
+    @Consumes("application/json")
+    public void putJson(String content) {
     }
 }
