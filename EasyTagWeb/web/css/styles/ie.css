@@ -1,0 +1,322 @@
+/**
+ * @package WordPress
+ * @subpackage Riviera
+ * @since Riviera 1.0
+ * 
+ * Custom CSS Rules for Internet Explorer < 9
+ * Created by CMSMasters
+ * 
+ */
+
+.ie8 .widget_custom_recent_testimonials_entries .cmsms_content_slider_parent ul.cmsms_slides_nav {bottom:18px;}
+
+.ie8 body.cmsms_black .wrap_nav nav {border-top:1px solid #33251c;}
+
+.ie8 h2:after,
+.ie8 .cmsms_sitemap > li > a:after {border-top:1px dotted #c9cac3;}
+
+.ie8 body.cmsms_black h2:after,
+.ie8 body.cmsms_black .cmsms_sitemap > li > a:after {border-top:1px dotted #5a534c;}
+
+.ie8 #navigation > li > a,
+.ie8 #navigation > li:hover > a,
+.ie8 #navigation > li > a:hover,
+.ie8 #navigation > li.current_page_item > a,
+.ie8 #navigation > li.current_page_ancestor > a,
+.ie8 #navigation > li.current-menu-ancestor > a {
+	border-left:0;
+	border-right:1px solid #e7eace;
+}
+
+.ie8 body.cmsms_black #navigation > li > a,
+.ie8 body.cmsms_black #navigation > li:hover > a,
+.ie8 body.cmsms_black #navigation > li > a:hover,
+.ie8 body.cmsms_black #navigation > li.current_page_item > a,
+.ie8 body.cmsms_black #navigation > li.current_page_ancestor > a,
+.ie8 body.cmsms_black #navigation > li.current-menu-ancestor > a {
+	border-left:0;
+	border-right:1px solid #4b3e36;
+}
+
+.ie8 #navigation > li:first-child > a {border-left:1px solid #e7eace;}
+
+.ie8 body.cmsms_black #navigation > li:first-child > a {border-left:1px solid #4b3e36;}
+
+.ie8 #navigation > li:hover > a,
+.ie8 #navigation > li > a:hover,
+.ie8 #navigation > li.current_page_item > a,
+.ie8 #navigation > li.current_page_ancestor > a,
+.ie8 #navigation > li.current-menu-ancestor > a {background-color:#ffffff;}
+
+.ie8 body.cmsms_black #navigation > li:hover > a,
+.ie8 body.cmsms_black #navigation > li > a:hover,
+.ie8 body.cmsms_black #navigation > li.current_page_item > a,
+.ie8 body.cmsms_black #navigation > li.current_page_ancestor > a,
+.ie8 body.cmsms_black #navigation > li.current-menu-ancestor > a {background-color:#000000;}
+
+.ie8 body.cmsms_black #navigation ul {background:#000000;}
+
+.ie8 body.cmsms_black #navigation ul li {border-bottom:1px solid #2c2a24;}
+
+.ie8 body.cmsms_black #navigation ul li:first-child {border-top:1px solid #2c2a24;}
+
+.ie8 #header, 
+.ie8 .headline,
+.ie8 .cmsms_breadcrumbs,
+.ie8 .top_sidebar,
+.ie8 .related_posts ul,
+.ie8 .pj_sort_block {border-bottom:1px solid #f1f0ea;}
+
+.ie8 body.cmsms_black #header, 
+.ie8 body.cmsms_black .headline,
+.ie8 body.cmsms_black .cmsms_breadcrumbs,
+.ie8 body.cmsms_black .top_sidebar,
+.ie8 body.cmsms_black .related_posts ul,
+.ie8 body.cmsms_black .pj_sort_block {border-bottom:1px solid #372e26;}
+
+.ie8 .middle_sidebar,
+.ie8 ul.cmsms_details .cmsms_sharing,
+.ie8 #sidebar .widget,
+.ie8 .widget_rss ul li {border-top:1px solid #f1f0ea;}
+
+.ie8 body.cmsms_black .middle_sidebar,
+.ie8 body.cmsms_black ul.cmsms_details .cmsms_sharing,
+.ie8 body.cmsms_black #sidebar .widget,
+.ie8 body.cmsms_black #bottom .widget_rss ul li {border-top:1px solid #372e26;}
+
+.ie8 body.cmsms_black #sidebar div:first-child .widget, 
+.ie8 #sidebar div:first-child .widget,
+.ie8 .tab.lpr .tab_content ul li:first-child,
+.ie8 #bottom .tab.lpr .tab_content ul li:first-child,
+.ie8 .widget_rss ul li:first-child,
+.ie8 #bottom .widget_rss ul li:first-child {border-top:0;}
+
+.ie8 .content_wrap:before,
+.ie8 hr, 
+.ie8 .divider,
+.ie8 .cmsms_timeline li:before,
+.ie8 .cmsms_timeline:before {background:#f1f0ea;}
+
+.ie8 body.cmsms_black .content_wrap:before,
+.ie8 body.cmsms_black hr, 
+.ie8 body.cmsms_black .divider,
+.ie8 body.cmsms_black #bottom .divider,
+.ie8 body.cmsms_black .cmsms_pricing_table .cmsms_price_inner:before,
+.ie8 body.cmsms_black .cmsms_pricing_table .cmsms_price_inner:after,
+.ie8 body.cmsms_black .cmsms_timeline li:before,
+.ie8 body.cmsms_black .cmsms_timeline:before {background:#372e26;}
+
+.ie8 .percent_item,
+.ie8 .about_author_box,
+.ie8 .comment-body,
+.ie8 input[type="text"], 
+.ie8 input[type="password"], 
+.ie8 textarea,
+.ie8 select,
+.ie8 option {border:1px solid #f1f0ea;}
+
+.ie8 body.cmsms_black .error_box,
+.ie8 body.cmsms_black .success_box,
+.ie8 body.cmsms_black .notice_box,
+.ie8 body.cmsms_black .warning_box,
+.ie8 body.cmsms_black .download_box,
+.ie8 body.cmsms_black .css_box,
+.ie8 body.cmsms_black .featured_block,
+.ie8 body.cmsms_black .acc .tog,
+.ie8 body.cmsms_black .tab .tabs li a,
+.ie8 body.cmsms_black .tab .tabs.active li:first-child a, 
+.ie8 body.cmsms_black .tab .tab_content,
+.ie8 body.cmsms_black .tour li a,
+.ie8 body.cmsms_black .tour.active li:first-child a,
+.ie8 body.cmsms_black div.jp-playlist ul,
+.ie8 body.cmsms_black div.jp-playlist li,
+.ie8 body.cmsms_black .about_author_box,
+.ie8 body.cmsms_black .related_posts_content .rel_post_content figure.alignleft,
+.ie8 body.cmsms_black .comment-body,
+.ie8 body.cmsms_black .tweet_list li .tweet_text,
+.ie8 body.cmsms_black input[type="text"], 
+.ie8 body.cmsms_black input[type="password"], 
+.ie8 body.cmsms_black textarea, 
+.ie8 body.cmsms_black select,
+.ie8 body.cmsms_black #bottom input[type="text"], 
+.ie8 body.cmsms_black #bottom input[type="password"], 
+.ie8 body.cmsms_black #bottom textarea, 
+.ie8 body.cmsms_black #bottom select,
+.ie8 body.cmsms_black .tour_box_content {border:1px solid #372e26;}
+
+.ie8 .tour.active li.current:first-child a, 
+.ie8 .tour li:first-child a,
+.ie8 .tour li.current a {border-left:1px solid #e6e6e6;}
+
+.ie8 body.cmsms_black .tour.active li.current:first-child a, 
+.ie8 body.cmsms_black .tour li:first-child a,
+.ie8 body.cmsms_black .tour li.current a {border-left:1px solid #372e26;}
+
+.ie8 .tab .tabs li:first-child a,
+.ie8 .tab .tabs.active li.current a,
+.ie8 .tab .tabs.active li.current:first-child a,
+.ie8 .tab .tabs.active li.current:first-child a:hover, 
+.ie8 .tab .tabs li.current a {border-top:1px solid #e6e6e6;}
+
+.ie8 body.cmsms_black .tab .tabs li:first-child a,
+.ie8 body.cmsms_black .tab .tabs.active li.current a,
+.ie8 body.cmsms_black .tab .tabs.active li.current:first-child a,
+.ie8 body.cmsms_black .tab .tabs.active li.current:first-child a:hover, 
+.ie8 body.cmsms_black .tab .tabs li.current a,
+.ie8 body.cmsms_black .tab.lpr .tab_content ul li, 
+.ie8 #bottom .tab.lpr .tab_content ul li {border-top:1px solid #372e26;}
+
+.ie8 #bottom .widget .widgettitle {border-bottom:1px dotted #535353;}
+
+.ie8 body.cmsms_black .widget_custom_flickr_entries .flickr_badge_image a img, 
+.ie8 body.cmsms_black #bottom .widget_custom_flickr_entries .flickr_badge_image a img {border:5px solid #3b3b3b;}
+
+.ie8 body.cmsms_black #bottom .tab.lpr .tabs li a,
+.ie8 body.cmsms_black #bottom .tab.lpr .tabs.active li:first-child a,
+.ie8 body.cmsms_black #bottom .tab.lpr .tab_content,
+.ie8 body.cmsms_black .widget .tl-content_wrap .tl-content,
+.ie8 body.cmsms_black #bottom .widget .tl-content_wrap .tl-content {border-color:#372e26;}
+
+.ie8 body.cmsms_black .tweet_list li .tweet_text:before {border-top-color:#372e26;}
+
+.ie8 body.cmsms_black .tweet_list li .tweet_text,
+.ie8 body.cmsms_black .widget .tl-content_wrap .tl-content,
+.ie8 body.cmsms_black #bottom .widget .tl-content_wrap .tl-content,
+.ie8 body.cmsms_black .acc .tog,
+.ie8 body.cmsms_black .tab .tabs li a,
+.ie8 body.cmsms_black .tab .tabs.active li:first-child a, 
+.ie8 body.cmsms_black .tab .tab_content,
+.ie8 body.cmsms_black .tab .tabs li:first-child a,
+.ie8 body.cmsms_black .tab .tabs.active li.current a,
+.ie8 body.cmsms_black .tab .tabs.active li.current:first-child a,
+.ie8 body.cmsms_black .tab .tabs.active li.current:first-child a:hover, 
+.ie8 body.cmsms_black .tab .tabs li.current a,
+.ie8 body.cmsms_black .tour li a,
+.ie8 body.cmsms_black .tour.active li:first-child a,
+.ie8 body.cmsms_black .tour_box_content {background:#000000;}
+
+.ie8 body.cmsms_black #bottom .tweet_list li .tweet_text:after,
+.ie8 body.cmsms_black .tweet_list li .tweet_text:after {border-top-color:#000000;}
+
+.ie8 body.cmsms_black .widget .tl-content_wrap .tl-content:before,
+.ie8 body.cmsms_black #bottom .widget .tl-content_wrap .tl-content:before {border-right-color:#372e26;}
+
+.ie8 body.cmsms_black .widget .tl-content_wrap .tl-content:after,
+.ie8 body.cmsms_black #bottom .widget .tl-content_wrap .tl-content:after {border-right-color:#000000;}
+
+.ie8 body.cmsms_black #wp-calendar thead th, 
+.ie8 #bottom #wp-calendar thead th {color:#ffffff;}
+
+.ie8 input[type="text"], 
+.ie8 input[type="password"], 
+.ie8 textarea,
+.ie8 select,
+.ie8 option {background-color:#ffffff;}
+
+.ie8 #bottom input[type="text"], 
+.ie8 #bottom input[type="password"], 
+.ie8 #bottom textarea, 
+.ie8 #bottom select {border:1px solid #505050;}
+
+.ie8 body.cmsms_black .post_type_shortcode article.post:hover:before,
+.ie8 body.cmsms_black .post_type_shortcode article.project:hover:before,
+.ie8 body.cmsms_black .portfolio .project:hover:before {background:#d1cdca;}
+
+.ie8 .wrap_nav.navi_scrolled {
+	background:transparent;
+	width:auto;
+	padding-top:0;
+	position:relative;
+}
+
+.ie8 .wrap_nav.navi_scrolled nav {width:auto;}
+
+.jackbox-modal {background:url(../../images/jackbox/ie_bg.png);}
+
+img.fullwidth {width:100%;}
+
+.p_options_block, 
+.p_filter_container:hover ul.p_filter {filter:alpha(opacity=100);}
+
+.p_filter_container ul.p_filter, 
+.cmsms-form-builder .check_parent input[type="checkbox"], 
+.cmsms-form-builder .check_parent input[type="radio"], 
+.loading {filter:alpha(opacity=0);}
+
+.button,
+.button_small,
+.button_medium,
+.button_large,
+.dropcap2,
+.comment-reply-link,
+.cmsmsLike {
+	position:relative;
+	z-index:0;
+}
+
+div.p_filter {height:1000px;}
+
+html.ie .cmsms-form-builder form .check_parent input[type="radio"] + label:before, 
+html.ie .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="radio"] + span.wpcf7-list-item-label,
+html.ie .cmsms-form-builder form .check_parent input[type="checkbox"] + label:before,
+html.ie .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="checkbox"] + span.wpcf7-list-item-label {background:none;}
+
+html.ie .cmsms-form-builder .check_parent input[type="radio"],
+html.ie .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="radio"],
+html.ie .cmsms-form-builder .check_parent input[type="checkbox"],
+html.ie .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="checkbox"] {
+	margin-top:8px;
+	visibility:visible;
+	filter:alpha(opacity=100);
+}
+
+.format-album.cmsms_four .resize figure+figure+figure+figure, 
+.format-album.cmsms_three .resize figure+figure+figure, 
+.format-album.cmsms_two .resize figure+figure, 
+.format-album.cmsms_one .resize figure {padding-right:0;}
+
+
+/* ---------- Small Tablet & Mobile (Note: Design for a width less than 768px) ---------- */
+
+@media only screen and (max-width: 767px) {
+	
+	.portfolio.three_columns, 
+	.portfolio.one_blocks {margin-right:0;}
+	
+	.one_sixth,
+	.one_fifth,
+	.two_fifth,
+	.three_fifth,
+	.four_fifth,
+	.five_sixth,
+	.one_half, 
+	.one_third, 
+	.two_third, 
+	.three_fourth {
+		float:none;
+		width:96%;
+		margin:0 2%;
+	}
+	
+	.format-album.cmsms_two .resize figure, 
+	.format-album.cmsms_three .resize figure {
+		float:none;
+		padding-right:0;
+		width:100%;
+	}
+}
+
+
+@media only screen and (max-width: 1151px) {
+
+	.header_html_inner, 
+	.container, 
+	#footer {
+		width:90%;
+		margin:0 5%;
+	}
+	
+	.container {margin-top: 20px;}
+
+}
+

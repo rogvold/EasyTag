@@ -1,0 +1,343 @@
+/**
+ * @package WordPress
+ * @subpackage Riviera
+ * @since Riviera 1.0
+ * 
+ * High Resolution (Retina) Displays CSS Rules
+ * Created by CMSMasters
+ * 
+ */
+
+ 
+@media only screen and (-Webkit-min-device-pixel-ratio: 1.5), 
+	only screen and (-moz-min-device-pixel-ratio: 1.5), 
+	only screen and (-o-min-device-pixel-ratio: 3/2), 
+	only screen and (min-device-pixel-ratio: 1.5) {
+	
+	#slide_top{
+		background-image:url(../../images/retina/arrow_top@2x.png);
+		background-size:11px 8px; 
+	}
+	
+	#cmsms_latest_bottom_tweets .cmsms_content_prev_slide span, 
+	#cmsms_latest_bottom_tweets .cmsms_content_next_slide span {
+		background-image:url(../../images/retina/bottom_tweet_arrow@2x.png);
+		background-size:7px 28px;
+	}
+	
+	#cmsms_latest_bottom_tweets {
+		background-image:url(../../images/retina/bottom_tweet_bird@2x.png);
+		background-size:31px 24px;
+	}
+	
+	.cmsms_clients_slider_arrow_prev,
+	.cmsms_clients_slider_arrow_next {
+		background-image:url(../../images/retina/clients_arrows@2x.png);
+		background-size:6px 38px;
+	}
+	
+	body.cmsms_black .cmsms_clients_slider_arrow_prev,
+	body.cmsms_black .cmsms_clients_slider_arrow_next {
+		background-image:url(../../images/retina/clients_arrows_black@2x.png);
+		background-size:6px 38px;
+	}
+	
+	.cmsms_close {
+		background-image:url(../../images/retina/cmsms_close@2x.png);
+		background-size:7px 7px;
+	}
+	
+	body.cmsms_black .cmsms_close {
+		background-image:url(../../images/retina/cmsms_close_black@2x.png);
+		background-size:7px 7px;
+	}
+	
+	a.cmsmsLike {
+		background-image:url(../../images/retina/heart@2x.png);
+		background-size:14px 12px;
+	}
+	
+	body.cmsms_black a.cmsmsLike {
+		background-image:url(../../images/retina/heart_black@2x.png);
+		background-size:14px 12px;
+	}
+	
+	.cmsms_timeline li a:before {
+		background-image:url(../../images/retina/list_image@2x.png);
+		background-size:11px 11px;
+	}
+	
+	body.cmsms_black .cmsms_timeline li a:before {
+		background-image:url(../../images/retina/list_image_black@2x.png);
+		background-size:11px 11px;
+	}
+	
+	#navigation ul li.dropdown > a > span:before {
+		background-image:url(../../images/retina/nav_arrow@2x.png);
+		background-size:18px 7px;
+	}	
+	
+	.pj_sort a:before,
+	a.pj_cat_filter:before {
+		background-image:url(../../images/retina/pj_sort_arrow@2x.png);
+		background-size:7px 38px;
+	}
+	
+	body.cmsms_black .pj_sort a:before,
+	body.cmsms_black a.pj_cat_filter:before {
+		background-image:url(../../images/retina/pj_sort_arrow_black@2x.png);
+		background-size:7px 38px;
+	}
+	
+	div.jp-playlist li a:before {
+		background-image:url(../../images/retina/right_arrow@2x.png);
+		background-size:26px 5px;
+	}
+	
+	.search_line input[type="submit"] {
+		background-image:url(../../images/retina/search@2x.png);
+		background-size:16px 16px;
+	}
+	
+	body.cmsms_black .search_line input[type="submit"], 
+	#bottom .search_line input[type="submit"] {
+		background-image:url(../../images/retina/search_bot@2x.png);
+		background-size:16px 16px;
+	}
+	
+	.widget_custom_contact_info_entries .contact_widget_info {
+		background-image:url(../../images/retina/widget_info@2x.png);
+		background-size:12px 16px;
+	}
+	
+	body.cmsms_black .widget_custom_contact_info_entries .contact_widget_info, 
+	#bottom .widget_custom_contact_info_entries .contact_widget_info {
+		background-image:url(../../images/retina/widget_info_bot@2x.png);
+		background-size:12px 16px;
+	}
+	
+	.widget_custom_contact_info_entries .contact_widget_email {
+		background-image:url(../../images/retina/widget_info_mail@2x.png);
+		background-size:16px 12px;
+	}
+	
+	body.cmsms_black .widget_custom_contact_info_entries .contact_widget_email, 
+	#bottom .widget_custom_contact_info_entries .contact_widget_email {
+		background-image:url(../../images/retina/widget_info_mail_bot@2x.png);
+		background-size:16px 12px;
+	}
+	
+	.widget_custom_contact_info_entries .contact_widget_phone {
+		background-image:url(../../images/retina/widget_info_phone@2x.png);
+		background-size:10px 16px;
+	}
+	
+	body.cmsms_black .widget_custom_contact_info_entries .contact_widget_phone, 
+	#bottom .widget_custom_contact_info_entries .contact_widget_phone {
+		background-image:url(../../images/retina/widget_info_phone_bot@2x.png);
+		background-size:10px 16px;
+	}
+	
+	ul.page-numbers li .page-numbers.prev,
+	ul.page-numbers li .page-numbers.next, 
+	.entry .project_navi span a:before, 
+	a.cmsms_content_prev_slide span, 
+	a.cmsms_content_next_slide span {
+		background-image:url(../../images/retina/widget_nav@2x.png);
+		background-size:4px 44px;
+	}
+	
+	body.cmsms_black ul.page-numbers li .page-numbers.prev,
+	body.cmsms_black ul.page-numbers li .page-numbers.next, 
+	body.cmsms_black .entry .project_navi span a:before, 
+	body.cmsms_black a.cmsms_content_prev_slide span, 
+	body.cmsms_black a.cmsms_content_next_slide span, 
+	#bottom a.cmsms_content_prev_slide span, 
+	#bottom a.cmsms_content_next_slide span {
+		background-image:url(../../images/retina/widget_nav_bot@2x.png);
+		background-size:4px 44px;
+	}
+	
+	.widget_tag_cloud .tagcloud a:before {
+		background-image:url(../../images/retina/widget_tag@2x.png);
+		background-size:16px 16px;
+	}
+	
+	body.cmsms_black .widget_tag_cloud .tagcloud a:before, 
+	#bottom .widget_tag_cloud .tagcloud a:before {
+		background-image:url(../../images/retina/widget_tag_bot@2x.png);
+		background-size:16px 16px;
+	}
+	
+	.widget_custom_twitter_entries .tweet_time {
+		background-image:url(../../images/retina/widget_tweet@2x.png);
+		background-size:16px 14px;
+	}
+	
+	body.cmsms_black .widget_custom_twitter_entries .tweet_time, 
+	#bottom .widget_custom_twitter_entries .tweet_time {
+		background-image:url(../../images/retina/widget_tweet_bot@2x.png);
+		background-size:16px 14px;
+	}
+	
+	.cmsms-form-builder .check_parent input[type="radio"]+label:before,
+	.wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="radio"] + span.wpcf7-list-item-label:before,
+	.wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="radio"]:checked + span.wpcf7-list-item-label:before,
+	.cmsms-form-builder .check_parent input[type="radio"]:checked+label:before,
+	.wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="checkbox"] + span.wpcf7-list-item-label:before,
+	.cmsms-form-builder .check_parent input[type="checkbox"]+label:before,
+	.wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="checkbox"]:checked + span.wpcf7-list-item-label:before,
+	.cmsms-form-builder .check_parent input[type="checkbox"]:checked+label:before {
+		background-image:url(../../images/retina/radio_check@2x.png);
+		background-size:17px 98px; 
+	}
+	
+	#bottom .cmsms-form-builder .check_parent input[type="radio"]+label:before,
+	#bottom .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="radio"] + span.wpcf7-list-item-label:before,
+	#bottom .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="radio"]:checked + span.wpcf7-list-item-label:before,
+	#bottom .cmsms-form-builder .check_parent input[type="radio"]:checked+label:before,
+	#bottom .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="checkbox"] + span.wpcf7-list-item-label:before,
+	#bottom .cmsms-form-builder .check_parent input[type="checkbox"]+label:before,
+	#bottom .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="checkbox"]:checked + span.wpcf7-list-item-label:before,
+	#bottom .cmsms-form-builder .check_parent input[type="checkbox"]:checked+label:before {
+		background-image:url(../../images/retina/radio_check_b_s@2x.png);
+		background-size:17px 98px;  
+	}
+	
+	body.cmsms_black .cmsms-form-builder .check_parent input[type="radio"]+label:before,
+	body.cmsms_black .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="radio"] + span.wpcf7-list-item-label:before,
+	body.cmsms_black .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="radio"]:checked + span.wpcf7-list-item-label:before,
+	body.cmsms_black .cmsms-form-builder .check_parent input[type="radio"]:checked+label:before,
+	body.cmsms_black .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="checkbox"] + span.wpcf7-list-item-label:before,
+	body.cmsms_black .cmsms-form-builder .check_parent input[type="checkbox"]+label:before,
+	body.cmsms_black .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="checkbox"]:checked + span.wpcf7-list-item-label:before,
+	body.cmsms_black .cmsms-form-builder .check_parent input[type="checkbox"]:checked+label:before {
+		background-image:url(../../images/retina/radio_check_black@2x.png);
+		background-size:17px 98px;  
+	}
+
+	body.cmsms_black #bottom .cmsms-form-builder .check_parent input[type="radio"]+label:before,
+	body.cmsms_black #bottom .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="radio"] + span.wpcf7-list-item-label:before,
+	body.cmsms_black #bottom .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="radio"]:checked + span.wpcf7-list-item-label:before,
+	body.cmsms_black #bottom .cmsms-form-builder .check_parent input[type="radio"]:checked+label:before,
+	body.cmsms_black #bottom .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="checkbox"] + span.wpcf7-list-item-label:before,
+	body.cmsms_black #bottom .cmsms-form-builder .check_parent input[type="checkbox"]+label:before,
+	body.cmsms_black #bottom .wpcf7 form.wpcf7-form span.wpcf7-list-item input[type="checkbox"]:checked + span.wpcf7-list-item-label:before,
+	body.cmsms_black #bottom .cmsms-form-builder .check_parent input[type="checkbox"]:checked+label:before {
+		background-image:url(../../images/retina/radio_check_black_b_s@2x.png);
+		background-size:17px 98px;  
+	}
+	
+	.format-standard .cmsms_post_format_img, 
+	.format-page .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_standard@2x.png);
+		background-size:11px 14px; 
+	}
+
+	.format-aside .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_aside@2x.png);
+		background-size:16px 15px; 
+	}
+
+	.format-quote .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_quote@2x.png);
+		background-size:14px 12px; 
+	}
+
+	.format-link .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_link@2x.png);
+		background-size:18px 17px; 
+	}
+
+	.format-image .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_image@2x.png);
+		background-size:17px 12px; 
+	}
+
+	.format-gallery .cmsms_post_format_img, 
+	.format-album .cmsms_post_format_img, 
+	.format-slider .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_gallery@2x.png);
+		background-size:17px 14px; 
+	}
+
+	.format-video .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_video@2x.png);
+		background-size:14px 15px; 
+	}
+
+	.format-audio .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_audio@2x.png);
+		background-size:15px 11px; 
+	}
+	
+	body.cmsms_black .format-standard .cmsms_post_format_img, 
+	body.cmsms_black .format-page .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_standard_black@2x.png);
+		background-size:11px 14px; 
+	}
+
+	body.cmsms_black .format-aside .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_aside_black@2x.png);
+		background-size:16px 15px; 
+	}
+
+	body.cmsms_black .format-quote .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_quote_black@2x.png);
+		background-size:14px 12px; 
+	}
+
+	body.cmsms_black .format-link .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_link_black@2x.png);
+		background-size:18px 17px; 
+	}
+
+	body.cmsms_black .format-image .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_image_black@2x.png);
+		background-size:17px 12px; 
+	}
+
+	body.cmsms_black .format-gallery .cmsms_post_format_img, 
+	body.cmsms_black .format-album .cmsms_post_format_img, 
+	body.cmsms_black .format-slider .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_gallery_black@2x.png);
+		background-size:17px 14px; 
+	}
+
+	body.cmsms_black .format-video .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_video_black@2x.png);
+		background-size:14px 15px; 
+	}
+
+	body.cmsms_black .format-audio .cmsms_post_format_img {
+		background-image:url(../../images/retina/format_audio_black@2x.png);
+		background-size:15px 11px; 
+	}
+	
+	.box.error_box tr td:first-child {
+		background-image:url(../../images/retina/error@2x.png); 
+		background-size:32px 32px; 
+	}
+
+	.box.success_box tr td:first-child {
+		background-image:url(../../images/retina/success@2x.png); 
+		background-size:32px 32px; 
+	}
+
+	.box.notice_box tr td:first-child {
+		background-image:url(../../images/retina/notice@2x.png); 
+		background-size:32px 32px; 
+	}
+
+	.box.warning_box tr td:first-child {
+		background-image:url(../../images/retina/warning@2x.png); 
+		background-size:32px 32px; 
+	}
+
+	.box.download_box tr td:first-child {
+		background-image:url(../../images/retina/download@2x.png); 
+		background-size:32px 32px; 
+	}
+	
+}
+

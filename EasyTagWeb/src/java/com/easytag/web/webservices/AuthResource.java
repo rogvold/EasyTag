@@ -51,6 +51,7 @@ public class AuthResource {
             if (user == null) {
                 throw new TagException("Gson: can't convert user");
             }
+            System.out.println("userMan = " + userMan);
             userMan.registerUser(user.getEmail(), user.getPassword(), UserType.USER);
             JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
             return SimpleResponseWrapper.getJsonResponse(jr);
@@ -96,6 +97,12 @@ public class AuthResource {
         SessionUtils.setUserId(session, null);
         JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
         return SimpleResponseWrapper.getJsonResponse(jr);
+    }
+    
+    @GET
+    @Path("test")
+    public String test(){
+        return "reogfdgd";
     }
 
     @POST

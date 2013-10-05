@@ -1,0 +1,542 @@
+/**
+ * @package Site Template
+ * @subpackage Whiteblack
+ * @since Whiteblack 1.0
+ * 
+ * Fonts & Colors Settings File
+ * Created by CMSMasters
+ * 
+ */
+
+
+/* ===================> Fonts <================== */
+
+/* ====> Content <==== */
+
+body, 
+li p {
+	font:13px/20px Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+
+/* ====> Links <==== */
+
+a {
+	font:13px/20px Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+
+/* ====> Navigation <==== */
+
+#navigation > li > a {
+	font:14px/20px 'Open Sans', Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+#navigation ul li a {
+	font:13px/20px 'Open Sans', Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+
+/* ====> Headings <==== */
+
+h1, 
+h1 a, 
+.logo .title {
+    font:300 48px/54px 'Open Sans', Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+.logo .title {
+    font-weight: normal;
+}
+
+h2, 
+h2 a, 
+.cmsms_sitemap > li > a {
+    font:300 30px/36px 'Open Sans', Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+h3, 
+h3 a, 
+.cmsms_pricing_table .cmsms_currency, 
+.cmsms_pricing_table .cmsms_price, 
+.cmsms_pricing_table .cmsms_coins, 
+.cmsms_pricing_table .cmsms_period {
+    font:300 26px/36px 'Open Sans', Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+h4, 
+h4 a, 
+.cmsms_sitemap > li > ul > li > a, 
+.person_title, 
+.post.format-aside .cmsms_post_right_column, 
+.archive .project.format-aside .cmsms_post_right_column {
+    font:600 18px/24px 'Open Sans', Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+h5, 
+h5 a {
+    font:bold 14px/20px Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+h6, 
+h6 a {
+    font:14px/20px Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+
+/* ====> Other <==== */
+
+li {line-height:24px;}
+
+li p,
+li a,
+li abbr,
+li small {line-height:18px;}
+
+q, 
+blockquote,
+.format-quote .entry-title {
+	font:14px/20px Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+q:before,
+blockquote:before {
+	font-size:60px;
+	line-height:1em;
+	font-weight:normal;
+	color:#cccac6;
+}
+
+body.cmsms_black q:before,
+body.cmsms_black blockquote:before {color:#f2f2f2;}
+
+span.dropcap,
+span.dropcap2 {
+	font:300 48px/48px 'Open Sans', Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+span.dropcap2 {
+	font-size:32px;
+	line-height:55px;
+	height:55px;
+}
+
+code {
+	font:13px/20px Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+small,
+small a,
+abbr,
+abbr a,
+.person_block .person_subtitle {
+	font:10px/20px Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+input,
+textarea,
+select,
+option,
+label,
+.cmsms-form-builder .check_parent input[type="checkbox"]+label,
+.cmsms-form-builder .check_parent input[type="radio"]+label {
+	font:13px/20px Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+}
+
+
+
+/* ===================> Colors <================== */
+
+/* ====> Content <==== */
+
+body,
+body.cmsms_black .table tbody td {
+	color:#888888;
+}
+
+#bottom,
+#footer {
+	color:#dfdfdf;
+}
+
+#bottom h1,
+#bottom h2,
+#bottom h3,
+#bottom h4,
+#bottom h5,
+#bottom h6,
+#footer h1,
+#footer h2,
+#footer h3,
+#footer h4,
+#footer h5,
+#footer h6 {
+	color:#fffefc;
+}
+
+
+/* ====> Links <==== */
+
+a,
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover,
+h5 a:hover,
+h6 a:hover,
+.person_footer,
+#wp-calendar #today,
+a.cmsmsLike.active span span,
+a.cmsmsLike.active:hover span span {
+	color:#555555;
+}
+
+#bottom a,
+#footer a,
+#bottom #wp-calendar #today {
+	color:#b1b1b1;
+}
+
+a:hover,
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover,
+h5 a:hover,
+h6 a:hover,
+a.cmsmsLike:hover span span,
+.cmsms_sitemap > li > a:hover,
+.testimonial > span a:hover,
+.widget_meta a:hover abbr,
+body.cmsms_black .header_html_inner,
+body.cmsms_black .header_html_inner *,
+body.cmsms_black .header_html_inner p,
+body.cmsms_black .header_html_inner a,
+body.cmsms_black .header_html_inner h1,
+body.cmsms_black .header_html_inner h2,
+body.cmsms_black .header_html_inner h3,
+body.cmsms_black .header_html_inner h4,
+body.cmsms_black .header_html_inner h5,
+body.cmsms_black .header_html_inner h6,
+#footer .footer_nav > li.current-menu-ancestor a,
+#footer .footer_nav > li.current_page_item a,
+#footer .footer_nav > li a:hover {
+	color:#ffffff;
+}
+
+.color_3 {
+	color:#edd225;
+}
+
+
+/* ====> Navigation <==== */
+
+#navigation > li > a {
+	color:#2e2e2e;
+}
+
+#navigation li.current_page_item > a,
+#navigation li.current_page_ancestor > a,
+#navigation li.current-menu-ancestor > a,
+#navigation li:hover > a:hover, 
+#navigation li:hover > a {
+	color:#2e2e2e;
+}
+
+#navigation ul li > a,
+#navigation > li.dropdown > a:hover {
+	color:#6a6a6a;
+}
+
+#navigation li li.current_page_item > a,
+#navigation li li.current_page_ancestor > a,
+#navigation li li.current-menu-ancestor > a,
+#navigation li li:hover > a:hover, 
+#navigation ul li:hover > a {
+	color:#ffffff;
+}
+
+
+/* ====> Headings <==== */
+
+h1,
+h1 a,
+.logo {
+	color:#2e2e2e;
+}
+
+h2,
+h2 a,
+.cmsms_sitemap > li > a {
+	color:#2e2e2e;
+}
+
+h3,
+h3 a,
+.cmsms_pricing_table .cmsms_currency,
+.cmsms_pricing_table .cmsms_price,
+.cmsms_pricing_table .cmsms_coins,
+.cmsms_pricing_table .cmsms_period {
+	color:#2e2e2e;
+}
+
+h4,
+h4 a,
+.post_type_shortcode article .entry-header .entry-title a:hover,
+.portfolio .project .entry-header .entry-title a:hover,
+.person_title,
+.post.format-aside .cmsms_post_right_column,
+.archive .project.format-aside .cmsms_post_right_column {
+	color:#2e2e2e;
+}
+
+h5,
+h5 a,
+.post_type_shortcode .tl_info,
+#wp-calendar thead th {
+	color:#2e2e2e;
+}
+
+h6,
+h6 a {
+	color:#888888;
+}
+
+
+/* ====> Other <==== */
+
+q, 
+blockquote,
+.post.format-quote blockquote + p,
+.archive .project.format-quote blockquote + p {
+	color:#888888;
+}
+
+span.dropcap {
+	color:#2e2e2e;
+}
+
+span.dropcap2 {
+	color:#fefefe;
+}
+
+code {
+	color:#888888;
+}
+
+small, 
+abbr {
+	color:#888888;
+}
+
+input, 
+textarea, 
+select, 
+option, 
+label,
+.cmsms-form-builder .check_parent input[type="checkbox"]+label, 
+.cmsms-form-builder .check_parent input[type="radio"]+label {
+	color:#888888;
+}
+
+.header_html_inner,
+.header_html_inner *,
+.header_html_inner p,
+.header_html_inner a,
+.header_html_inner h1,
+.header_html_inner h2,
+.header_html_inner h3,
+.header_html_inner h4,
+.header_html_inner h5,
+.header_html_inner h6,
+.cmsms_close,
+.table thead th,
+.table tfoot th,
+.acc .tog:hover,
+.acc .tog.current,
+body.cmsms_black .acc .tog:hover,
+body.cmsms_black .acc .tog.current,
+div.jp-playlist li.jp-playlist-current a,
+.percent_item_colored_wrap > span {
+	color:#ffffff;
+}
+
+
+
+/* ===================> Backgrounds and Borders <================== */
+
+a:hover, 
+#bottom a:hover,
+body.cmsms_black .header_html,
+.button:hover, 
+.button_medium:hover, 
+.button_large:hover, 
+.button_small:hover,
+.comment-reply-link:hover, 
+.pricing_button:hover,
+input[type="submit"]:hover,
+.pj_sort a[name="pj_name"]:hover, 
+.pj_sort a[name="pj_date"]:hover,
+a.pj_cat_filter:hover,
+.pj_filter_container:hover a.pj_cat_filter,
+.button.current, 
+.button_medium.current, 
+.button_large.current, 
+.button_small.current, 
+.comment-reply-link.current, 
+.pj_sort a[name="pj_name"].current, 
+.pj_sort a[name="pj_date"].current,
+a.pj_cat_filter.current,
+body.cmsms_black .button:hover, 
+body.cmsms_black .button_medium:hover, 
+body.cmsms_black .button_large:hover, 
+body.cmsms_black .button_small:hover,
+body.cmsms_black .comment-reply-link:hover, 
+body.cmsms_black .pricing_button:hover,
+body.cmsms_black input[type="submit"]:hover,
+body.cmsms_black .pj_sort a[name="pj_name"]:hover, 
+body.cmsms_black .pj_sort a[name="pj_date"]:hover,
+body.cmsms_black a.pj_cat_filter:hover,
+body.cmsms_black .button.current, 
+body.cmsms_black .button_medium.current, 
+body.cmsms_black .button_large.current, 
+body.cmsms_black .button_small.current,
+body.cmsms_black .comment-reply-link.current, 
+body.cmsms_black .pj_sort a[name="pj_name"].current, 
+body.cmsms_black .pj_sort a[name="pj_date"].current,
+body.cmsms_black a.pj_cat_filter.current, 
+#cmsms_latest_bottom_tweets,
+.colored_banner,
+.acc .tog:hover,
+.acc .tog.current,
+body.cmsms_black .acc .tog:hover,
+body.cmsms_black .acc .tog.current,
+div.jp-playlist li.jp-playlist-current a,
+a.cmsms_content_prev_slide:hover,
+a.cmsms_content_next_slide:hover,
+#bottom a.cmsms_content_prev_slide:hover,
+#bottom a.cmsms_content_next_slide:hover, 
+.post_type_shortcode article:hover:before,
+.percent_item_colored,
+.person_block:hover:before,
+.cmsms_sitemap > li > a:hover span,
+.cmsms_timeline li a:hover span,
+.entry .project_navi span a:hover span,
+.entry .project_navi span a:hover:before,
+a.cmsmsLike:hover,
+a.cmsmsLike.active,
+a.cmsmsLike:hover span span,
+.portfolio .project:hover:before,
+ul.page-numbers li .page-numbers.current,
+ul.page-numbers li .page-numbers:hover,
+body.cmsms_black ul.page-numbers li .page-numbers.current,
+body.cmsms_black ul.page-numbers li .page-numbers:hover, 
+.widget_custom_flickr_entries .flickr_badge_image a:hover, 
+body.cmsms_black .widget_custom_flickr_entries .flickr_badge_image a:hover, 
+#bottom .widget_custom_flickr_entries .flickr_badge_image a:hover,
+.related_posts_content .related_posts_content_tab .one_half:hover:before,
+#page .responsive_nav:hover, 
+#page .responsive_nav.active,
+.post_type_shortcode article.post:hover:before,
+.post_type_shortcode article.project:hover:before,
+.rev_slider_wrapper .tp-leftarrow.round:hover,
+.rev_slider_wrapper .tp-rightarrow.round:hover,
+#page .ls-riviera .ls-nav-prev:hover,
+#page .ls-riviera .ls-nav-next:hover,
+.cmsms_content_block_hover:hover:before,
+.recentcomments a:hover {
+	background-color:#edd225;
+}
+
+.acc .tog:hover,
+.acc .tog.current,
+body.cmsms_black .acc .tog:hover,
+body.cmsms_black .acc .tog.current,
+#bottom input[type="text"]:focus, 
+#bottom input[type="password"]:focus, 
+#bottom textarea:focus,
+#bottom select:focus,
+body.cmsms_black #bottom input[type="text"]:focus, 
+body.cmsms_black #bottom input[type="password"]:focus, 
+body.cmsms_black #bottom textarea:focus,
+body.cmsms_black #bottom select:focus,
+#bottom .widget_custom_flickr_entries .flickr_badge_image a:hover img {
+	border-color:#edd225;
+}
+
+.cmsms_content_slider_parent ul.cmsms_slides_nav li a {background-color:#ffffff;}
+
+.cmsms_content_slider_parent ul.cmsms_slides_nav li.active a,
+.cmsms_content_slider_parent ul.cmsms_slides_nav li a:hover,
+#slide_top {
+	background-color:#2e2e2e;
+}
+
+.social_icons li:nth-child(1) a:hover {background-color:#1482bb;}
+
+.social_icons li:nth-child(2) a:hover {background-color:#00cafb;}
+
+.social_icons li:nth-child(3) a:hover {background-color:#3b5998;}
+
+.social_icons li:nth-child(4) a:hover {background-color:#d64935;}
+
+.social_icons li:nth-child(5) a:hover {background-color:#fd954e;}
+
+
+
+/* ---------- Small Monitor (Note: Design for a width less than 1024px) ---------- */
+
+@media only screen and (max-width: 1023px) {
+	#page #navigation > li > a, 
+	#page #navigtion li.current_page_item > a,
+	#page #navigation li.current_page_ancestor > a,
+	#page #navigation li.current-menu-ancestor > a,
+	#page #navigation li:hover > a:hover, 
+	#page #navigation li:hover > a, 
+	#page #navigation ul li > a, 
+	#page #navigation li li.current_page_item > a,
+	#page #navigation li li.current_page_ancestor > a,
+	#page #navigation li li.current-menu-ancestor > a,
+	#page #navigation li li:hover > a:hover, 
+	#page #navigation ul li:hover > a {
+		color:#2e2e2e;
+		font-size:14px;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+	#page .responsive_content_block h1 {
+		font-size:48px;
+		line-height:54px;
+	}
+	
+	#page .responsive_content_block h1.with_line {
+		padding-bottom:30px;
+		margin-bottom:30px;
+	}
+	
+	#page .responsive_content_block h2 {
+		font-size:30px;
+		line-height:36px;
+	}
+	#page .responsive_content_block h3 {
+		font-size:26px;
+		line-height:36px;
+	}
+	#page .responsive_content_block h4 {
+		font-size:18px;
+		line-height:24px;
+	}
+	#page .responsive_content_block h5 {
+		font-size:14px;
+		line-height:20px;
+	}
+	#page .responsive_content_block h6 {
+		font-size:14px;
+		line-height:20px;
+	}
+	#page .responsive_content_block p {
+		font-size:13px;
+		line-height:20px;
+	}
+}
