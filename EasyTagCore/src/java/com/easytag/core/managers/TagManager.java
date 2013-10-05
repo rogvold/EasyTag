@@ -109,4 +109,28 @@ public class TagManager implements TagManagerLocal {
         EasyTag tag = new EasyTag(photoId, name, description, x, y, width, height);
         return em.merge(tag);
     }
+
+    @Override
+    public List<EasyTag> findEasyTagByName(String name) throws TagException {
+        Query q = em.createNativeQuery("select t from EasyTags t "
+                + "where t.name like :name").setParameter("name", "\'%" 
+                + name + "%\'");
+        List<EasyTag> list = q.getResultList();
+        if (list == null || list.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
+
+    @Override
+    public List<EasyTag> fingEasyTagByDescription(String description) throws TagException {
+        Query q = em.createNativeQuery("select t from EasyTags t "
+                + "where t.description like :description").setParameter("description", "\'%" 
+                + description + "%\'");
+        List<EasyTag> list = q.getResultList();
+        if (list == null || list.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
 }
