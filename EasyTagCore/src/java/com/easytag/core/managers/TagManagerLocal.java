@@ -24,5 +24,9 @@ public interface TagManagerLocal {
     
     public EasyTag modifyEasyTag(Long userId, Long photoId, String name, String description, Double x, Double y, Double width, Double height) throws TagException;
     
+    public List<EasyTag> findEasyTagByName(String name) throws TagException;
+    
+    public List<EasyTag> fingEasyTagByDescription(String description) throws TagException;
+    
     //TODO find by name, description
 }
