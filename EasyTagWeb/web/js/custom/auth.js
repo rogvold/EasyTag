@@ -43,7 +43,7 @@ function MyAuth(){
             self.register(self.registrationEmail, self.registrationPasword);
         });
         
-    }
+    };
     
     this.login = function(userEmail, userPassword){
         var u = {};
@@ -55,35 +55,30 @@ function MyAuth(){
             type: 'POST',
             data: JSON.stringify(u),
             success: function(data){
-                console.log(data);
+                    console.log(data);
                 if (data.data == undefined){
-                    alert(data.error.message);
-                    return;
+                        alert(data.error.message);
+                        return;
+                    }
+                    window.location.reload();
                 }
-                window.location.reload();
-            }
         });
-    }
+    };
     
     this.register = function(email, password){
         console.log('registration: email = ' + email + '; password = ' + password);
-        var user = {
-            email: email,
-            password: password
-        }
-        $.ajax({
-            url:'/EasyTagWeb/resources/auth/register',
-            type: 'POST',
-            data: JSON.stringify(user),
-            success: function(data){
-                data = JSON.parse(data);
-                console.log(data);
-                if (data.data == undefined){
-                    alert(data.error.message);
-                    return;
+        $.post(
+                '/EasyTagWeb/resources/auth/register',
+                $('#registration_form').serialize()
+            ).success(
+                function(data) {
+                    console.log(data);
+                    if (data.error != undefined){
+                        alert(data.error.message);
+                        return;
+                    }
+                    window.location.reload();
                 }
-                self.login(email, password);
-            }
-        });
-    }
+            );
+    };
 }

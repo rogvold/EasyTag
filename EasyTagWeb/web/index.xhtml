@@ -141,20 +141,22 @@
                             Создать аккаунт
                         </h3>
                         <div style="display: block; width: 400px; margin: 0 auto; text-align: center; ">
-                            <input type="text" placeholder="Login" id="registrationEmail" style="margin-bottom: 20px; width: 400px;" />
+                            <form id="registration_form" method="post" action="#{request.contextPath}/resources/auth/register">
+                                <input type="text" placeholder="Login" id="registrationEmail" name="email" style="margin-bottom: 20px; width: 400px;" />
 
-                            <input type="password" placeholder="Password" id="registrationPassword" style="margin-bottom: 20px; width: 400px;" />
+                                <input type="password" placeholder="Password" id="registrationPassword" name="password" style="margin-bottom: 20px; width: 400px;" />
 
-                            <input type="password" placeholder="Confirm password" id="registrationConfirmPassword" style="margin-bottom: 20px; width: 400px;" />
+                                <input type="password" placeholder="Confirm password" id="registrationConfirmPassword" name="passwordConfirmation" style="margin-bottom: 20px; width: 400px;" />
 
-                            <br/>
-                            <span class="button_medium" id="registerButton" style=" margin-bottom: 20px;  cursor: pointer;">
-                                Регистрация нового пользователя
-                            </span>
+                                <br/>
+                                <span class="button_medium" id="registerButton" style=" margin-bottom: 20px;  cursor: pointer;">
+                                    Регистрация нового пользователя
+                                </span>
 
-                            <!--                            <a href="javascript:void();" onclick="toggleForms();" >
-                                                            У меня уже есть аккаунт
-                                                        </a>-->
+                                <!--                            <a href="javascript:void();" onclick="toggleForms();" >
+                                                                У меня уже есть аккаунт
+                                                            </a>-->
+                            </form>
                         </div>
                     </div>
                     <div id="authErrorBlock" >

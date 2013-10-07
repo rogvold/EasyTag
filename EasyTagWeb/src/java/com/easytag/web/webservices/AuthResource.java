@@ -42,15 +42,12 @@ public class AuthResource {
     
     @POST
     @Path("register")
-    public String register(String data) {
+    public String register(@FormParam("email") String email, @FormParam("password") String password) {
         try {
-            if (data == null) {
-                throw new TagException("data is null");
+            if (email == null || password == null) {
+                throw new TagException("Email or password cannot be empty.");
             }
-            User user = new Gson().fromJson(data, User.class);
-            if (user == null) {
-                throw new TagException("Gson: can't convert user");
-            }
+            User user = new User(email, password);
             System.out.println("userMan = " + userMan);
             userMan.registerUser(user.getEmail(), user.getPassword(), UserType.USER);
             JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
