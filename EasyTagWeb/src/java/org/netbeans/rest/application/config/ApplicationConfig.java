@@ -19,6 +19,7 @@ public class ApplicationConfig extends Application {
             // Class jsonProvider = Class.forName("org.glassfish.jersey.moxy.json.MoxyJsonFeature");
             // Class jsonProvider = Class.forName("org.glassfish.jersey.jettison.JettisonFeature");
             resources.add(jsonProvider);
+            resources.add(Class.forName("org.glassfish.jersey.media.multipart.MultiPartFeature"));
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(getClass().getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
@@ -34,6 +35,7 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.easytag.web.webservices.AlbumResource.class);
         resources.add(com.easytag.web.webservices.AuthResource.class);
+        resources.add(com.easytag.web.webservices.FileResource.class);
         resources.add(com.easytag.web.webservices.PhotoResource.class);
         resources.add(com.easytag.web.webservices.TagResource.class);
         resources.add(com.easytag.web.webservices.TestResource.class);

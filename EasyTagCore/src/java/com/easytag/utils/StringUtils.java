@@ -29,6 +29,21 @@ public class StringUtils {
     public StringUtils(String text) {
         this.text = text;
     }
+    
+     public static String toHexString(byte[] byteData) {
+        if (byteData == null) {
+            return StringUtils.EMPTY_STRING;
+        }
+        StringBuilder hexString = new StringBuilder();
+        for (int i = 0; i < byteData.length; i++) {
+            String hex = Integer.toHexString(0xff & byteData[i]);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
 
     public String getStringFromList(List<String> list, String delimiter) {
         if (list == null || list.isEmpty()) {
@@ -110,6 +125,10 @@ public class StringUtils {
             return null;
         }
     }
+    
+    public static boolean isTrue(String s) {
+        return isTrue(s, "1", "yes", "true", "ok", "on");
+    }
 
     public static boolean isTrue(String s, String... accept) {
         final String v = getValidString(s);
@@ -122,7 +141,7 @@ public class StringUtils {
     }
 
     public static boolean isFalse(String s) {
-        return !isTrue(s);
+        return isTrue(s, "0", "no", "false", "cancel", "off");
     }
 
     public static String decode(String value, String charsetName) {

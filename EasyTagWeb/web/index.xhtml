@@ -123,17 +123,18 @@
                             Вход в систему
                         </h3>
                         <div style="display: block; width: 400px; margin: 0 auto; text-align: center; ">
-                            <input type="text" placeholder="Email" id="loginEmail" style="margin-bottom: 20px; width: 400px;" />
-
-                            <input type="password" placeholder="Password" id="loginPassword" style="margin-bottom: 20px; width: 400px;" />
-                            <br/>
-                            <span onclick="" class="button_medium" id="loginButton" style=" margin-bottom: 00px; cursor: pointer;">
-                                Вход
-                            </span>
+                            <form id="login_form" action="#{request.contextPath}/resources/auth/login">
+                                <input type="text" placeholder="Email" id="loginEmail" name="email" style="margin-bottom: 20px; width: 400px;" />
+                                <input type="password" placeholder="Password" id="loginPassword" name="password" style="margin-bottom: 20px; width: 400px;" />
+                                <br/>
+                                <span onclick="" class="button_medium" id="loginButton" style=" margin-bottom: 00px; cursor: pointer;">
+                                    Вход
+                                </span>
 
                             <!--                            <span  class="fuckingToggler" >
                                                             Создать аккаунт 
                                                         </span>-->
+                            </form>
                         </div>
                     </div>
                     <div id="registrationForm" style="display: block;">

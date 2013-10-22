@@ -59,19 +59,16 @@ public class AuthResource {
 
     @POST
     @Path("login")
-    public String login(@Context HttpServletRequest req, String data) {
+    public String login(@Context HttpServletRequest req, @FormParam("email") String email, @FormParam("password") String password) {
         try {
             HttpSession session = req.getSession(false);
             if (SessionUtils.getUserId(session) != null) {
                 throw new TagException("You should logout first");
             }
-            if (data == null) {
-                throw new TagException("data is null");
+            if (email == null || password == null) {
+                throw new TagException("Login and/or password = null");
             }
-            User user = new Gson().fromJson(data, User.class);
-            if (user == null) {
-                throw new TagException("Gson: can't convert user");
-            }
+            User user = new User(email, password);
             user = userMan.login(user.getEmail(), user.getPassword());
             if (user == null) {
                 throw new TagException("Incorrect pair email/password", ResponseConstants.LOGIN_FAILED_CODE);

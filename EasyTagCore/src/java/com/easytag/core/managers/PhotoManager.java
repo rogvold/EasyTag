@@ -47,7 +47,7 @@ public class PhotoManager implements PhotoManagerLocal {
     @Override
     public Integer getPhotosAmount(Long albumId) throws TagException {
         Query q = em.createQuery("select count(p) from Photo p where p.albumId = :albumId").setParameter("albumId", albumId);
-        return (Integer) q.getSingleResult();
+        return ((Long) q.getSingleResult()).intValue();
     }
 
     @Override
