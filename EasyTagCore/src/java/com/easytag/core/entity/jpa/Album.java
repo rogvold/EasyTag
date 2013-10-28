@@ -149,6 +149,10 @@ public class Album implements Serializable {
 
     @Override
     public String toString() {
-        return "com.easytag.core.entity.jpa.Album[ id=" + id + " ]";
+        return "Album{" + "id=" + id + ", creatorId=" + creatorId + ", name=" + name + ", description=" + description + ", tags=" + tags + ", categories=" + categories + ", parentId=" + parentId + ", status=" + status + ", type=" + type + ", avatarSrc=" + avatarSrc + '}';
     }
+
+    
+
+   
 }

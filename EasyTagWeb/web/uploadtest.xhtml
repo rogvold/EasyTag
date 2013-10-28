@@ -4,11 +4,56 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <title>Upload test</title>
+        <script type="text/javascript" src="js/jquery.min.js" />
+        
+        <script type="text/javascript">
+
+
+            function addAlbum() {
+                var a = {
+                    name: $('#albumName').val(),
+                    description: $('#albumDescription').val()
+                };
+                
+                console.log(a);
+
+                if (a == undefined || a.name == undefined || a.name == '') {
+                    alert('a is undefined');
+                    return;
+                }
+                $.ajax({
+                    url: '/EasyTagWeb/resources/album/create?name=' + a.name,
+                    success: function(data) {
+                        console.log(a);
+                        alert('success');
+                    }
+                });
+            }
+            
+            $(function(){
+                $('#createAlbumButton').click(function(){
+                    addAlbum();
+                });
+            });
+
+        </script>
+
+
     </h:head>
     <h:body>
+        <div style="border: dashed 2px firebrick;">
+           album name:  <input type="text" id="albumName" />
+            <br/>
+            <textarea  id="albumDescription" />
+            <br/>
+            <button id="createAlbumButton" > create album </button>
+        </div>
+        <hr/>
+        <br/>
+        
         <form id="fileupload" action="resources/file/upload" method="POST" enctype="multipart/form-data">
             <input type="file" name="file" value="Choose image..." />
-            <input type="hidden" name="album_id" value="1" />
+            <input type="hidden" name="album_id" value="51" />
             <input type="submit" value="Submit" />
         </form>
     </h:body>

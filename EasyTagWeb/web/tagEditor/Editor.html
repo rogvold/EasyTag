@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>My Editor</title>
+        
+        <link rel="shortcut icon" href="images/favicon.ico">
+        
+        <link rel="stylesheet" type="text/css" href="css/minified/jquery-hotspotter-1.7.9.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/ui-darkness/jquery-ui-1.9.2.custom.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/editor-1.3.2.min.css" />
+		
+        <link href='http://fonts.googleapis.com/css?family=Redressed' rel='stylesheet' type='text/css'>
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/beautify-html.min.js"></script>
+        <script type="text/javascript" src="css//minified/jquery-hotspotter-1.7.9.min.js"></script>
+        <script type="text/javascript" src="js/editor-1.3.2.js"></script>
+		
+		<script type="text/javascript">
+            
+            $(function(){
+				//Editor.localFile = 'file:///C:/uploads/user1/album51/upload1185721374514224631.jpg';              
+				imgURL = 'http://localhost:44940/EasyTagWeb/resources/file/download?id=52&inline=1'
+				Editor.initNewImage(imgURL);
+				Editor.isLocalFile= false;
+            });
+
+        </script>
+		
+    </head>
+    <body>
+        <div class="ed-top">
+            <button id="nimg-btn" title="New Image"><span class="btn-icon"><img src="images/new-img.png" /></span>New Image</button>
+            <button id="prev-btn" title="Start Preview  (ctrl + alt)"><span class="btn-icon"><img src="images/start-prev.png" /></span>Preview</button>
+            <button id="gcode-btn" title="Get Code"><span class="btn-icon"><img src="images/get-code.png" /></span>Get Code</button>
+            <button id="load-code-btn" title="Load Code"><span class="btn-icon"><img src="images/load-code.png" /></span>Load Code</button>
+            <br /><br /><br />
+            <span class="spot-options">
+                <button id="clone-btn" title="Clone (ctrl + c)"><span class="btn-icon"><img src="images/clone.png" /></span></button>
+                <button id="del-btn" title="Delete (DELETE)"><span class="btn-icon"><img src="images/del.png" /></span></button>
+                <button id="link-btn" title="Add Link"><span class="btn-icon"><img src="images/add-link.png" /></span></button>
+            </span>
+        </div>
+            
+        <div class="ed-left">
+            <div class="spot-bar">
+                <button id="red-spot-btn" title="Red Spot"><img src="images/red-spot.png" /></button>
+                <button id="glass-spot-btn" title="Glass Spot"><img src="images/glass-spot.png" /></button>
+                <button id="shadow-spot-btn" title="Shadow Spot"><img src="images/shadow-spot.png" /></button>
+                <button id="sniper-spot-btn" title="Sniper Spot"><img src="images/sniper-spot.png" /></button>
+                <button id="invisible-spot-btn" title="Invisible Spot">&nbsp;&nbsp;</button>
+                <button id="onhover-spot-btn" title="On Hover Spot"><img src="images/onhover-spot.png" /></button>
+                <button id="img-spot-btn" title="Image Spot"><img src="images/img-spot.png" /></button>
+            </div>
+        </div>
+            
+        <div class="ed-center">
+            <div class="edit-area" tabindex="-1">
+                <img id= "ed-img" />
+            </div>
+        </div>
+        
+        <div class="ed-right" hidden="true">  
+            <div class="option-bar">
+                <div class="img-resp-container">
+                    <p class="opt-title">Image</p>
+                    <input type="checkbox" id="img-responsive"/> Responsive / Fluid <img title="Choose if you are going to serve the same image with different resolutions or use as a fluid image to allow scaling & repositioning of your spots" src="images/help.png" />
+                </div>
+                    
+                <form class="spot-options" id="option-frm">
+                <p class="opt-title">Spot</p>
+                <table>
+                    <tr>
+                        <td>Type:</td>
+                        <td><select id="sp-type">
+                                <option>General</option>
+                                <option>Aim</option>
+                            </select></td>
+                        <td><img title="With 'general' you can use tip & bubble tooltips , 'Aim' to use aiming effect & show tooltip outside image" src="images/help.png" /></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Animation:</td>
+                        <td><input type="checkbox" id="sp-anim" checked="" /></td>
+                        <td><img title="if unchecked the tooltip will be shown without the aiming animation" src="images/help.png" /></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Active on:</td>
+                        <td><select id="sp-activeon">
+                                <option>hover</option>
+                                <option>click</option>
+                                <option>always</option>
+                            </select></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>b-radius:</td>
+                        <td><input type="text" id="sp-bradius"/></td>
+                        <td><img title="Specifiy border-radius style. Type number or use spin buttons beside to see effect" src="images/help.png" /></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Spot name:</td>
+                        <td><input type="text" id="sp-name" /></td>
+                        <td><img title="Have a link to your spot like 'www.yoursite.com/aa.html#spotname' when navigating to this link the plugin will scroll to where image is located & trigger your spot!" src="images/help.png" /></td>
+                    </tr>
+                </table>
+                    
+                    
+                
+                
+                <p class="opt-title">Tooltip</p>
+                <button id="tt-content-btn"><span class="btn-icon"><img src="images/edit-tooltip.png" /></span>Edit Content</button> <br>
+                <table id="tooltip-option">
+                    <tr>
+                        <td>Type:</td>
+                        <td><select id="tt-type">
+                                <option>tip</option>
+                                <option>bubble</option>
+                            </select></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Animation:</td>
+                        <td><select id="tt-anim">
+                                <option>goin</option>
+                                <option>fade</option>
+                                <option>none</option>
+                            </select></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Direction:</td>
+                        <td><select id="tt-dir">
+                                <option>top</option>
+                                <option>bottom</option>
+                                <option>right</option>
+                                <option>left</option>
+                            </select></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Width:</td>
+                        <td><input type="text" id="tt-width"/></td>
+                        <td><img title="Set custom width for tooltip in px , or leave it blank to auto resize with your content" src="images/help.png" /></td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Position:</td>
+                        <td><input type="text" id="tt-pos"/></td>
+                        <td><img title="Tooltip position relative to element , setting positive value will move tooltip to right for top & bottom directions or down for right & left directions , reverse with negative" src="images/help.png" /></td>
+                    </tr>
+                        
+                    <tr>
+                        <td>Color</td>
+                        <td><select id="tt-color">
+                                <option>white</option>
+                                <option>black</option>
+                            </select></td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+        </div>
+        
+		<div class="ed-right">
+			<div class="option-bar">
+					<form class="spot-options" id="option-frm" style="display: block;">
+						<p class="opt-title">Params</p>
+						<table>
+							<tbody>
+								<tr>
+									<td>left:</td>
+									<td> <input id="spotLeft" value="0"/> </td>
+								</tr>
+								<tr>
+									<td>top:</td>
+									<td> <input id="spotTop" value="0"/> </td>
+								</tr>
+								<tr>
+									<td>width:</td>
+									<td> <input id="spotWidth" value="0"/> </td>
+								</tr>
+								<tr>
+									<td>height:</td>
+									<td> <input id="spotHeight" value="0"/> </td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>			
+		</div>
+		
+        <!-- Dialogs -->
+        <div id="new-img-dialog">
+                <div id="new-i-d-tabs">
+                    <ul>
+                        <li><a href="#img-url">URL</a></li>
+                        <li class="html5-local-file"><a href="#img-local">Local Image</a></li>
+                    </ul>
+                    
+                    <div id="img-url">
+                        <p>Image URL:</p>
+                        <input type="text" id="img-url-txt" />
+                    </div>
+                    
+                    <div class="html5-local-file" id="img-local">
+                        <p>Get Local File:</p>
+                        <input id="img-file-txt" type="file" accept="image/*" />
+                    </div>
+                </div>
+        </div>
+        
+        <div id="gcode-dialog">
+            HTML:
+            <textarea id="gcode-txt"></textarea>
+            
+            <br /><br />
+            <input type="checkbox" id="remove-formatting">
+            <label for="remove-formatting">Remove Formatting "for use with wordpress"</label>
+            
+            <div class="ui-widget" id="local-file-notice">
+                <div class="ui-state-error ui-corner-all">
+                    <p><span class="ui-icon ui-icon-info"></span>
+                        <strong>Note:</strong> The image you have used is local , after you upload it put image URL in the first img tag in
+                        the markup above you will find <strong>&lt;img src= 'your image URL' /&gt; </strong> in line 2 , replace 'your image URL' with image URL</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="load-code-dialog">
+            HTML:
+            <textarea id="load-code-txt"></textarea>
+            <p>Remember that hotspotter generated HTML always start with '&lt;div class="hs-area"&gt;'</p>
+        </div>
+        
+        <div id="img-spot-dialog">
+            <p>Main Image URL:
+                <input type="text" id="imgspot-1"/>
+            </p> 
+            <p>Image shown on hover / click:
+                <input type="text" id="imgspot-2"/>
+            </p>
+        </div>
+            
+        <div id="sp-link-dialog">
+                URL:
+                <input type="text" id="sp-link"/>
+                <p>
+                    <input id="sp-link-n-win" type="checkbox" />
+                    <label for="sp-link-n-win">Open in new Window</label>
+                </p>
+        </div>
+            
+        <div id="tt-content-dialog">
+                Tooltip HTML/text Content:
+                <textarea id="tt-content"></textarea>
+        </div>
+            
+        <div id="error-dialog">
+            <p><span class="ui-icon ui-icon-alert"></span>
+                <span id="error-txt"></span></p>
+        </div>
+        <!-- Preview & button & it's Overlay-->
+        <div id="prev-overlay"></div>
+        <button id="end-prev-btn" title="End Preview (ctrl + alt)"><span class="btn-icon"><img src="images/end-prev.png" /></span>End Preview</button>    
+
+        <div class="preview-area">
+            <div class="hs-area">
+                <img id= "prev-img">
+            </div>
+        </div>
+        
+       
+    </body>
+</html>

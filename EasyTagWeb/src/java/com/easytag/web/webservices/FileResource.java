@@ -110,6 +110,7 @@ public class FileResource {
     }
     
     @GET
+    @Path("download")
     public Response download(@Context HttpServletRequest request, @QueryParam("id") long id, @QueryParam("inline") String inline) {
         try {
             Long userId = SessionUtils.getUserId(SessionUtils.getSession(request, true));

@@ -61,7 +61,9 @@ public class AlbumManager implements AlbumManagerLocal {
             throw new TagException("you have already created album with name " + name);
         }
         Album a = new Album(creatorId, name, description, tags, categories, parentId, AlbumStatus.NEW, AlbumType.PRIVATE, avatarSrc);
+        System.out.println("creating new album: a = " + a);
         return em.merge(a);
+        
     }
 
     @Override

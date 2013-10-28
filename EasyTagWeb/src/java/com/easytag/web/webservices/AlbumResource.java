@@ -61,9 +61,15 @@ public class AlbumResource {
     @Path("create")
     public String createAlbum(@Context HttpServletRequest req, String data) {
         try {
+            System.out.println("ws createAlbum occured");
+
+            System.out.println("data = " + data);
+            
             HttpSession session = req.getSession(false);
             Long currentUserId = SessionUtils.getUserId(session);
 
+            System.out.println("userId = " + currentUserId);
+            
             if (currentUserId == null) {
                 throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
             }
@@ -75,16 +81,55 @@ public class AlbumResource {
             //TODO(Vitaly): wrap this string with trycatch block throwing TagException
             Album album = new Gson().fromJson(data, Album.class);
 
+            System.out.println("ws createAlbum: a = " + album);
+            
             if (album == null) {
                 throw new TagException("cannot deserialize album");
             }
+
             album = alMan.createAlbum(currentUserId, album.getName(), album.getDescription(), album.getTags(), album.getCategories(), null, album.getAvatarSrc());
+            
+            System.out.println("ws createAlbum: a = " + album);
+            
+            
             JsonResponse<Album> jr = new JsonResponse<Album>(ResponseConstants.OK, null, album);
             return SimpleResponseWrapper.getJsonResponse(jr);
         } catch (TagException e) {
             return TagExceptionWrapper.wrapException(e);
         }
     }
+    
+    @GET
+    @Path("create")
+    public String createSimpleAlbum(@Context HttpServletRequest req, @QueryParam("name") String name) {
+        try {
+            System.out.println("ws createAlbum occured");
+
+            HttpSession session = req.getSession(false);
+            Long currentUserId = SessionUtils.getUserId(session);
+
+            System.out.println("userId = " + currentUserId);
+            
+            if (currentUserId == null) {
+                throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+
+            //TODO(Vitaly): wrap this string with trycatch block throwing TagException
+
+
+            Album album = alMan.createAlbum(currentUserId, name, null, null, null, null, null);
+            
+            
+            
+            JsonResponse<Album> jr = new JsonResponse<Album>(ResponseConstants.OK, null, album);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException e) {
+            return TagExceptionWrapper.wrapException(e);
+        }
+    }
+    
+    
+    
 
     @GET
     @Path("getUserAlbums")

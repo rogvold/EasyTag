@@ -1,0 +1,222 @@
+/*
+ * Title                   : Hotspotter Editor App Styles
+ * Author                  : Basm , aka z-B
+ * Version                 : 1.3.2
+ * Last Modified           : 9 April 2013
+ * CodeCanyon Profile      : http://codecanyon.net/user/z-B
+ * License                 : http://codecanyon.net/licenses/regular_extended
+ */
+body {
+    background-color: #000000;
+    font: 10px 'Redressed', arial ,sans-serif;
+}
+.ed-top {
+    height: 81px;
+    width: 78%;
+    text-align: center;
+}
+.ed-left , .ed-center , .ed-right {
+    float: left;
+}
+
+.ed-left {
+    width: 5%;
+    height: 200px;
+    position: relative;
+	display: none;
+}
+.spot-bar {
+    position: absolute;
+    right: 0;
+    top: 12px;
+    width: 47px;
+    height: 122px;
+    text-align: right;
+}
+.spot-bar .ui-button {
+    border-radius: 10px 0;
+    width: 40px;
+    height: 40px;
+}
+.spot-bar .ui-button-text {
+    padding: 6px 0;
+}
+#img-spot-btn img {
+    width:18px;
+    height:18px;
+    padding-top:4px;
+}
+/*-----------------------------------------------*/
+.ed-center {
+    position: relative;
+    width: 69%;
+    height: 500px;
+    text-align: center;
+    overflow: auto;
+    border: 1px dashed gray;
+    border-radius: 8px;
+}
+.edit-area {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+    outline: none;
+}
+.edit-area > img {
+    display: block;
+}
+#clone-btn , #del-btn , #link-btn {
+    width: 40px;
+    height: 25px;
+}
+.ed-right {
+    width: 25%;
+    height: 200px;
+    position: relative;	
+}
+.option-bar {
+    position: absolute;
+    left: 8px;
+    height: 100px;
+    text-align: center;
+    color: #ffffff;
+    width: 100%;
+    max-width: 220px;
+    min-width: 188px;
+    font-size: 15px;
+}
+.option-bar .opt-title {
+    margin: 10px 0 10px;
+    border: 2px solid #000000;
+    color: #0B93D5;
+    padding: 3px;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 0 10px #0B93D5 inset;
+    font-size: 16px;
+}
+.option-bar select , .option-bar input[type=text]{
+    width: 77px;
+    height: 20px;
+    border: 0;
+    border-radius: 5px 0 5px 0;
+    font-size: 14px; 
+}
+#sp-bradius {
+    width: 50px;
+    font-size: 12px;
+}
+.img-resp-container {
+    display: none;
+}
+.spot-options {
+    display: none;
+}
+
+
+table td {
+    padding-bottom: 5px;
+    padding-right: 10px;
+}
+#tt-content-btn {
+    margin-bottom:5px;
+    font-size: 10px;
+}
+#tt-content {
+    width: 400px;
+    height: 170px;
+}
+/*-----------------------------------------*/
+.invisible-spot-ed {
+    border: 2px solid #000000;
+}
+.onhover-spot-ed {
+    border: 2px solid #007E32;
+}
+.selected {
+    border: 2px solid #0B93D5;
+}
+
+#imgspot-1 , #imgspot-2 {
+    width: 350px;
+}
+
+#prev-overlay , .preview-area {
+    display: none;
+    position: absolute;
+}
+
+#prev-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #5F5F5F;
+    left:0;
+    top:0;
+    z-index: 2000;
+    text-align: center;
+}
+
+.preview-area {
+    z-index: 2001;
+    font: 12px arial;
+}
+
+.gcode-dialog .ui-widget {
+    display: none;
+}
+#gcode-txt, #load-code-txt {
+    width: 600px;
+    height: 200px;
+}
+.ui-icon-alert {
+    float: left; margin-right: .3em;
+}
+
+.ui-state-error {
+    padding: 0 .7em;
+}
+
+#error-txt {
+    color: #cd0a0a;
+}
+
+#error-dialog span:first-child {
+    float: left;
+    margin-right: 5px;
+}
+
+
+#img-url-txt {
+    width: 240px;
+}
+
+#new-img-dialog .ui-widget , #gcode-dialog .ui-widget{
+    margin-top: 10px;
+}
+
+#gls-shdw-notice , #local-file-notice {
+    display: none;
+}
+
+#sp-link {
+    width: 275px;
+}
+.btn-icon {
+    float: left;
+    padding-right: 5px;
+}
+.btn-focus {
+    background: #0078a3 url("ui-darkness/images/ui-bg_glass_20_555555_1x400.png") 40px 40px repeat-x;
+}
+#end-prev-btn {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 2002;
+    border: 1px solid #ffffff;
+}
+
+#thank-famfamfam {
+    clear:both;color:#ffffff;padding-top:10px;text-align: center;font-size:14px
+}
