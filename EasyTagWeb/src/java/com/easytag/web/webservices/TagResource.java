@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -78,7 +79,7 @@ public class TagResource {
     
     @POST
     @Path("create")
-    public String createEasyTag(@Context HttpServletRequest req, String data) {
+    public String createEasyTag(@Context HttpServletRequest req,@FormParam("data") String data) {
         try {
             HttpSession session = req.getSession(false);
             Long currentUserId = SessionUtils.getUserId(session);
@@ -128,7 +129,7 @@ public class TagResource {
     
     @POST
     @Path("modify")
-    public String modifyEasyTag(@Context HttpServletRequest req, String data) {
+    public String modifyEasyTag(@Context HttpServletRequest req,@FormParam("data") String data) {
         try {
             HttpSession session = req.getSession(false);
             Long currentUserId = SessionUtils.getUserId(session);

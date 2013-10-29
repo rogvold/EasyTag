@@ -17,11 +17,11 @@ function MyAuth() {
             self.loginEmail = $('#loginEmail').val();
             self.loginPassword = $('#loginPassword').val();
             //TODO: validate
-            if (self.loginEmail == undefined || self.loginEmail == '' || self.loginPassword == undefined || self.loginPassword == '') {
+            if (self.loginEmail === undefined || self.loginEmail === '' || self.loginPassword === undefined || self.loginPassword === '') {
                 alert('incorrect input data');
                 return;
             }
-            self.login(self.loginEmail, self.loginPassword);
+            self.login(self.loginEmail, self.loginPassword);            
         });
 
         $('#registerButton').live('click', function() {
@@ -51,15 +51,20 @@ function MyAuth() {
                 '/EasyTagWeb/resources/auth/login',
                 $('#login_form').serialize()
                 ).success(
-                function(data) {
+                function(data) {                    
                     console.log(data);
-                    if (data.error !== undefined) {
-                        alert(data.error.message);
+                    var resp = JSON.parse(data);     
+                    
+                    if (resp.responseCode === 0) {
+                        alert(resp.error.message);
                         return;
-                    }
-                    window.location.reload();
+                    } else {
+                        window.location.href = 'http://localhost:44940/EasyTagWeb/index.xhtml';  
+                        alert('Loged as ' + self.loginEmail);
+                    }                    
+                    //window.location.reload();
                 }
-        );
+        );         
     };
 
 

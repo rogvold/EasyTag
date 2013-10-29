@@ -8,7 +8,6 @@
         
         <script type="text/javascript">
 
-
             function addAlbum() {
                 var a = {
                     name: $('#albumName').val(),
@@ -17,17 +16,19 @@
                 
                 console.log(a);
 
-                if (a == undefined || a.name == undefined || a.name == '') {
+                if (a === undefined || a.name === undefined || a.name === '') {
                     alert('a is undefined');
                     return;
                 }
-                $.ajax({
-                    url: '/EasyTagWeb/resources/album/create?name=' + a.name,
-                    success: function(data) {
-                        console.log(a);
+                $.post(
+                    '/EasyTagWeb/resources/album/create',
+                    {data: JSON.stringify(a)},
+                    function(data) {
+                        console.log(data);
                         alert('success');
-                    }
-                });
+                    },
+                    "json"
+                );
             }
             
             $(function(){
@@ -41,7 +42,8 @@
 
     </h:head>
     <h:body>
-        <div style="border: dashed 2px firebrick;">
+        <!--style="border: dashed 2px firebrick;">-->
+        <div>  
            album name:  <input type="text" id="albumName" />
             <br/>
             <textarea  id="albumDescription" />

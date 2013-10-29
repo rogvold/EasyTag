@@ -18,13 +18,20 @@
         <script type="text/javascript" src="css//minified/jquery-hotspotter-1.7.9.min.js"></script>
         <script type="text/javascript" src="js/editor-1.3.2.js"></script>
 		
-		<script type="text/javascript">
+        <script type="text/javascript">
             
-            $(function(){
-				//Editor.localFile = 'file:///C:/uploads/user1/album51/upload1185721374514224631.jpg';              
-				imgURL = 'http://localhost:44940/EasyTagWeb/resources/file/download?id=52&inline=1'
-				Editor.initNewImage(imgURL);
-				Editor.isLocalFile= false;
+            editPhoto = function(photoId) {
+                imgURL = 'http://localhost:44940/EasyTagWeb/resources/file/download?id=' + photoId + '&inline=1';
+                Editor.initNewImage(imgURL);
+                Editor.isLocalFile= false;
+            };
+            
+            showPhoto = function() {                
+                Editor.togglePreview();
+            };
+            
+            $(function() {
+		editPhoto(52);
             });
 
         </script>
@@ -266,7 +273,7 @@
         </div>
         <!-- Preview & button & it's Overlay-->
         <div id="prev-overlay"></div>
-        <button id="end-prev-btn" title="End Preview (ctrl + alt)"><span class="btn-icon"><img src="images/end-prev.png" /></span>End Preview</button>    
+        <button id="end-prev-btn" title="Edit (ctrl + alt)"><span class="btn-icon"><img src="images/end-prev.png" /></span>Edit</button>    
 
         <div class="preview-area">
             <div class="hs-area">

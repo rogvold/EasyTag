@@ -874,33 +874,35 @@ var Editor= {
                 cur;
             
             //reset Aim handler tooltip position in dom in case user changed tt type
-            do {
-                cur= this.spotPool[i];
-                
-                cur.$prevSpot.removeData();
-                
-                if (cur.options.spType == 'Aim') {
-                    cur.$tooltip.appendTo(Editor.spotPool[i].$ttWrap);
-                    cur.$tooltip.stop();
-                    
-                    //clear Aim handler additional markup & data 
-                    cur.$prevSpot.parents('.hs-area').removeData()
-                                 .find('.hs-aim-rect , .hs-aim-pillar').remove();
-                    
-                    //unbind before hide to prevent undefined object error
-                    //when leave event try to access removed data 'areaData'
-                    cur.$hsWrap.unbind();
-                }
-            }while(i--);
+            if (i > -1) {
+                do {
+                    cur= this.spotPool[i];
+
+                    cur.$prevSpot.removeData();
+
+                    if (cur.options.spType == 'Aim') {
+                        cur.$tooltip.appendTo(Editor.spotPool[i].$ttWrap);
+                        cur.$tooltip.stop();
+
+                        //clear Aim handler additional markup & data 
+                        cur.$prevSpot.parents('.hs-area').removeData()
+                                     .find('.hs-aim-rect , .hs-aim-pillar').remove();
+
+                        //unbind before hide to prevent undefined object error
+                        //when leave event try to access removed data 'areaData'
+                        cur.$hsWrap.unbind();
+                    }
+                }while(i--);
+            }
 
             $('#prev-overlay').hide();
             this.$prevDiv.parent().hide();
             Editor.$edDiv.focus();
         } else {
-            if (this.spotPool.length == 0) { 
+            /*if (this.spotPool.length == 0) { 
                 this.showError('There is no spots');
                 return; 
-            }
+            } */
             this.inPreview= true;
             
             $('#end-prev-btn').show();
@@ -933,12 +935,13 @@ var Editor= {
             }
             
             var i= this.spotPool.length - 1;
-        
-            do {
-                //save options
-                this.spotPool[i].flushOptions();
-                
-            }while(i--);
+			
+            if (i > -1){
+                do {
+                    //save options
+                    this.spotPool[i].flushOptions();
+                }while(i--);
+            }
             
             var winW= $(window).width(),
                 winH= $(window).height(),

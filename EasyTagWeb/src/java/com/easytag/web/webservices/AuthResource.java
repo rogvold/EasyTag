@@ -101,7 +101,7 @@ public class AuthResource {
 
     @POST
     @Path("update")
-    public String update(@Context HttpServletRequest req, String data) {
+    public String update(@Context HttpServletRequest req,@FormParam("data") String data) {
         try {
             HttpSession session = req.getSession(false);
             Long currentUserId = SessionUtils.getUserId(session);

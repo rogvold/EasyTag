@@ -23,6 +23,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -98,7 +99,7 @@ public class PhotoResource {
     
     @POST
     @Path("addPhotos")
-    public String addPhotos(@Context HttpServletRequest req, String data, @QueryParam("albumId") Long albumId) {
+    public String addPhotos(@Context HttpServletRequest req, @FormParam("data") String data, @QueryParam("albumId") Long albumId) {
         try {
             HttpSession session = req.getSession(false);
             Long currentUserId = SessionUtils.getUserId(session);
