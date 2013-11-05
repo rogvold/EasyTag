@@ -1,9 +1,11 @@
 package com.easytag.core.managers;
 
 import com.easytag.core.entity.jpa.Album;
+import com.easytag.core.entity.jpa.EasyTagFile;
 import com.easytag.core.entity.jpa.Photo;
 import com.easytag.core.enums.PhotoStatus;
 import com.easytag.exceptions.TagException;
+import com.easytag.utils.PreviewUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +27,9 @@ public class PhotoManager implements PhotoManagerLocal {
     
     @EJB
     AlbumManagerLocal aMan;
+    
+    @EJB
+    FileManagerLocal  fMan;
 
     @Override
     public Photo getPhotoById(Long photoId) {
@@ -116,5 +121,27 @@ public class PhotoManager implements PhotoManagerLocal {
             throw new TagException("Photo is not specified");
         }
         return aMan.getAlbumById(p.getAlbumId());
-    }
+    }   
+
+    @Override
+    public void generatePreview(Photo p) throws TagException {
+        
+        EasyTagFile etf = fMan.findFileById(p.getFileId());
+        
+        String path = etf.getCurrentPath();        
+        String prevPath = path.substring(0, path.lastIndexOf(".")) 
+                + PreviewUtils.POSTFIX + path.substring(path.lastIndexOf("."));
+        
+        String name = etf.getOriginalName();
+        String prevName = name.substring(0, name.lastIndexOf(".")) 
+                + PreviewUtils.POSTFIX + name.substring(name.lastIndexOf("."));
+        
+        try {
+            PreviewUtils.makePreview(path, prevPath);
+        } catch (Exception e) {
+            throw new TagException("can't make a preview");
+        }
+        
+        EasyTagFile prevFile = fMan.addFile(etf.getUserId(), prevName, prevPath, etf.getContentType());
+        p.setPreviewId(prevFile.getId());   }
 }

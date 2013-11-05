@@ -95,6 +95,7 @@ public class FileResource {
                 throw new IllegalStateException("Unable to create file record.");
             }
             Photo photo = pm.addPhoto(userId, albumId, fileName, null, null, file.getId());
+            pm.generatePreview(photo);
             if (photo == null || photo.getId() == null) {
                 throw new IllegalStateException("Unable to create a database record for the foto.");
             }
@@ -141,7 +142,7 @@ public class FileResource {
                 return Response.status(Status.FORBIDDEN).build();
             }
             User user = um.getUserByEmail(email);
-            EasyTagFile file = fm.findFileById(user.getId(), id);
+            EasyTagFile file = fm.findFileById(id);
             if (file == null)
                 return Response.status(Response.Status.NOT_FOUND).build();
             String attachment = StringUtils.isTrue(inline) ? "inline" : "attachment";

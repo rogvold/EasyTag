@@ -6,6 +6,6 @@ public interface FileManagerLocal {
 
     EasyTagFile addFile(Long userId, String originalName, String path, String contentType);
 
-    EasyTagFile findFileById(Long userId, long fileId);
+    EasyTagFile findFileById(long fileId);
     
 }
