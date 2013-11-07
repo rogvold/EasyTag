@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>TagsCool</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.css" rel="stylesheet">
+
+        <!-- Add custom CSS here -->
+        <link href="css/modern-business.css" rel="stylesheet">
+        <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <script src="js/custom/auth.js" type="text/javascript"></script>
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- You'll want to use a responsive image option so this logo looks good on devices - I recommend using something like retina.js (do a quick Google search for it and you'll find it) -->
+                    <a class="navbar-brand" href="index.html">TagsCool</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a data-toggle="modal" href="#myModal" class=""  >Log in</a></li>
+                        <!--                        <li><a href="services.html">Services</a></li>
+                                                <li><a href="contact.php">Contact</a></li>-->
+
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container -->
+        </nav>
+
+        <div id="myCarousel" class="carousel slide">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li  data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide One');"></div>
+                    <div class="carousel-caption">
+                        <h1>TagsCool - Manage your knowledge</h1>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Two');"></div>
+                    <div class="carousel-caption">
+                        <h1>Ready to Style &amp; Add Content</h1>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Three');"></div>
+                    <div class="carousel-caption">
+                        <h1>Additional Layout Options at <a href="http://startbootstrap.com">http://startbootstrap.com</a></h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="icon-prev"></span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="icon-next"></span>
+            </a>
+        </div>
+
+
+
+
+        <div class="section">
+
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <h3><i class="icon-ok-circle"></i> Bootstrap 3 Built</h3>
+                        <p>The 'Modern Business' website template by <a href="http://startbootstrap.com">Start Bootstrap</a> is built with <a href="http://getbootstrap.com">Bootstrap 3</a>. Make sure you're up to date with latest Bootstrap documentation!</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <h3><i class="icon-pencil"></i> Ready to Style &amp; Edit</h3>
+                        <p>Your ready to go with this pre-built page structure, now all you need to do is add your own custom stylings! You can see some free themes over at <a href="http://bootswatch.com">Bootswatch</a>, or come up with your own using <a href="http://getbootstrap.com/customize/">the Bootstrap customizer</a>!</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <h3><i class="icon-folder-open-alt"></i> Many Page Options</h3>
+                        <p>This template features many common pages that you might see on a business website. Pages include: about, contact, portfolio variations, blog, pricing, FAQ, 404, services, and general multi-purpose pages.</p>
+                    </div>
+                </div><!-- /.row -->
+
+            </div><!-- /.container -->
+
+        </div><!-- /.section -->
+
+
+        <div class="container">
+
+            <hr>
+
+            <footer>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Copyright &copy; Company 2013</p>
+                    </div>
+                </div>
+            </footer>
+
+        </div><!-- /.container -->
+
+        <!-- Modal -->
+        <!-- Button trigger modal -->
+        <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Launch demo modal</a>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Authotization</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="authForm">
+
+
+
+                            <div id="loginForm">
+                                <h3 style="text-align: center;">
+                                    Вход в систему
+                                </h3>
+                                <div style="display: block; width: 400px; margin: 0 auto; text-align: center; ">
+                                    <form id="login_form" action="#{request.contextPath}/resources/auth/login">
+                                        <input type="text" placeholder="Email" id="loginEmail" name="email" style="margin-bottom: 20px; width: 400px;" />
+                                        <input type="password" placeholder="Password" id="loginPassword" name="password" style="margin-bottom: 20px; width: 400px;" />
+                                        <br/>
+                                        <span onclick="" class="btn" id="loginButton" style=" margin-bottom: 00px; cursor: pointer;">
+                                            Вход
+                                        </span>
+
+                                        <!--                            <span  class="fuckingToggler" >
+                                                                        Создать аккаунт 
+                                                                    </span>-->
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="registrationForm" style="display: block;">
+                                <h3 style="text-align: center;">
+                                    Создать аккаунт
+                                </h3>
+                                <div style="display: block; width: 400px; margin: 0 auto; text-align: center; ">
+                                    <form id="registration_form" method="post" action="#{request.contextPath}/resources/auth/register">
+                                        <input type="text" placeholder="Login" id="registrationEmail" name="email" style="margin-bottom: 20px; width: 400px;" />
+
+                                        <input type="password" placeholder="Password" id="registrationPassword" name="password" style="margin-bottom: 20px; width: 400px;" />
+
+                                        <input type="password" placeholder="Confirm password" id="registrationConfirmPassword" name="passwordConfirmation" style="margin-bottom: 20px; width: 400px;" />
+
+                                        <br/>
+                                        <span class="btn" id="registerButton" style=" margin-bottom: 20px;  cursor: pointer;">
+                                            Регистрация нового пользователя
+                                        </span>
+
+                                        <!--                            <a href="javascript:void();" onclick="toggleForms();" >
+                                                                        У меня уже есть аккаунт
+                                                                    </a>-->
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="authErrorBlock" >
+                                Something is wrong
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <!-- Bootstrap core JavaScript -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/bootstrap-modal.js"></script>
+        <script src="js/modern-business.js"></script>
+
+
+        <script>
+            //<![CDATA[
+            
+            myAuth = new MyAuth();
+            myAuth.init();
+            
+            //]]>
+            
+        </script>
+
+    </body>
+</html>
