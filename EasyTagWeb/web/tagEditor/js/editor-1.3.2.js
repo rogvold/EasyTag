@@ -224,7 +224,7 @@ var Spot= function(spotClass, x, y) {
     
     this.spLink= '';     //spot link
     this.spLinknWin= false; //whether to open link in new win or no
-    this.ttContent= ''; // tooltip content
+    this.ttContent= 'content'; // tooltip content
     /*
      * Options object contain options that's specified
      * in option bar , when option bar changes this object 
@@ -414,10 +414,11 @@ Spot.prototype.select= function() {
     
     this.$edSpot.addClass('selected');
 	
-	$('#spotLeft').attr('value', this.$edSpot.css('left')); 
-	$('#spotTop').attr('value', this.$edSpot.css('top'));
-	$('#spotWidth').attr('value', this.$edSpot.css('width')); 
-	$('#spotHeight').attr('value', this.$edSpot.css('height'));
+    $('#spotLeft').attr('value', this.$edSpot.css('left')); 
+    $('#spotTop').attr('value', this.$edSpot.css('top'));
+    $('#spotWidth').attr('value', this.$edSpot.css('width')); 
+    $('#spotHeight').attr('value', this.$edSpot.css('height'));
+    $('#spotContent').attr('value', this.ttContent);
 };
 
 /*
@@ -973,7 +974,7 @@ var Editor= {
         var dialogH= 220; //specifiy height of dialog , to make dialog scale if we have notices 
         
         //check if user want image to be repsonsive
-        if ($('#img-responsive').is(':checked')) {
+        if(true){//if ($('#img-responsive').is(':checked')) {
             var imgW= this.$edImg.width(),
                 imgH= this.$edImg.height();
                 
@@ -1520,8 +1521,8 @@ var Editor= {
         this.curSpot.dim[0]= w;
         this.curSpot.dim[1]= h;
 		
-		$('#spotWidth').attr('value', w + 'px'); 
-		$('#spotHeight').attr('value', h + 'px');		
+        $('#spotWidth').attr('value', w + 'px'); 
+        $('#spotHeight').attr('value', h + 'px');		
 		
     },
     
