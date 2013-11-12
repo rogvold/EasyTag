@@ -33,7 +33,7 @@ public class TagManager implements TagManagerLocal {
 
     @Override
     public List<EasyTag> getEasyTagsInPhoto(Long photoId) {
-        Query q = em.createQuery("select t from EasyTags t where t.photoId = :photoId").setParameter("photoId", photoId);
+        Query q = em.createQuery("select t from EasyTag t where t.photoId = :photoId").setParameter("photoId", photoId);
         List<EasyTag> list = q.getResultList();
         if (list == null || list.isEmpty()) {
             return Collections.EMPTY_LIST;
@@ -112,7 +112,7 @@ public class TagManager implements TagManagerLocal {
 
     @Override
     public List<EasyTag> findEasyTagByName(String name) throws TagException {
-        Query q = em.createNativeQuery("select t from EasyTags t "
+        Query q = em.createNativeQuery("select t from EasyTag t "
                 + "where t.name like :name").setParameter("name", "\'%" 
                 + name + "%\'");
         List<EasyTag> list = q.getResultList();
@@ -124,7 +124,7 @@ public class TagManager implements TagManagerLocal {
 
     @Override
     public List<EasyTag> fingEasyTagByDescription(String description) throws TagException {
-        Query q = em.createNativeQuery("select t from EasyTags t "
+        Query q = em.createNativeQuery("select t from EasyTag t "
                 + "where t.description like :description").setParameter("description", "\'%" 
                 + description + "%\'");
         List<EasyTag> list = q.getResultList();

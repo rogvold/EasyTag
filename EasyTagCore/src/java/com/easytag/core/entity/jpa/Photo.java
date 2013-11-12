@@ -26,6 +26,7 @@ public class Photo implements Serializable {
     private Integer number;
     private Long albumId;
     private Long fileId;
+    private Long previewId;
 
     public Photo() {
     }
@@ -38,6 +39,7 @@ public class Photo implements Serializable {
         this.number = number;
         this.albumId = albumId;
         this.fileId = fileId;
+        this.previewId = null;
     }
 
     public Long getId() {
@@ -103,14 +105,22 @@ public class Photo implements Serializable {
     public void setTags(String tags) {
         this.tags = tags;
     }
+    
+    public Long getPreviewId() {
+        return previewId;
+    }
 
+    public void setPreviewId(Long previewId) {
+        this.previewId = previewId;
+    }  
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set

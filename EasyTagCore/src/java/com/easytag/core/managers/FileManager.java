@@ -4,7 +4,6 @@ import com.easytag.core.entity.jpa.EasyTagFile;
 import com.easytag.utils.FileUtils;
 import com.easytag.utils.StringUtils;
 import java.io.File;
-import java.io.IOException;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -34,9 +33,7 @@ public class FileManager implements FileManagerLocal {
     }
 
     @Override
-    public EasyTagFile findFileById(Long userId, long fileId) {
-        //TODO: Check user permissions!
-        
+    public EasyTagFile findFileById(long fileId) {
         return em.find(EasyTagFile.class, fileId);
     }
     
