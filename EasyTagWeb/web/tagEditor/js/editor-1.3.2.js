@@ -1046,8 +1046,8 @@ var Editor= {
         
         //show it
         $('#gcode-txt').val(markup);
-        $('#gcode-dialog').dialog('option')['height']= dialogH;
-        $('#gcode-dialog').dialog('open');
+        //$('#gcode-dialog').dialog('option')['height']= dialogH;
+        //$('#gcode-dialog').dialog('open');
     },
     
     loadCode: function () {

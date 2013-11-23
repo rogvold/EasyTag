@@ -27,11 +27,13 @@ public class Photo implements Serializable {
     private Long albumId;
     private Long fileId;
     private Long previewId;
+    private Long height; 
+    private Long width;       
 
     public Photo() {
     }
 
-    public Photo(String name, String description, String tags, PhotoStatus status, Integer number, Long albumId, Long fileId) {
+    public Photo(String name, String description, String tags, PhotoStatus status, Integer number, Long albumId, Long fileId, Long height, Long width) {
         this.name = name;
         this.description = description;
         this.tags = tags;
@@ -40,6 +42,8 @@ public class Photo implements Serializable {
         this.albumId = albumId;
         this.fileId = fileId;
         this.previewId = null;
+        this.height = height;
+        this.width = width;
     }
 
     public Long getId() {
@@ -112,14 +116,30 @@ public class Photo implements Serializable {
 
     public void setPreviewId(Long previewId) {
         this.previewId = previewId;
-    }  
+    }
+    
+    public Long getWidth() {
+        return width;
+    }
+
+    public void setWidth(Long width) {
+        this.width = width;
+    }
+
+    public Long getHeight() {
+        return height;
+    }
+
+    public void setHeight(Long height) {
+        this.height = height;
+    }   
     
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
-    }
+    }    
     
     @Override
     public boolean equals(Object object) {

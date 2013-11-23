@@ -56,7 +56,7 @@ public class PhotoManager implements PhotoManagerLocal {
     }
 
     @Override
-    public Photo addPhoto(Long userId, Long albumId, String name, String description, String tags, Long fileId) throws TagException {
+    public Photo addPhoto(Long userId, Long albumId, String name, String description, String tags, Long fileId, Long height, Long width) throws TagException {
         
         if (albumId == null) {
             throw new TagException("Album Id is not specified"); 
@@ -76,7 +76,7 @@ public class PhotoManager implements PhotoManagerLocal {
         //TODO check file existance
         
         Photo photo =  new Photo(name, description, tags,
-                PhotoStatus.NEW, getPhotosAmount(albumId) + 1, albumId, fileId);
+                PhotoStatus.NEW, getPhotosAmount(albumId) + 1, albumId, fileId, height, width);
         
         return em.merge(photo);
     }
@@ -107,7 +107,7 @@ public class PhotoManager implements PhotoManagerLocal {
         Integer number = getPhotosAmount(albumId);
         for(Long id:fileIdList){
             number++;
-            Photo photo =  new Photo(null, null, null, PhotoStatus.NEW,  number, albumId, id);
+            Photo photo =  new Photo(null, null, null, PhotoStatus.NEW,  number, albumId, id, null, null);
             em.merge(photo);
             lp.add(photo);
         }
