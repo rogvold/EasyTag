@@ -28,6 +28,7 @@ public interface PhotoManagerLocal {
     public void generatePreview(Photo p) throws TagException;
     
     //TODO find by tag
+    public List<Photo> findPhotosByTagName(String query);
     
     //TODO deletePhoto
 }

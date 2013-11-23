@@ -144,4 +144,30 @@ public class PhotoManager implements PhotoManagerLocal {
         
         EasyTagFile prevFile = fMan.addFile(etf.getUserId(), prevName, prevPath, etf.getContentType());
         p.setPreviewId(prevFile.getId());   }
+
+    @Override
+    public List<Photo> findPhotosByTagName(String query) {
+                
+        String[] words = query.split("\\s+");
+        
+        Query q = em.createQuery("select distinct p from "
+                    + "Photo p, EasyTag e where e.name like :query "
+                    + "and p.id = e.photoId").setParameter("query", "%" + words[0] + "%");            
+        List<Photo> list = q.getResultList();
+        
+        List<Photo> curr;
+        for(int i = 1; i < words.length; i++){        
+            q = em.createQuery("select distinct p from "
+                    + "Photo p, EasyTag e where e.name like :query "
+                    + "and p.id = e.photoId").setParameter("query", "%" + words[i] + "%");
+            curr = q.getResultList();
+            list.retainAll(curr);
+        }
+        
+       
+        if (list == null || list.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
 }
