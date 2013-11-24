@@ -28,5 +28,7 @@ public interface TagManagerLocal {
     
     public List<EasyTag> fingEasyTagByDescription(String description) throws TagException;
     
+    public void removeAllTagsInPhoto(Long photoId) throws TagException;
+    
     //TODO find by name, description
 }

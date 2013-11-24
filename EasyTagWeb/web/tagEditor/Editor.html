@@ -22,7 +22,13 @@
 		
         <script type="text/javascript">
             
-            var currentPhotoId;           
+            var currentPhotoId;        
+            
+            function getURLParameter(name) {
+                return decodeURI(
+                    (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+                );
+            }
             
             editPhoto = function(fileId) { // TODO проверка на существование файла
                 //currentPhotoId = fileId;
@@ -67,6 +73,21 @@
             }
             
             saveTags = function(pId){
+                $.ajax({
+                    type: "GET",
+                    url: "../resources/Tag/removeEasyTags?photoId=" + pId,                   
+                    success: function(responseText, statusText)  {
+                        if (statusText === 'success'){                            
+                            console.log(JSON.stringify(responseText));
+                            addTagsToDB(pId);
+                        }
+                    },
+                    dataType: "json"
+                });
+            }
+            
+            addTagsToDB = function(pId){
+                
                 
                 var spots = Editor.spotPool;
                 
@@ -139,7 +160,20 @@
 		//editPhoto(3);    
                 $('#spotContent').bind('blur', function (e) {
                     Editor.curSpot.ttContent = $('#spotContent').val();
-                });                                
+                });   
+                
+                currentPhotoId = getURLParameter('id');
+                $.ajax({
+                    type: "GET",
+                    url: "../resources/Photo/getPhoto?photoId=" + currentPhotoId,                   
+                    success: function(responseText, statusText)  {
+                        if (statusText === 'success'){                            
+                            editPhoto(responseText.data.fileId);
+                            loadTags(currentPhotoId);
+                        }
+                    },
+                    dataType: "json"
+                });
             });
 
         </script>

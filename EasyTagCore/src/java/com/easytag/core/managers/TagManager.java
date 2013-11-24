@@ -133,4 +133,11 @@ public class TagManager implements TagManagerLocal {
         }
         return list;
     }
+
+    @Override
+    public void removeAllTagsInPhoto(Long photoId) throws TagException {
+        Query q = em.createQuery("delete from EasyTag e "
+                + "where e.photoId = :photoId").setParameter("photoId", photoId);
+        q.executeUpdate();
+    }
 }

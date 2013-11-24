@@ -73,6 +73,24 @@ public class TagResource {
         }
     }
     
+    @GET
+    @Path("removeEasyTags")
+    public String removeEasyTagsInPhoto(@Context HttpServletRequest req,  @QueryParam("photoId") Long photoId) {
+        try {
+            HttpSession session = req.getSession(false);
+            Long currentUserId = SessionUtils.getUserId(session);
+
+            if (currentUserId == null) {
+                throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            tagMan.removeAllTagsInPhoto(photoId);
+            JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException e) {
+            return TagExceptionWrapper.wrapException(e);
+        }
+    }
+    
     @POST
     @Path("create")
     public String createEasyTag(@Context HttpServletRequest req,@FormParam("data") String data) {
