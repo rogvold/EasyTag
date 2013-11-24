@@ -127,7 +127,6 @@ public class PhotoManager implements PhotoManagerLocal {
     }   
     
     @Override
-    @Asynchronous
     public void generatePreview(Photo p) throws TagException {
         
         EasyTagFile etf = fMan.findFileById(p.getFileId());

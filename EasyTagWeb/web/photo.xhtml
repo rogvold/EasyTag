@@ -100,20 +100,13 @@
                 <script src="#{request.contextPath}/css/hotspotter/jquery-hotspotter-1.7.9.min.js"></script>
                 <script>
                     //<![CDATA[
-                    function appendImg(photo) {
-                        var fileId = photo.fileId;
-                        $('body').append('<div class="hs-area"></div>');
-                        $('.hs-area').append('<img>');
-                        $('img').attr('src', '../resources/file/download?id=' + fileId);
-                        
-                    }
 
                     function appendTag(x, y, w, h, name) {
                         $('.hs-area').append('<div class="hs-wrap">\n\
                             <div class="red-spot" data-coord="' + x + ',' + y + '" \n\
                             data-dim="' + w + ',' + h + ',0" data-activeon="hover">\n\
                             </div><div class="tt-wrap"><div class="tip-tooltip" data-anim="goin" \n\
-                            data-dir="top">' + name + '</div></div></div>')
+                            data-dir="top">' + name + '</div></div></div>');
                     }
 
                     function appendTags(pId) {
@@ -138,7 +131,7 @@
                         });
                     }
                     $(function () {
-                        $('img').attr('data-imgdim', ["#{photoBean.findById(param['id']).width}", "#{photoBean.findById(param['id']).height}"].join(','));
+                        $('.hs-area img').attr('data-imgdim', ["#{photoBean.findById(param['id']).width}", "#{photoBean.findById(param['id']).height}"].join(','));
                         appendTags('#{param['id']}');
                     });
                     //]]>

@@ -26,7 +26,7 @@
                         <h1 class="page-header">
                             Просмотр альбома
                         </h1>
-                        <div class="col-lg-10">
+                        <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
                                 <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.album.creatorId}">#{userBean.findById(albumBean.album.creatorId).email}</a></li>
@@ -34,7 +34,8 @@
                             </ol>
                         </div>
                         <div class="col-lg-2" style="margin-bottom: 20px;">
-                            <a href="#addFileModal" class="btn btn-primary" data-toggle="modal">Добавить файлы</a>
+                            <a href="#addFileModal" class="btn btn-primary" data-toggle="modal" title="Добавить фото..."><span class="glyphicon glyphicon-plus"></span> Добавить</a>
+                            <a href="#" class="btn btn-primary" onclick=" resetPhotosList(); return false;" title="Обновить"><span class="glyphicon glyphicon-refresh"></span></a>
                         </div>
                     </div>
 
@@ -52,7 +53,7 @@
 
             <ui:define name="dialogs">
                 <!-- Modal -->
-                <div class="modal fade" id="addFileModal" tabindex="-1" role="dialog" aria-labelledby="addFileModalLabel" aria-hidden="true">
+                <div class="modal fade" id="addFileModal" tabindex="-1" role="dialog" aria-labelledby="addFileModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -62,7 +63,7 @@
                             <div class="modal-body">
                                 <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
                                     <!-- The global progress bar -->
-                                    <div id="progress" class="progress" style="display: none;">
+                                    <div id="progress" class="progress progress-striped" style="display: none;">
                                         <div class="progress-bar progress-bar-success"></div>
                                     </div>
                                     <form action="#{request.contextPath}/resources/file/upload" method="POST" enctype="multipart/form-data">
@@ -103,7 +104,8 @@
                                         'width',
                                         progress + '%'
                                         );
-                                if (progress === 100) {
+                                console.log("progress="+progress);
+                                if (progress >= 100) {
                                     onUploadFinished();
                                 }
                             }
