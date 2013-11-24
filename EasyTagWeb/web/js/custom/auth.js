@@ -20,7 +20,7 @@ function MyAuth() {
             //TODO: validate
             if (self.loginEmail === undefined || self.loginEmail === '' || self.loginPassword === undefined || self.loginPassword === '') {
                 alert('incorrect input data');
-                return;
+                return false;
             }
             self.login(self.loginEmail, self.loginPassword);  
             return false;
@@ -40,13 +40,15 @@ function MyAuth() {
             //TODO: validate
             if (self.registrationEmail == undefined || self.registrationEmail == '' || self.registrationPasword == undefined || self.registrationPasword == '' || self.registrationPasword != self.registrationConfirmPasword) {
                 alert('incorrect input data');
-                return;
+                return false;
             }
             self.register(self.registrationEmail, self.registrationPasword);
+            return false;
         });
 
         $('#logoutButton').click(function(){
             self.logout();
+            return false;
         });
 
     };
@@ -58,17 +60,15 @@ function MyAuth() {
             $('#login_form').serialize()
             ).success(
             function(data) {
-                console.log(data);
-                var resp = data;    
+                console.log(data);    
                     
                 if (data.responseCode === 0) {
-                    alert(resp.error.message);
+                    alert(data.error.message);
                     return;
                 } else {
-                    window.location.href = '/EasyTagWeb/index.xhtml';  
-                    alert('Logged in as ' + self.loginEmail);
+                   // window.location.href = '/EasyTagWeb/index.xhtml'; 
+                   window.location.reload();
                 }                    
-            //window.location.reload();
             }
             );   
     };

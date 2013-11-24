@@ -27,14 +27,19 @@
                                 #{userBean.findById(params['id']).email}
                             </b>
                         </h1>
-                        <ol class="breadcrumb">
-                            <li><a href="users.xhtml">All users</a></li>
-                            <li class="active">#{userBean.findById(params['id']).email}</li>
-                        </ol>
+                        <div class="col-lg-10">
+                            <ol class="breadcrumb">
+                                <li><a href="users.xhtml">All users</a></li>
+                                <li class="active">#{userBean.findById(params['id']).email}</li>
+                            </ol>
+                        </div>
+                        <div class="col-lg-2" style="margin-bottom: 20px;">
+                            <a href="#createAlbumModal" class="btn btn-primary" data-toggle="modal">Создать альбом</a>
+                        </div>
                     </div>
 
                 </div><!-- /.row -->
-               
+
             </ui:define>
 
             <ui:define name="main_footer">
@@ -44,48 +49,100 @@
                     </div>
                 </div>
             </ui:define>
-            
+
             <ui:define name="dialogs">
-                
+                <!-- Modal -->
+                <div class="modal fade" id="createAlbumModal" tabindex="-1" role="dialog" aria-labelledby="createAlbumModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Создание албома</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
+                                    <form id="createAlbumForm" action="#{request.contextPath}/resources/album/create" method="POST">
+                                        <input type="text" placeholder="Название альбома" id="albumName" name="name" style="margin-bottom: 20px; width: 100%;" />
+                                        <textarea placeholder="Описание альбома" id="albumDescription" name="description" style="margin-bottom: 20px; width: 100%;" rows="4" />
+                                        <br/>
+                                        <button class="btn" id="createButton" style="margin-bottom: 0px; cursor: pointer;">
+                                            Создать альбом
+                                        </button>
+
+                                    </form>
+                                </div>
+                            </div>
+                            <!--                            <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                        </div>-->
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
             </ui:define>
 
             <ui:define name="scripts">
                 <script>
+                    
+                    $(function () {
+                        requestAlbums();
+                    }); 
+                    
+                    $('#createButton').click(function() {
+                        var a = {
+                            name: $('#albumName').val(),
+                            description: $('#albumDescription').val()
+                        };
+                        console.log(a);
+                        if (a.name === undefined || a.name === '') {
+                            return;
+                        }
+                        $.post('#{request.contextPath}/resources/album/create', {data: JSON.stringify(a)})
+                                .done(function(data) {
+                                    console.log(data);
+                                    if (data.responseCode === 1) {
+                                        $('#createAlbumModal').modal('hide');
+                                        refreshAlbums();
+                                    }
+                                });
+                        return false;
+                    });
+
                     function requestAlbumList(url) {
                         $.get(url)
-                            .done(function(data) {
-                                console.log(data);
-                                if (data.responseCode === 1) {
-                                    var albums = [];
-                                    albums = data.data;
-                                    var n = 1;
-                                    var row = null;
-                                    var container = $('#main-content');
-                                    for (var i in albums) {
-                                        console.log(albums[i]);
-                                        if (row === null) {
-                                            row = $('<div class="row" />');
+                                .done(function(data) {
+                                    console.log(data);
+                                    if (data.responseCode === 1) {
+                                        var albums = [];
+                                        albums = data.data;
+                                        var n = 1;
+                                        var row = null;
+                                        var container = $('#main-content');
+                                        for (var i in albums) {
+                                            console.log(albums[i]);
+                                            if (row === null) {
+                                                row = $('<div class="albums row" />');
+                                            }
+                                            row.append(createItem(albums[i]));
+                                            if ((n++) % 3 === 0) {
+                                                console.log("break");
+                                                container.append(row);
+                                                row = null;
+                                            }
                                         }
-                                        row.append(createItem(albums[i]));
-                                        if ((n++) % 3 === 0) {
-                                            console.log("break");
+                                        if (n === 1) {
+                                            row = $('<div class="row"/>');
+                                            row.append('<p style="padding-left:30px;">No albums to show.</p>');
+                                        }
+                                        if (row !== null) {
                                             container.append(row);
-                                            row = null;
                                         }
                                     }
-                                    if (n === 1) {
-                                        row = $('<div class="row"/>');
-                                        row.append('<p style="padding-left:30px;">No albums to show.</p>');
-                                    }
-                                    if (row !== null) {
-                                        container.append(row);
-                                    }
-                                }
-                            })
-                            .fail(function() {
-                                alert("error");
-                            });
-                        }
+                                })
+                                .fail(function() {
+                                    alert("error");
+                                });
+                    }
 
                     function createItem(album) {
                         var item = $('<div class="col-md-4 portfolio-item" />');
@@ -95,20 +152,25 @@
                         item.append('<p>' + album.description + '</p>');
                         return item;
                     }
+                    
+                    function refreshAlbums() {
+                        $('#main-content .row.albums').remove();
+                        requestAlbums();
+                    }
                 </script>
-                
+
                 <c:if test="#{param['id'] eq null}">
                     <script>
-                        $(function() {
+                        function requestAlbums() {
                             requestAlbumList('#{request.contextPath}/resources/album/myAlbums');
-                        });
+                        }
                     </script>
                 </c:if>
                 <c:if test="#{param['id'] ne null}">
                     <script>
-                        $(function() {
+                        function requestAlbums() {
                             requestAlbumList('#{request.contextPath}/resources/album/getUserAlbums?userId=#{param['id']}');
-                        });
+                        }
                     </script>
                 </c:if>
             </ui:define>
