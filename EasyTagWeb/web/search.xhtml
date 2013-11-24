@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+        <f:viewAction action="#{userBean.redirectIfNotAuthorized}"/>
+        <f:viewParam name="id" value="#{albumBean.albumId}"/>
+    </f:metadata>
+    
+    <h:body>
+        <ui:composition template="templates/main.xhtml">
+
+            <ui:param name="windowTitle" value="Album - TagsCool"/>
+            <ui:param name="user" value="#{userBean.user}"/>
+            <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
+
+            <ui:define name="slider">
+            </ui:define>
+
+            <ui:define name="main_content">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                         <div class="col-lg-12" style="margin-top: 20px; margin-bottom: 20px">
+                            <div class="input-group" style="width: 100%">
+                                <input id="query" type="text" class="form-control"/>                                
+                            </div>     
+                        </div>
+                        <ol class="breadcrumb">
+                            <li><a href="users.xhtml">All users</a></li>
+                            <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.album.creatorId}">#{userBean.findById(albumBean.album.creatorId).email}</a></li>
+                            <li class="active">#{albumBean.album.name}</li>
+                        </ol>
+                    </div>
+
+                </div><!-- /.row -->
+
+            </ui:define>
+
+            <ui:define name="main_footer">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Copyright © TagsCool 2013</p>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="dialogs">
+
+            </ui:define>
+
+            <ui:define name="scripts">
+                <script>
+                    function requestPhotosList(url) {
+                        $.get(url)
+                                .done(function(data) {
+                                    console.log(data);
+                                    if (data.responseCode === 1) {
+                                        var photos = [];
+                                        photos = data.data;
+                                        var n = 1;
+                                        var row = null;
+                                        var container = $('#main-content');
+                                        for (var i in photos) {
+                                            console.log(photos[i]);
+                                            if (row === null) {
+                                                row = $('<div class="row result" />');
+                                            }
+                                            row.append(createItem(photos[i]));
+                                            if ((n++) % 4 === 0) {
+                                                console.log("break");
+                                                container.append(row);
+                                                row = null;
+                                            }
+                                        }
+                                        if (n === 1) {
+                                            row = $('<div class="row result"/>');
+                                            row.append('<p style="padding-left:30px;">No photos to show.</p>');
+                                        }
+                                        if (row !== null) {
+                                            container.append(row);
+                                        }
+                                    }
+                                })
+                                .fail(function() {
+                                    alert("error");
+                                });
+                    }
+
+                    function createItem(photo) {
+                        var item = $('<div class="col-md-3 portfolio-item" />');
+                        item.attr("id", "photo-" + photo.id);
+                        item.append('<a href="portfolio-item.html"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id='+photo.previewId+'"/></a>');
+                        return item;
+                    }
+                </script>
+                <script>
+                    $(function() {
+                        $('#query').bind('keydown', function (e) {
+                            if (e.keyCode === 13) {
+                                $('.result').remove();
+                                requestPhotosList('#{request.contextPath}/resources/Photo/findPhotos?q=' + $('#query').val());
+                            }                              
+                        });
+                        
+                        requestPhotosList('#{request.contextPath}/resources/Photo/findPhotos?q=#{param['q']}');
+                    });
+                </script>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+
+</html>
