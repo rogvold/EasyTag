@@ -32,7 +32,7 @@
                             </ol>
                         </div>
                         <div class="col-lg-2">
-                            <a href="#" class="btn btn-primary">Редактировать</a>
+                            <a href="#{request.contextPath}/tagEditor/Editor.html?id=#{param['id']}" class="btn btn-primary">Редактировать</a>
                         </div>
                     </div>
 
@@ -40,7 +40,7 @@
 
                 <div class="row">
 
-                    <div class="col-md-9">
+                    <div class="col-md-9 hs-area">
                         <img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.findById(param['id']).fileId}"/>
                     </div>
 
@@ -96,6 +96,53 @@
             </ui:define>
 
             <ui:define name="scripts">
+                <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/hotspotter/jquery-hotspotter-1.7.9.min.css" />	
+                <script src="#{request.contextPath}/css/hotspotter/jquery-hotspotter-1.7.9.min.js"></script>
+                <script>
+                    //<![CDATA[
+                    function appendImg(photo) {
+                        var fileId = photo.fileId;
+                        $('body').append('<div class="hs-area"></div>');
+                        $('.hs-area').append('<img>');
+                        $('img').attr('src', '../resources/file/download?id=' + fileId);
+                        
+                    }
+
+                    function appendTag(x, y, w, h, name) {
+                        $('.hs-area').append('<div class="hs-wrap">\n\
+                            <div class="red-spot" data-coord="' + x + ',' + y + '" \n\
+                            data-dim="' + w + ',' + h + ',0" data-activeon="hover">\n\
+                            </div><div class="tt-wrap"><div class="tip-tooltip" data-anim="goin" \n\
+                            data-dir="top">' + name + '</div></div></div>')
+                    }
+
+                    function appendTags(pId) {
+                        $.ajax({
+                            type: "GET",
+                            url: "#{request.contextPath}/resources/Tag/getEasyTags?photoId=" + pId,
+                            success: function(responseText, statusText) {
+                                if (statusText === 'success') {
+                                    console.log(JSON.stringify(responseText));
+                                    spots = responseText.data;
+                                    for (var i = 0; i < spots.length; i++) {
+                                        appendTag(spots[i].x,
+                                                spots[i].y,
+                                                spots[i].width,
+                                                spots[i].height,
+                                                spots[i].name);
+                                    }
+                                    $('.hs-area').hotspotter();
+                                }
+                            },
+                            dataType: "json"
+                        });
+                    }
+                    $(function () {
+                        $('img').attr('data-imgdim', ["#{photoBean.findById(param['id']).width}", "#{photoBean.findById(param['id']).height}"].join(','));
+                        appendTags('#{param['id']}');
+                    });
+                    //]]>
+                </script>
             </ui:define>
 
         </ui:composition>
