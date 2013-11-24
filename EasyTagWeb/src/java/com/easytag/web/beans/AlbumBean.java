@@ -1,6 +1,7 @@
 package com.easytag.web.beans;
 
 import com.easytag.core.entity.jpa.Album;
+import com.easytag.core.entity.jpa.User;
 import com.easytag.core.managers.AlbumManagerLocal;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -17,6 +18,18 @@ public class AlbumBean implements Serializable {
 
     public Album getAlbum() {
         return albumMan.getAlbumById(albumId);
+    }
+    
+    public Album findById(String albumId) {
+        Long id = null;
+        try {
+            id = Long.parseLong(albumId);
+        } catch (Exception ex) {
+        }
+        if (id == null || id == this.albumId) {
+            return getAlbum();
+        }
+        return albumMan.getAlbumById(id);
     }
     
     public Long getAlbumId() {

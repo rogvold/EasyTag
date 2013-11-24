@@ -180,7 +180,7 @@
                     function createItem(photo) {
                         var item = $('<div class="col-md-3 portfolio-item" />');
                         item.attr("id", "photo-" + photo.id);
-                        item.append('<a href="portfolio-item.html"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
+                        item.append('<a href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
                         return item;
                     }
                 </script>

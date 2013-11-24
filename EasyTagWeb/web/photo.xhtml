@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewAction action="#{userBean.redirectIfNotAuthorized}"/>
+        <f:viewParam name="id" value="#{photoBean.photoId}" />
+    </f:metadata>
+    <h:body>
+        <ui:composition template="templates/main.xhtml">
+
+            <ui:param name="windowTitle" value="Photo - TagsCool"/>
+            <ui:param name="user" value="#{userBean.user}"/>
+            <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
+
+            <ui:define name="slider">
+
+            </ui:define>
+
+            <ui:define name="main_content">
+                <div class="row" style="padding-top: 20px;">
+
+                    <div class="col-lg-12">
+                        <div class="col-lg-10" style="padding-left: 0px;">
+                            <ol class="breadcrumb">
+                                <li><a href="users.xhtml">All users</a></li>
+                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.findById(photoBean.findById(param['id']).albumId).creatorId}">#{userBean.findById(albumBean.findById(photoBean.findById(param['id']).albumId).creatorId).email}</a></li>
+                                <li><a href="#{request.contextPath}/album.xhtml?id=#{photoBean.findById(param['id']).albumId}">#{albumBean.findById(photoBean.findById(param['id']).albumId).name}</a></li>
+                                <li class="active">#{photoBean.findById(param['id']).name}</li>
+                            </ol>
+                        </div>
+                        <div class="col-lg-2">
+                            <a href="#" class="btn btn-primary">Редактировать</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-9">
+                        <img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.findById(param['id']).fileId}"/>
+                    </div>
+
+                    <div class="col-md-3">
+                        <h3>#{photoBean.findById(param['id']).name}</h3>
+                        <p>#{photoBean.findById(param['id']).description}</p>
+                        <h3>Tags</h3>
+                        <ul>
+                            <li>Lorem Ipsum</li>
+                            <li>Dolor Sit Amet</li>
+                            <li>Consectetur</li>
+                            <li>Adipiscing Elit</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <h3 class="page-header">Related Projects</h3>
+                    </div>
+
+                    <div class="col-sm-3 col-xs-6">
+                        <a href="#"><img class="img-responsive img-customer" src="http://placehold.it/500x300"/></a>
+                    </div>
+
+                    <div class="col-sm-3 col-xs-6">
+                        <a href="#"><img class="img-responsive img-customer" src="http://placehold.it/500x300"/></a>
+                    </div>
+
+                    <div class="col-sm-3 col-xs-6">
+                        <a href="#"><img class="img-responsive img-customer" src="http://placehold.it/500x300"/></a>
+                    </div>
+
+                    <div class="col-sm-3 col-xs-6">
+                        <a href="#"><img class="img-responsive img-customer" src="http://placehold.it/500x300"/></a>
+                    </div>
+
+                </div>
+            </ui:define>
+
+            <ui:define name="main_footer">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Copyright © TagsCool 2013</p>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="dialogs">
+
+            </ui:define>
+
+            <ui:define name="scripts">
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+
+</html>
