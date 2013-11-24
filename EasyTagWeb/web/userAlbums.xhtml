@@ -1,156 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:h="http://java.sun.com/jsf/html">
-    <head>
-
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta name="description" content=""/>
-        <meta name="author" content=""/>
-
-        <title>User Albums</title>
-
-        <!-- Bootstrap core CSS -->
-        <link href="css/bootstrap.css" rel="stylesheet"/>
-
-        <!-- Add custom CSS here -->
-        <link href="css/modern-business.css" rel="stylesheet"/>
-        <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
-
-    </head>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+        <f:viewAction action="#{userBean.redirectIfNotAuthorized}"/>
+    </f:metadata>
     <h:body>
+        <ui:composition template="templates/main.xhtml">
 
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <!-- You'll want to use a responsive image option so this logo looks good on devices - I recommend using something like retina.js (do a quick Google search for it and you'll find it) -->
-                    <a class="navbar-brand" href="index.html">TagsCool</a>
-                </div>
+            <ui:param name="windowTitle" value="Albums - TagsCool"/>
+            <ui:param name="user" value="#{userBean.user}"/>
+            <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="javascript:void();" id="logoutButton" >Log out</a></li>
+            <ui:define name="slider">
+            </ui:define>
 
-                        <!--                        <li><a href="services.html">Services</a></li>
-                                                <li><a href="contact.php">Contact</a></li>-->
+            <ui:define name="main_content">
+                <div class="row">
 
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container -->
-        </nav>
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Альбомы пользователя
+                            <b>
+                                #{userBean.findById(params['id']).email}
+                            </b>
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li><a href="users.xhtml">All users</a></li>
+                            <li class="active">#{userBean.findById(params['id']).email}</li>
+                        </ol>
+                    </div>
 
-        <div class="container">
+                </div><!-- /.row -->
+               
+            </ui:define>
 
-            <div class="row">
-
-                <div class="col-lg-12">
-                    <h1 class="page-header">Альбомы пользователя
-                        <b>
-                            Шайхлисламов Сабир
-                        </b>
-                        <!--                        <small>Showcase Your Work</small>-->
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="users.xhtml">К списку пользователей</a></li>
-<!--                        <li class="active">Теоретическая физика</li>-->
-                    </ol>
-                </div>
-
-            </div><!-- /.row -->
-
-            <div class="row">
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-                <div class="col-md-3 portfolio-item">
-                    <a href="portfolio-item.html"><img class="img-responsive" src="http://placehold.it/750x450"/></a>
-                </div>
-
-            </div>
-
-
-        </div><!-- /.container -->
-
-        <div class="container">
-
-            <hr/>
-
-            <footer>
+            <ui:define name="main_footer">
                 <div class="row">
                     <div class="col-lg-12">
-                        <p>Copyright © Company 2013</p>
+                        <p>Copyright © TagsCool 2013</p>
                     </div>
                 </div>
-            </footer>
+            </ui:define>
+            
+            <ui:define name="dialogs">
+                
+            </ui:define>
 
-        </div><!-- /.container -->
+            <ui:define name="scripts">
+                <script>
+                    function requestAlbumList(url) {
+                        $.get(url)
+                            .done(function(data) {
+                                console.log(data);
+                                if (data.responseCode === 1) {
+                                    var albums = [];
+                                    albums = data.data;
+                                    var n = 1;
+                                    var row = null;
+                                    var container = $('#main-content');
+                                    for (var i in albums) {
+                                        console.log(albums[i]);
+                                        if (row === null) {
+                                            row = $('<div class="row" />');
+                                        }
+                                        row.append(createItem(albums[i]));
+                                        if ((n++) % 3 === 0) {
+                                            console.log("break");
+                                            container.append(row);
+                                            row = null;
+                                        }
+                                    }
+                                    if (n === 1) {
+                                        row = $('<div class="row"/>');
+                                        row.append('<p style="padding-left:30px;">No albums to show.</p>');
+                                    }
+                                    if (row !== null) {
+                                        container.append(row);
+                                    }
+                                }
+                            })
+                            .fail(function() {
+                                alert("error");
+                            });
+                        }
 
-        <!-- Bootstrap core JavaScript -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="js/jquery.js"></script>
-        <script src="js/bootstrap.js"></script>
-        <script src="js/modern-business.js"></script>
+                    function createItem(album) {
+                        var item = $('<div class="col-md-4 portfolio-item" />');
+                        item.attr("id", "album-" + album.id);
+                        item.append('<a href="album.xhtml?id=' + album.id + '"><img class="img-responsive" src="http://placehold.it/700x400"/></a>');
+                        item.append('<h3><a href="album.xhtml?id=' + album.id + '">' + album.name + '</a></h3>');
+                        item.append('<p>' + album.description + '</p>');
+                        return item;
+                    }
+                </script>
+                
+                <c:if test="#{param['id'] eq null}">
+                    <script>
+                        $(function() {
+                            requestAlbumList('#{request.contextPath}/resources/album/myAlbums');
+                        });
+                    </script>
+                </c:if>
+                <c:if test="#{param['id'] ne null}">
+                    <script>
+                        $(function() {
+                            requestAlbumList('#{request.contextPath}/resources/album/getUserAlbums?userId=#{param['id']}');
+                        });
+                    </script>
+                </c:if>
+            </ui:define>
 
+        </ui:composition>
     </h:body>
+
 </html>

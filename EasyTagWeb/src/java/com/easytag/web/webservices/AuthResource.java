@@ -17,6 +17,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import com.easytag.json.utils.TagExceptionWrapper;
+import javax.ws.rs.core.MediaType;
 
 /**
  * REST Web Service
@@ -25,6 +26,7 @@ import com.easytag.json.utils.TagExceptionWrapper;
  */
 @Path("auth")
 @Stateless
+@Produces(MediaType.APPLICATION_JSON)
 public class AuthResource {
 
     @Context
@@ -61,7 +63,7 @@ public class AuthResource {
     @Path("login")
     public String login(@Context HttpServletRequest req, @FormParam("email") String email, @FormParam("password") String password) {
         try {
-            HttpSession session = req.getSession(false);
+            HttpSession session = SessionUtils.resetSession(req);
             if (SessionUtils.getUserId(session) != null) {
                 throw new TagException("You should logout first");
             }
@@ -76,7 +78,6 @@ public class AuthResource {
             
             SessionUtils.setUserId(session, user.getId());
             System.out.println("setting user id to session/ userId = " + user.getId());
-            
             JsonResponse<User> jr = new JsonResponse<User>(ResponseConstants.OK, null, user);
             return SimpleResponseWrapper.getJsonResponse(jr);
         } catch (TagException e) {
@@ -87,8 +88,7 @@ public class AuthResource {
     @GET
     @Path("logout")
     public String logout(@Context HttpServletRequest req) {
-        HttpSession session = req.getSession(false);//false - does not create new session
-        SessionUtils.setUserId(session, null);
+        SessionUtils.resetSession(req);
         JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
         return SimpleResponseWrapper.getJsonResponse(jr);
     }

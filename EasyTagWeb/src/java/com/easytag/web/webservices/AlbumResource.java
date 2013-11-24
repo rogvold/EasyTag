@@ -18,6 +18,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import com.easytag.json.utils.TagExceptionWrapper;
+import javax.ws.rs.core.MediaType;
 
 /**
  * REST Web Service
@@ -26,6 +27,7 @@ import com.easytag.json.utils.TagExceptionWrapper;
  */
 @Path("album")
 @Stateless
+@Produces(MediaType.APPLICATION_JSON)
 public class AlbumResource {
 
     @Context

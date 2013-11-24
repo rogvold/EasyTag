@@ -22,7 +22,8 @@ function MyAuth() {
                 alert('incorrect input data');
                 return;
             }
-            self.login(self.loginEmail, self.loginPassword);            
+            self.login(self.loginEmail, self.loginPassword);  
+            return false;
         });
 
         $('#registerButton').click(function (){
@@ -58,18 +59,18 @@ function MyAuth() {
             ).success(
             function(data) {
                 console.log(data);
-                var resp = JSON.parse(data);     
+                var resp = data;    
                     
-                if (resp.responseCode === 0) {
+                if (data.responseCode === 0) {
                     alert(resp.error.message);
                     return;
                 } else {
                     window.location.href = '/EasyTagWeb/index.xhtml';  
-                    alert('Loged as ' + self.loginEmail);
+                    alert('Logged in as ' + self.loginEmail);
                 }                    
             //window.location.reload();
             }
-            );         
+            );   
     };
 
 

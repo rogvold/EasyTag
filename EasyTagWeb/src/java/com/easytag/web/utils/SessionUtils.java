@@ -4,24 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
+ * Contains a few useful null-safe static methods for working with http session.
  *
  * @author danon
  */
 public class SessionUtils {
 
-    public static boolean isSignedIn() {
-        if (SessionListener.getSessionAttribute(SessionListener.USER_ID_ATTRIBUTE_NAME, false) != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public static Long getUserId() {
-        Long uId = ((Long) SessionListener.getSessionAttribute(SessionListener.USER_ID_ATTRIBUTE_NAME, true));
-        return uId;
-    }
     public static final String USER_ID_SESSION_ATTR = "userId";
-//    private static final Logger log = Logger.getLogger(SessionUtils.class);
+    //private static final Logger log = Logger.getLogger(SessionUtils.class);
 
     public static <T> T getSessionAttribute(Class<T> clazz, final HttpSession session, String name) {
         try {
@@ -31,8 +21,7 @@ public class SessionUtils {
                 }
             }
         } catch (Exception ex) {
-            System.out.println("Exception whyle accesssing session attribute. ex = " + ex.getMessage());
-
+            //log.debug("Exception whyle accesssing session attribute.", ex);
         }
         return null;
     }
@@ -42,12 +31,13 @@ public class SessionUtils {
             if (isSessionValid(session)) {
                 synchronized (session) {
                     session.setAttribute(name, value);
-                    System.out.println("setSessionAttribute(): " + name + " is set to " + value);
+//                    if(log.isTraceEnabled()) {
+//                        log.trace("setSessionAttribute(): "+name+" is set to "+value);
+//                    }
                 }
             }
         } catch (Exception ex) {
-            System.out.println("Exception whyle accesssing session attribute. ex = " + ex.getMessage());
-
+//            log.debug("Exception whyle trying to set session attribute.", ex);
         }
     }
 
@@ -83,4 +73,15 @@ public class SessionUtils {
     public static void setUserId(HttpSession session, Long userId) {
         setSessionAttribute(session, USER_ID_SESSION_ATTR, userId);
     }
+    
+    public static HttpSession resetSession(HttpServletRequest request) {
+        try {
+            HttpSession session = getSession(request, true);
+            session.invalidate();
+            return getSession(request, true);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
 }

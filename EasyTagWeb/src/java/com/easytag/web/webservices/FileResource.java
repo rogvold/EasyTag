@@ -95,10 +95,11 @@ public class FileResource {
                 throw new IllegalStateException("Unable to create file record.");
             }
             Photo photo = pm.addPhoto(userId, albumId, fileName, null, null, file.getId());
-            pm.generatePreview(photo);
             if (photo == null || photo.getId() == null) {
                 throw new IllegalStateException("Unable to create a database record for the foto.");
             }
+            
+            pm.generatePreview(photo);
             return Response.ok(SimpleResponseWrapper.getJsonResponse(new JsonResponse<Photo>(ResponseConstants.OK, null, photo))).build();
         } catch (Exception ex) {
             ex.printStackTrace();

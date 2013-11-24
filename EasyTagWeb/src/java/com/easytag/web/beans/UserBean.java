@@ -2,19 +2,20 @@ package com.easytag.web.beans;
 
 import com.easytag.core.entity.jpa.User;
 import com.easytag.core.managers.UserManagerLocal;
-import com.easytag.web.utils.SessionUtils;
+import com.easytag.web.utils.JSFHelper;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author Shaykhlislamov Sabir (email: sha-sabir@yandex.ru)
  */
 @ManagedBean
-@ViewScoped
-public class UserBean {
+@SessionScoped
+public class UserBean implements Serializable {
 
     @EJB
     UserManagerLocal userMan;
@@ -24,11 +25,34 @@ public class UserBean {
 
     @PostConstruct
     private void init() {
-        this.userId = SessionUtils.getUserId();
+        this.userId = new JSFHelper().getCurrentUserId();
         this.user = userMan.getUserById(userId);
     }
 
     public Long getUserId() {
         return userId;
+    }
+    
+    public User getUser() {
+        return user;
+    }
+    
+    public User findById(String userId) {
+        Long id = null;
+        try {
+            id = Long.parseLong(userId);
+        } catch (Exception ex) {
+        }
+        if (id == null || id == this.userId) {
+            return user;
+        }
+        return userMan.getUserById(id);
+    }
+    
+    public String redirectIfNotAuthorized() {
+        JSFHelper helper = new JSFHelper();
+        if (helper.getCurrentUserId() == null) {
+            return "/index?faces-redirect=true";
+        } else return null;
     }
 }

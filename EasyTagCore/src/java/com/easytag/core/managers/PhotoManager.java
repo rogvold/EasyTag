@@ -9,6 +9,7 @@ import com.easytag.utils.PreviewUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -77,6 +78,8 @@ public class PhotoManager implements PhotoManagerLocal {
         
         Photo photo =  new Photo(name, description, tags,
                 PhotoStatus.NEW, getPhotosAmount(albumId) + 1, albumId, fileId);
+        // for now set preview the same as original file
+        photo.setPreviewId(fileId);
         
         return em.merge(photo);
     }
@@ -124,6 +127,7 @@ public class PhotoManager implements PhotoManagerLocal {
     }   
 
     @Override
+    @Asynchronous
     public void generatePreview(Photo p) throws TagException {
         
         EasyTagFile etf = fMan.findFileById(p.getFileId());
