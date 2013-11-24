@@ -22,10 +22,10 @@
 		
         <script type="text/javascript">
             
-            var currentPhotoId;
+            var currentPhotoId;           
             
             editPhoto = function(fileId) { // TODO проверка на существование файла
-                currentPhotoId = fileId;
+                //currentPhotoId = fileId;
                 imgURL = '../resources/file/download?id=' + fileId + '&inline=1';
                 Editor.initNewImage(imgURL);
                 Editor.isLocalFile= false;
@@ -58,6 +58,7 @@
                          if (statusText === 'success'){
                             //alert(JSON.stringify(responseText) + ' ' + statusText);
                             // alert(responseText);
+                            currentPhotoId = responseText.data.id;
                             editPhoto(responseText.data.fileId);
                          }
                       }
@@ -111,7 +112,7 @@
                                     spots[i].y, 
                                     spots[i].width, 
                                     spots[i].height,
-                                    spots[i].description);
+                                    spots[i].name);
                             }    
                         }
                     },
@@ -135,7 +136,7 @@
             }
             
             $(function() {
-		editPhoto(3);               
+		//editPhoto(3);               
                       
             });
 
@@ -313,6 +314,7 @@
                 </form>
                 <!--<p id="testP">  </p>-->                
                 <button onclick="uploadFile();"> upload</button>
+                <button onclick="saveTags(currentPhotoId);"> save</button>
             </div>			
         </div>
 		
