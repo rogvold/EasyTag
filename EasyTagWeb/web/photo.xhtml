@@ -4,11 +4,11 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <f:metadata>
-        <f:viewAction action="#{userBean.redirectIfNotAuthorized}"/>
-        <f:viewParam name="id" value="#{photoBean.photoId}" />
-    </f:metadata>
     <h:body>
+        <f:metadata>
+            <f:viewAction action="#{userBean.redirectIfNotAuthorized}"/>
+            <f:viewParam name="id" value="#{photoBean.photoId}" />
+        </f:metadata>
         <ui:composition template="templates/main.xhtml">
 
             <ui:param name="windowTitle" value="Photo - TagsCool"/>
@@ -48,12 +48,9 @@
                         <h3>#{photoBean.findById(param['id']).name}</h3>
                         <p>#{photoBean.findById(param['id']).description}</p>
                         <h3>Tags</h3>
-                        <ul>
-                            <li>Lorem Ipsum</li>
-                            <li>Dolor Sit Amet</li>
-                            <li>Consectetur</li>
-                            <li>Adipiscing Elit</li>
+                        <ul id="tagList">
                         </ul>
+                        <a href="javascript:void(0);" onclick="toggleTags()" class="btn btn-default">Toggle tags</a>
                     </div>
 
                 </div>
@@ -99,51 +96,57 @@
                 <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/hotspotter/jquery-hotspotter-1.7.9.min.css" />	
                 <script src="#{request.contextPath}/css/hotspotter/jquery-hotspotter-1.7.9.min.js"></script>
                 <script>
-                    //<![CDATA[
+                            //<![CDATA[
 
-                    function appendTag(x, y, w, h, name) {
-                        $('.hs-area').append('<div class="hs-wrap">\n\
+                            function appendTag(x, y, w, h, name) {
+                                $('.hs-area').append('<div class="hs-wrap">\n\
                             <div class="red-spot" data-coord="' + x + ',' + y + '" \n\
                             data-dim="' + w + ',' + h + ',0" data-activeon="hover">\n\
                             </div><div class="tt-wrap"><div class="tip-tooltip" data-anim="goin" \n\
                             data-dir="top">' + name + '</div></div></div>');
-                    }
+                                $('<li/>').text(name).appendTo('#tagList');
+                            }
 
-                    function appendTags(pId) {
-                        $.ajax({
-                            type: "GET",
-                            url: "#{request.contextPath}/resources/Tag/getEasyTags?photoId=" + pId,
-                            success: function(responseText, statusText) {
-                                if (statusText === 'success') {
-                                    console.log(JSON.stringify(responseText));
-                                    spots = responseText.data;
-                                    for (var i = 0; i < spots.length; i++) {
-                                        appendTag(spots[i].x,
-                                                spots[i].y,
-                                                spots[i].width,
-                                                spots[i].height,
-                                                spots[i].name);
-                                    }
-                                    $('.hs-area').hotspotter();
-                                }
-                            },
-                            dataType: "json"
-                        });
-                    }
-                    
-                    function refreshTags() {
-                        $('.hs-area .hs-wrap').remove();
-                        appendTags('#{param['id']}');
-                    }
-                    
-                    $(function () {
-                        $('.hs-area img').attr('data-imgdim', ["#{photoBean.findById(param['id']).width}", "#{photoBean.findById(param['id']).height}"].join(','));
-                        refreshTags();
-                        $(window).resize( function() {
-                            refreshTags();
-                        });
-                    });
-                    //]]>
+                            function appendTags(pId) {
+                                $.ajax({
+                                    type: "GET",
+                                    url: "#{request.contextPath}/resources/Tag/getEasyTags?photoId=" + pId,
+                                    success: function(responseText, statusText) {
+                                        if (statusText === 'success') {
+                                            console.log(JSON.stringify(responseText));
+                                            spots = responseText.data;
+                                            for (var i = 0; i < spots.length; i++) {
+                                                appendTag(spots[i].x,
+                                                        spots[i].y,
+                                                        spots[i].width,
+                                                        spots[i].height,
+                                                        spots[i].name);
+                                            }
+                                            $('.hs-area').hotspotter();
+                                        }
+                                    },
+                                    dataType: "json"
+                                });
+                            }
+
+                            function refreshTags() {
+                                $('.hs-area .hs-wrap').remove();
+                                $('#tagList li').remove();
+                                appendTags('#{param['id']}');
+                            }
+
+                            function toggleTags() {
+                                $('.hs-area .hs-wrap').toggle();
+                            }
+
+                            $(function() {
+                                $('.hs-area img').attr('data-imgdim', ["#{photoBean.findById(param['id']).width}", "#{photoBean.findById(param['id']).height}"].join(','));
+                                refreshTags();
+                                $(window).resize(function() {
+                                    refreshTags();
+                                });
+                            });
+                            //]]>
                 </script>
             </ui:define>
 
