@@ -94,7 +94,7 @@ public class FileResource {
             if (file == null || file.getId() == null) {
                 throw new IllegalStateException("Unable to create file record.");
             }
-            Photo photo = pm.addPhoto(userId, albumId, fileName, null, null, file.getId());
+            Photo photo = pm.addPhoto(userId, albumId, fileName, null, null, file.getId(), null, null);
             if (photo == null || photo.getId() == null) {
                 throw new IllegalStateException("Unable to create a database record for the foto.");
             }

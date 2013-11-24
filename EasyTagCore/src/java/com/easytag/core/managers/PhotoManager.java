@@ -77,7 +77,7 @@ public class PhotoManager implements PhotoManagerLocal {
         //TODO check file existance
         
         Photo photo =  new Photo(name, description, tags,
-                PhotoStatus.NEW, getPhotosAmount(albumId) + 1, albumId, fileId);
+                PhotoStatus.NEW, getPhotosAmount(albumId) + 1, albumId, fileId, height, width);
         // for now set preview the same as original file
         photo.setPreviewId(fileId);
         
