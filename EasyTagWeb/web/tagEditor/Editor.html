@@ -136,8 +136,10 @@
             }
             
             $(function() {
-		//editPhoto(3);               
-                      
+		//editPhoto(3);    
+                $('#spotContent').bind('blur', function (e) {
+                    Editor.curSpot.ttContent = $('#spotContent').val();
+                });                                
             });
 
         </script>
