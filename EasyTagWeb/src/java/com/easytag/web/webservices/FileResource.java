@@ -12,6 +12,7 @@ import com.easytag.json.utils.ResponseConstants;
 import com.easytag.json.utils.SimpleResponseWrapper;
 import com.easytag.utils.StringUtils;
 import com.easytag.web.utils.SessionUtils;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -94,7 +96,10 @@ public class FileResource {
             if (file == null || file.getId() == null) {
                 throw new IllegalStateException("Unable to create file record.");
             }
-            Photo photo = pm.addPhoto(userId, albumId, fileName, null, null, file.getId(), null, null);
+            BufferedImage bimg = ImageIO.read(new File(uploadedFileName));
+            Long width = new Long(bimg.getWidth());
+            Long height = new Long(bimg.getHeight());
+            Photo photo = pm.addPhoto(userId, albumId, fileName, null, null, file.getId(), height, width);
             if (photo == null || photo.getId() == null) {
                 throw new IllegalStateException("Unable to create a database record for the foto.");
             }
