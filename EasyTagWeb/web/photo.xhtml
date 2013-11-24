@@ -130,9 +130,18 @@
                             dataType: "json"
                         });
                     }
+                    
+                    function refreshTags() {
+                        $('.hs-area .hs-wrap').remove();
+                        appendTags('#{param['id']}');
+                    }
+                    
                     $(function () {
                         $('.hs-area img').attr('data-imgdim', ["#{photoBean.findById(param['id']).width}", "#{photoBean.findById(param['id']).height}"].join(','));
-                        appendTags('#{param['id']}');
+                        refreshTags();
+                        $(window).resize( function() {
+                            refreshTags();
+                        });
                     });
                     //]]>
                 </script>
