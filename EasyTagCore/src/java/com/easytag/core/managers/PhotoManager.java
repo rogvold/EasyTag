@@ -125,7 +125,7 @@ public class PhotoManager implements PhotoManagerLocal {
         }
         return aMan.getAlbumById(p.getAlbumId());
     }   
-
+    
     @Override
     @Asynchronous
     public void generatePreview(Photo p) throws TagException {
@@ -154,22 +154,36 @@ public class PhotoManager implements PhotoManagerLocal {
 
     @Override
     public List<Photo> findPhotosByTagName(String query) {
+        if (query == null || query.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
                 
         String[] words = query.split("\\s+");
         
+        List<Photo> currTag, currName;
         Query q = em.createQuery("select distinct p from "
                     + "Photo p, EasyTag e where e.name like :query "
                     + "and p.id = e.photoId").setParameter("query", "%" + words[0] + "%");            
         List<Photo> list = q.getResultList();
+        q = em.createQuery("select p from "
+                    + "Photo p where p.name "
+                    + "like :query ").setParameter("query", "%" + words[0] + "%");
+        currName = q.getResultList();
+        list.addAll(currName);        
         
-        List<Photo> curr;
+        
         for(int i = 1; i < words.length; i++){        
             q = em.createQuery("select distinct p from "
                     + "Photo p, EasyTag e where e.name like :query "
                     + "and p.id = e.photoId").setParameter("query", "%" + words[i] + "%");
-            curr = q.getResultList();
-            list.retainAll(curr);
-        }
+            currTag = q.getResultList();
+            q = em.createQuery("select p from "
+                    + "Photo p where p.name "
+                    + "like :query ").setParameter("query", "%" + words[i] + "%");
+            currName = q.getResultList();
+            currTag.addAll(currName);
+            list.retainAll(currTag);
+        }     
         
        
         if (list == null || list.isEmpty()) {

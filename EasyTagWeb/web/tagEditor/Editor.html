@@ -310,12 +310,12 @@
                                 </tbody>
                         </table>                        
                 </form>
-                <form id="myForm" action="../resources/file/upload" method="POST" enctype="multipart/form-data">
+                <form id="myForm" style="display:none" action="../resources/file/upload" method="POST" enctype="multipart/form-data">
                     <input type="file" name="file" value="Choose image..." />
                     <input type="text" name="album_id" value="" />                   
                 </form>
                 <!--<p id="testP">  </p>-->                
-                <button onclick="uploadFile();"> upload</button>
+                <button onclick="uploadFile();" style="display:none"> upload</button>
                 <button onclick="saveTags(currentPhotoId);"> save</button>
             </div>			
         </div>
