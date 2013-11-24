@@ -72,8 +72,8 @@
                 for(var i = 0; i < spots.length; i++){
                     var tag = {
                         photoId: pId,
-                        name: "tag" + i,
-                        description: spots[i].ttContent,
+                        name: spots[i].ttContent,
+                        description: "tag" + i,
                         x: spots[i].coord[0],
                         y: spots[i].coord[1],
                         width: spots[i].dim[0], 

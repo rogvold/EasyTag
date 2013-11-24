@@ -57,7 +57,7 @@ public class PhotoManager implements PhotoManagerLocal {
     }
 
     @Override
-    public Photo addPhoto(Long userId, Long albumId, String name, String description, String tags, Long fileId) throws TagException {
+    public Photo addPhoto(Long userId, Long albumId, String name, String description, String tags, Long fileId, Long height, Long width) throws TagException {
         
         if (albumId == null) {
             throw new TagException("Album Id is not specified"); 
@@ -110,7 +110,7 @@ public class PhotoManager implements PhotoManagerLocal {
         Integer number = getPhotosAmount(albumId);
         for(Long id:fileIdList){
             number++;
-            Photo photo =  new Photo(null, null, null, PhotoStatus.NEW,  number, albumId, id);
+            Photo photo =  new Photo(null, null, null, PhotoStatus.NEW,  number, albumId, id, null, null);
             em.merge(photo);
             lp.add(photo);
         }
@@ -148,4 +148,30 @@ public class PhotoManager implements PhotoManagerLocal {
         
         EasyTagFile prevFile = fMan.addFile(etf.getUserId(), prevName, prevPath, etf.getContentType());
         p.setPreviewId(prevFile.getId());   }
+
+    @Override
+    public List<Photo> findPhotosByTagName(String query) {
+                
+        String[] words = query.split("\\s+");
+        
+        Query q = em.createQuery("select distinct p from "
+                    + "Photo p, EasyTag e where e.name like :query "
+                    + "and p.id = e.photoId").setParameter("query", "%" + words[0] + "%");            
+        List<Photo> list = q.getResultList();
+        
+        List<Photo> curr;
+        for(int i = 1; i < words.length; i++){        
+            q = em.createQuery("select distinct p from "
+                    + "Photo p, EasyTag e where e.name like :query "
+                    + "and p.id = e.photoId").setParameter("query", "%" + words[i] + "%");
+            curr = q.getResultList();
+            list.retainAll(curr);
+        }
+        
+       
+        if (list == null || list.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
 }
