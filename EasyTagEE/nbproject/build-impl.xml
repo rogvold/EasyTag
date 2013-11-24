@@ -51,6 +51,18 @@ is divided into following sections:
         <condition property="do.compile.jsps">
             <istrue value="${compile.jsps}"/>
         </condition>
+        <condition property="do.display.browser.old">
+            <and>
+                <istrue value="${display.browser}"/>
+                <isset property="client.module.uri"/>
+                <not>
+                    <isset property="app.client"/>
+                </not>
+                <not>
+                    <isset property="browser.context"/>
+                </not>
+            </and>
+        </condition>
         <condition property="do.display.browser">
             <and>
                 <istrue value="${display.browser}"/>
@@ -58,6 +70,7 @@ is divided into following sections:
                 <not>
                     <isset property="app.client"/>
                 </not>
+                <isset property="browser.context"/>
             </and>
         </condition>
         <available file="${meta.inf}/MANIFEST.MF" property="has.custom.manifest"/>
@@ -152,19 +165,25 @@ exists or setup the property manually. For example like this:
                 </fail>
         <taskdef classpath="${libs.CopyLibs.classpath}" resource="org/netbeans/modules/java/j2seproject/copylibstask/antlib.xml"/>
     </target>
-    <target depends="-profile-pre-init, init, -profile-post-init, -profile-init-check" name="profile-init"/>
-    <target name="-profile-pre-init">
+    <!--
+                pre NB7.2 profiling section; consider it deprecated
+            -->
+    <target depends="-profile-pre-init, init, -profile-post-init, -profile-init-check" if="profiler.info.jvmargs.agent" name="profile-init"/>
+    <target if="profiler.info.jvmargs.agent" name="-profile-pre-init">
         <!-- Empty placeholder for easier customization. -->
         <!-- You can override this target in the ../build.xml file. -->
     </target>
-    <target name="-profile-post-init">
+    <target if="profiler.info.jvmargs.agent" name="-profile-post-init">
         <!-- Empty placeholder for easier customization. -->
         <!-- You can override this target in the ../build.xml file. -->
     </target>
-    <target depends="-profile-pre-init, init, -profile-post-init" name="-profile-init-check">
+    <target depends="-profile-pre-init, init, -profile-post-init" if="profiler.info.jvmargs.agent" name="-profile-init-check">
         <fail unless="profiler.info.jvm">Must set JVM to use for profiling in profiler.info.jvm</fail>
         <fail unless="profiler.info.jvmargs.agent">Must set profiler agent JVM arguments in profiler.info.jvmargs.agent</fail>
     </target>
+    <!--
+                end of pre NB7.2 profiling section
+            -->
     <target depends="pre-init,init-private,init-userdir,init-user,init-project,do-init,post-init,init-check,-init-taskdefs" name="init"/>
     <!--
     COMPILATION SECTION
@@ -299,10 +318,21 @@ exists or setup the property manually. For example like this:
     <target depends="dist" name="verify">
         <nbverify file="${dist.jar}"/>
     </target>
-    <target depends="run-deploy,-init-display-browser,-display-browser-nb,-display-browser-cl" name="run-display-browser"/>
+    <target depends="run-deploy,-init-display-browser,-display-browser-nb-old,-display-browser-nb,-display-browser-cl" name="run-display-browser"/>
     <target if="do.display.browser" name="-init-display-browser">
+        <condition property="do.display.browser.nb.old">
+            <and>
+                <isset property="netbeans.home"/>
+                <not>
+                    <isset property="browser.context"/>
+                </not>
+            </and>
+        </condition>
         <condition property="do.display.browser.nb">
-            <isset property="netbeans.home"/>
+            <and>
+                <isset property="netbeans.home"/>
+                <isset property="browser.context"/>
+            </and>
         </condition>
         <condition property="do.display.browser.cl">
             <and>
@@ -311,8 +341,11 @@ exists or setup the property manually. For example like this:
             </and>
         </condition>
     </target>
-    <target if="do.display.browser.nb" name="-display-browser-nb">
+    <target if="do.display.browser.nb.old" name="-display-browser-nb-old">
         <nbbrowse url="${client.url}"/>
+    </target>
+    <target if="do.display.browser.nb" name="-display-browser-nb">
+        <nbbrowse context="${browser.context}" url="${client.url}" urlPath="${client.urlPart}"/>
     </target>
     <target if="do.display.browser.cl" name="-get-browser" unless="browser">
         <condition property="browser" value="rundll32">
@@ -436,10 +469,14 @@ exists or setup the property manually. For example like this:
     <target depends="dist" description="Debug project in IDE." if="netbeans.home" name="run-debug" unless="app.client">
         <nbdeploy clientModuleUri="${client.module.uri}" clientUrlPart="${client.urlPart}" debugmode="true"/>
         <antcall target="connect-debugger"/>
+        <antcall target="debug-display-browser-old"/>
         <antcall target="debug-display-browser"/>
     </target>
     <target name="connect-debugger" unless="is.debugged">
-        <nbjpdaconnect address="${jpda.address}" host="${jpda.host}" name="${jpda.host}:${jpda.address}" transport="${jpda.transport}">
+        <condition property="listeningcp" value="sourcepath">
+            <istrue value="${j2ee.compile.on.save}"/>
+        </condition>
+        <nbjpdaconnect address="${jpda.address}" host="${jpda.host}" listeningcp="${listeningcp}" name="${jpda.host}:${jpda.address}" transport="${jpda.transport}">
             <classpath>
                 <path path="${debug.classpath}"/>
                 <fileset dir="${build.dir}" includes="lib/*.jar"/>
@@ -449,8 +486,11 @@ exists or setup the property manually. For example like this:
             </sourcepath>
         </nbjpdaconnect>
     </target>
-    <target if="do.display.browser" name="debug-display-browser">
+    <target if="do.display.browser.old" name="debug-display-browser-old">
         <nbbrowse url="${client.url}"/>
+    </target>
+    <target if="do.display.browser" name="debug-display-browser">
+        <nbbrowse context="${browser.context}" url="${client.url}" urlPath="${client.urlPart}"/>
     </target>
     <target if="can.debug.appclient" name="run-debug-appclient">
         <antcall target="-run-debug-appclient"/>
@@ -529,13 +569,16 @@ exists or setup the property manually. For example like this:
     PROFILING SECTION
     =================
     -->
-    <target description="Profile a J2EE project in the IDE." name="profile">
+    <!--
+        pre NB7.2 profiling section; consider it deprecated
+    -->
+    <target description="Profile a J2EE project in the IDE." if="profiler.info.jvmargs.agent" name="-profile-pre72">
         <condition else="start-profiled-server" property="profiler.startserver.target" value="start-profiled-server-extraargs">
             <isset property="profiler.info.jvmargs.extra"/>
         </condition>
         <antcall target="${profiler.startserver.target}"/>
         <antcall target="run"/>
-        <antcall target="start-loadgen"/>
+        <antcall target="-profile-start-loadgen"/>
     </target>
     <target name="start-profiled-server">
         <nbstartprofiledserver forceRestart="${profiler.j2ee.serverForceRestart}" javaPlatform="${profiler.info.javaPlatform}" startupTimeout="${profiler.j2ee.serverStartupTimeout}">
@@ -550,7 +593,27 @@ exists or setup the property manually. For example like this:
             <jvmarg value="${profiler.j2ee.agentID}"/>
         </nbstartprofiledserver>
     </target>
-    <target if="profiler.loadgen.path" name="start-loadgen">
+    <!--
+        end of pre NB7.2 profiling section
+    -->
+    <target if="netbeans.home" name="-profile-check">
+        <condition property="profiler.configured">
+            <or>
+                <contains casesensitive="true" string="${run.jvmargs.ide}" substring="-agentpath:"/>
+                <contains casesensitive="true" string="${run.jvmargs.ide}" substring="-javaagent:"/>
+            </or>
+        </condition>
+    </target>
+    <target depends="dist" name="-do-profile">
+        <startprofiler/>
+        <nbstartserver profilemode="true"/>
+        <nbdeploy clientUrlPart="${client.urlPart}" forceRedeploy="true" profilemode="true"/>
+        <antcall target="-profile-start-loadgen"/>
+    </target>
+    <target depends="-profile-check,-profile-pre72" description="Profile a J2EE project in the IDE." if="profiler.configured" name="profile">
+        <antcall target="-do-profile"/>
+    </target>
+    <target if="profiler.loadgen.path" name="-profile-start-loadgen">
         <loadgenstart path="${profiler.loadgen.path}"/>
     </target>
     <!--
