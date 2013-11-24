@@ -23,13 +23,19 @@
                 <div class="row">
 
                     <div class="col-lg-12">
-                        <h1 class="page-header">Просмотр альбома
+                        <h1 class="page-header">
+                            Просмотр альбома
                         </h1>
-                        <ol class="breadcrumb">
-                            <li><a href="users.xhtml">All users</a></li>
-                            <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.album.creatorId}">#{userBean.findById(albumBean.album.creatorId).email}</a></li>
-                            <li class="active">#{albumBean.album.name}</li>
-                        </ol>
+                        <div class="col-lg-10">
+                            <ol class="breadcrumb">
+                                <li><a href="users.xhtml">All users</a></li>
+                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.album.creatorId}">#{userBean.findById(albumBean.album.creatorId).email}</a></li>
+                                <li class="active">#{albumBean.album.name}</li>
+                            </ol>
+                        </div>
+                        <div class="col-lg-2" style="margin-bottom: 20px;">
+                            <a href="#addFileModal" class="btn btn-primary" data-toggle="modal">Добавить файлы</a>
+                        </div>
                     </div>
 
                 </div><!-- /.row -->
@@ -45,40 +51,82 @@
             </ui:define>
 
             <ui:define name="dialogs">
-
+                <!-- Modal -->
+                <div class="modal fade" id="addFileModal" tabindex="-1" role="dialog" aria-labelledby="addFileModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Добавить фотографию</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
+                                    <!-- The global progress bar -->
+                                    <div id="progress" class="progress" style="display: none;">
+                                        <div class="progress-bar progress-bar-success"></div>
+                                    </div>
+                                    <form action="#{request.contextPath}/resources/file/upload" method="POST" enctype="multipart/form-data">
+                                        <input type="file" id="fileupload" name="file" value="Choose image..." multiple="true" />
+                                        <input type="hidden" name="album_id" value="#{albumBean.albumId}" />
+                                    </form>
+                                </div>
+                            </div>
+                            <!--                            <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                        </div>-->
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
             </ui:define>
 
             <ui:define name="scripts">
+                <script src="#{request.contextPath}/js/jquery.ui.widget.js"></script>
+                <script src="#{request.contextPath}/js/jquery.fileupload.js"></script>
                 <script>
-                    function requestPhotosList(url) {
+                    /*jslint unparam: true */
+                    /*global window, $ */
+                    $(function() {
+                        'use strict';
+                        // Change this to the location of your server-side upload handler:
+                        var url = '#{request.contextPath}/resources/file/upload';
+                        $('#fileupload').fileupload({
+                            url: url,
+                            dataType: 'json',
+                            done: function(e, data) {
+                                console.log(data);
+                            },
+                            progressall: function(e, data) {
+                                var progress = parseInt(data.loaded / data.total * 100, 10);
+                                $('#progress').show();
+                                $('#progress .progress-bar').css(
+                                        'width',
+                                        progress + '%'
+                                        );
+                                if (progress === 100) {
+                                    onUploadFinished();
+                                }
+                            }
+                        }).prop('disabled', !$.support.fileInput)
+                                .parent().addClass($.support.fileInput ? undefined : 'disabled');
+                    });
+                    
+                    function onUploadFinished() {
+                        $('#progress').hide();
+                        $('#progress .progress-bar').css('width', '0%');
+                        $('#addFileModal').modal('hide');
+                        resetPhotosList();
+                    }  
+                </script>
+                <script>
+                    function requestPhotosList(url, callback) {
                         $.get(url)
                                 .done(function(data) {
                                     console.log(data);
                                     if (data.responseCode === 1) {
                                         var photos = [];
                                         photos = data.data;
-                                        var n = 1;
-                                        var row = null;
-                                        var container = $('#main-content');
-                                        for (var i in photos) {
-                                            console.log(photos[i]);
-                                            if (row === null) {
-                                                row = $('<div class="row" />');
-                                            }
-                                            row.append(createItem(photos[i]));
-                                            if ((n++) % 4 === 0) {
-                                                console.log("break");
-                                                container.append(row);
-                                                row = null;
-                                            }
-                                        }
-                                        if (n === 1) {
-                                            row = $('<div class="row"/>');
-                                            row.append('<p style="padding-left:30px;">No photos to show.</p>');
-                                        }
-                                        if (row !== null) {
-                                            container.append(row);
-                                        }
+                                        callback(photos);
                                     }
                                 })
                                 .fail(function() {
@@ -86,16 +134,59 @@
                                 });
                     }
 
+                    function resetPhotosList() {
+                        clearPhotosList();
+                        row = $('<div class="row photos"/>');
+                        row.append('<p style="padding-left:30px;">Loading list of photos...</p>');
+                        row.appendTo('#main-content');
+                        requestPhotosList(
+                                '#{request.contextPath}/resources/Photo/getPhotos?albumId=#{param['id']}',
+                                                function(photos) {
+                                                    clearPhotosList();
+                                                    addAllPhotos(photos);
+                                                }
+                                        );
+                      }
+
+                    function addAllPhotos(photos) {
+                        var n = 1;
+                        var row = null;
+                        var container = $('#main-content');
+                        for (var i in photos) {
+                            console.log(photos[i]);
+                            if (row === null) {
+                                row = $('<div class="row photos" />');
+                            }
+                            row.append(createItem(photos[i]));
+                            if ((n++) % 4 === 0) {
+                                console.log("break");
+                                container.append(row);
+                                row = null;
+                            }
+                        }
+                        if (n === 1) {
+                            row = $('<div class="row photos"/>');
+                            row.append('<p style="padding-left:30px;">No photos to show.</p>');
+                        }
+                        if (row !== null) {
+                            container.append(row);
+                        }
+                    }
+
+                    function clearPhotosList() {
+                        $("#main-content .row.photos").remove();
+                    }
+
                     function createItem(photo) {
                         var item = $('<div class="col-md-3 portfolio-item" />');
                         item.attr("id", "photo-" + photo.id);
-                        item.append('<a href="portfolio-item.html"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id='+photo.previewId+'"/></a>');
+                        item.append('<a href="portfolio-item.html"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
                         return item;
                     }
                 </script>
                 <script>
                     $(function() {
-                        requestPhotosList('#{request.contextPath}/resources/Photo/getPhotos?albumId=#{param['id']}');
+                        resetPhotosList();
                     });
                 </script>
             </ui:define>
