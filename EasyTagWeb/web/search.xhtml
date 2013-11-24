@@ -13,7 +13,7 @@
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
-            <ui:param name="windowTitle" value="Album - TagsCool"/>
+            <ui:param name="windowTitle" value="Search - TagsCool"/>
             <ui:param name="user" value="#{userBean.user}"/>
             <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
 
@@ -102,7 +102,9 @@
                         $('#query').bind('keydown', function (e) {
                             if (e.keyCode === 13) {
                                 $('.result').remove();
-                                requestPhotosList('#{request.contextPath}/resources/Photo/findPhotos?q=' + $('#query').val());
+                                var query = $('#query').val()
+                                requestPhotosList('#{request.contextPath}/resources/Photo/findPhotos?q=' + query);
+                                window.history.pushState("object or string", "Search - TagsCool", "/EasyTagWeb/search.xhtml?q=" + query);
                             }                              
                         });
                         
