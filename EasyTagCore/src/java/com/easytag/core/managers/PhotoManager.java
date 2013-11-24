@@ -147,7 +147,10 @@ public class PhotoManager implements PhotoManagerLocal {
         }
         
         EasyTagFile prevFile = fMan.addFile(etf.getUserId(), prevName, prevPath, etf.getContentType());
-        p.setPreviewId(prevFile.getId());   }
+        p.setPreviewId(prevFile.getId());  
+        
+        em.merge(p);
+    }
 
     @Override
     public List<Photo> findPhotosByTagName(String query) {
