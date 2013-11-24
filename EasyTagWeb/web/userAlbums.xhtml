@@ -150,7 +150,7 @@
                     function createItem(album) {
                         var item = $('<div class="col-md-4 portfolio-item" />');
                         item.attr("id", "album-" + album.id);
-                        item.append('<a href="album.xhtml?id=' + album.id + '"><img class="img-responsive" src="http://placehold.it/700x400"/></a>');
+                        item.append('<a href="album.xhtml?id=' + album.id + '"><img class="img-responsive" src="#{request.contextPath}/img/folder.png"/></a>');
                         item.append('<h3><a href="album.xhtml?id=' + album.id + '">' + album.name + '</a></h3>');
                         item.append('<p>' + album.description + '</p>');
                         return item;
