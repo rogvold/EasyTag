@@ -26,13 +26,12 @@
                     <div class="col-lg-12">
                          <div class="col-lg-12" style="margin-top: 20px; margin-bottom: 20px">
                             <div class="input-group" style="width: 100%">
-                                <input id="query" type="text" class="form-control"/>                                
+                                <input id="query" type="text" class="form-control" placeholder="Search query"/>                                
                             </div>     
                         </div>
                         <ol class="breadcrumb">
                             <li><a href="users.xhtml">All users</a></li>
-                            <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.album.creatorId}">#{userBean.findById(albumBean.album.creatorId).email}</a></li>
-                            <li class="active">#{albumBean.album.name}</li>
+                            <li class="active">Search</li>
                         </ol>
                     </div>
 
@@ -93,7 +92,7 @@
                     function createItem(photo) {
                         var item = $('<div class="col-md-3 portfolio-item" />');
                         item.attr("id", "photo-" + photo.id);
-                        item.append('<a href="portfolio-item.html"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id='+photo.previewId+'"/></a>');
+                        item.append('<a href="#{request.contextPath}/photo.xhtml?id='+photo.id+'"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id='+photo.previewId+'"/></a>');
                         return item;
                     }
                 </script>
