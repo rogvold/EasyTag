@@ -224,7 +224,7 @@ var Spot= function(spotClass, x, y) {
     
     this.spLink= '';     //spot link
     this.spLinknWin= false; //whether to open link in new win or no
-    this.ttContent= 'content'; // tooltip content
+    this.ttContent= ''; // tooltip content
     /*
      * Options object contain options that's specified
      * in option bar , when option bar changes this object 

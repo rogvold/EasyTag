@@ -7,3 +7,4 @@ EasyTagEE/build/
 EasyTagWeb/dist/
 EasyTagCore/dist/
 EasyTagEE/dist/
+EasyTagCore/src/conf/persistence.xml

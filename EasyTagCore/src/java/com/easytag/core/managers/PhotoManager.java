@@ -42,7 +42,8 @@ public class PhotoManager implements PhotoManagerLocal {
 
     @Override
     public List<Photo> getPhotosInAlbum(Long albumId) {
-        Query q = em.createQuery("select p from Photo p where p.albumId = :albumId").setParameter("albumId", albumId);
+        Query q = em.createQuery("select p from Photo p where p.albumId = :albumId"
+                + " order by p.name").setParameter("albumId", albumId);
         List<Photo> list = q.getResultList();
         if (list == null || list.isEmpty()) {
             return Collections.EMPTY_LIST;
