@@ -98,13 +98,23 @@
                 <script>
                             //<![CDATA[
 
-                            function appendTag(x, y, w, h, name) {
-                                $('.hs-area').append('<div class="hs-wrap">\n\
+                            function appendTag(x, y, w, h, name, id) {
+                                $('.hs-area').append('<div class="hs-wrap ' + id + '">\n\
                             <div class="red-spot" data-coord="' + x + ',' + y + '" \n\
                             data-dim="' + w + ',' + h + ',0" data-activeon="hover">\n\
                             </div><div class="tt-wrap"><div class="tip-tooltip" data-anim="goin" \n\
                             data-dir="top">' + name + '</div></div></div>');
-                                $('<li/>').text(name).appendTo('#tagList');
+                                $('<li/>').text(name).appendTo('#tagList')
+                                        .bind('mouseover', function() {
+                                            $(this).css('color','red');
+                                            $('.' + id + ' .red-spot').addClass('active');
+                                            $('.' + id + ' .tt-wrap').css('display','block');                                        
+                                        })
+                                        .bind('mouseout', function() {
+                                            $(this).css('color','black')
+                                            $('.' + id + ' .red-spot').removeClass('active')
+                                            $('.' + id + ' .tt-wrap').css('display','none');                                        
+                                        });
                             }
 
                             function appendTags(pId) {
@@ -120,7 +130,8 @@
                                                         spots[i].y,
                                                         spots[i].width,
                                                         spots[i].height,
-                                                        spots[i].name);
+                                                        spots[i].name,
+                                                        spots[i].id);
                                             }
                                             $('.hs-area').hotspotter();
                                             $('.hs-wrap').css('left', "+=15"); // hs-area padding
