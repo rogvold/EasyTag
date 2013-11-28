@@ -26,7 +26,7 @@
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
-                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.findById(photoBean.findById(param['id']).albumId).creatorId}">#{userBean.findById(albumBean.findById(photoBean.findById(param['id']).albumId).creatorId).email}</a></li>
+                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.findById(photoBean.findById(param['id']).albumId).creatorId}">user #{userBean.findById(albumBean.findById(photoBean.findById(param['id']).albumId).creatorId).id}</a></li>
                                 <li><a href="#{request.contextPath}/album.xhtml?id=#{photoBean.findById(param['id']).albumId}">#{albumBean.findById(photoBean.findById(param['id']).albumId).name}</a></li>
                                 <li class="active">#{photoBean.findById(param['id']).name}</li>
                             </ol>

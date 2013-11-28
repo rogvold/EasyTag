@@ -29,7 +29,7 @@
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
-                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.album.creatorId}">#{userBean.findById(albumBean.album.creatorId).email}</a></li>
+                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.album.creatorId}">user #{userBean.findById(albumBean.album.creatorId).id}</a></li>
                                 <li class="active">#{albumBean.album.name}</li>
                             </ol>
                         </div>
