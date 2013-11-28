@@ -21,6 +21,7 @@ public class AlbumBean implements Serializable {
     }
     
     public Album findById(String albumId) {
+        System.out.println("findById: albumId = " + albumId);
         Long id = null;
         try {
             id = Long.parseLong(albumId);
@@ -32,12 +33,13 @@ public class AlbumBean implements Serializable {
         return albumMan.getAlbumById(id);
     }
     
-    public Long getAlbumId() {
-        return albumId;
+    public String getAlbumId() {
+        return albumId == null ? null : albumId.toString();
     }
 
-    public void setAlbumId(Long albumId) {
-        this.albumId = albumId;
+    public void setAlbumId(String albumId) {
+        System.out.println("albumId="+albumId);
+        this.albumId = Long.parseLong(albumId);
     }
     
 }

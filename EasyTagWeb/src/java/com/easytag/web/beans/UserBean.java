@@ -49,10 +49,11 @@ public class UserBean implements Serializable {
         return userMan.getUserById(id);
     }
     
-    public String redirectIfNotAuthorized() {
+    public void redirectIfNotAuthorized() {
+        System.out.println("UserBean.redirectIfNotAuthorized()");
         JSFHelper helper = new JSFHelper();
         if (helper.getCurrentUserId() == null) {
-            return "/index?faces-redirect=true";
-        } else return null;
+            helper.redirect("/index?faces-redirect=true");
+        };
     }
 }

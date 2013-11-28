@@ -35,12 +35,13 @@ public class PhotoBean implements Serializable {
     }
     
 
-    public Long getPhotoId() {
-        return photoId;
+    public String getPhotoId() {
+        return photoId == null ? null : photoId.toString();
     }
 
-    public void setPhotoId(Long photoId) {
-        this.photoId = photoId;
-        this.photo = photoMan.getPhotoById(photoId);
+    public void setPhotoId(String photoId) {
+        System.out.println("setPhotoId: "+photoId);
+        this.photoId = Long.parseLong(photoId);
+        this.photo = photoMan.getPhotoById(this.photoId);
     }
 }

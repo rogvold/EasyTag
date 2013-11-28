@@ -3,12 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+        <f:viewParam id="PHOTO_ID" name="id" value="#{photoBean.photoId}" required="true" requiredMessage="Photo ID must be specified." />
+        <f:event type="preRenderView" listener="#{userBean.redirectIfNotAuthorized}"/>
+    </f:metadata>
     <h:body>
-        <f:metadata>
-            <f:viewAction action="#{userBean.redirectIfNotAuthorized}"/>
-            <f:viewParam name="id" value="#{photoBean.photoId}" />
-        </f:metadata>
         <ui:composition template="templates/main.xhtml">
 
             <ui:param name="windowTitle" value="Photo - TagsCool"/>
@@ -20,15 +21,16 @@
             </ui:define>
 
             <ui:define name="main_content">
+                <c:if test="#{photoBean.photo ne null}">
                 <div class="row" style="padding-top: 20px;">
 
                     <div class="col-lg-12">
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
-                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.findById(photoBean.findById(param['id']).albumId).creatorId}">#{userBean.findById(albumBean.findById(photoBean.findById(param['id']).albumId).creatorId).email}</a></li>
-                                <li><a href="#{request.contextPath}/album.xhtml?id=#{photoBean.findById(param['id']).albumId}">#{albumBean.findById(photoBean.findById(param['id']).albumId).name}</a></li>
-                                <li class="active">#{photoBean.findById(param['id']).name}</li>
+                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.findById(photo.albumId).creatorId}">#{userBean.findById(albumBean.findById(photoBean.photo.albumId).creatorId).email}</a></li>
+                                <li><a href="#{request.contextPath}/album.xhtml?id=#{photoBean.photo.albumId}">#{albumBean.findById(photoBean.photo.albumId).name}</a></li>
+                                <li class="active">#{photoBean.photo.name}</li>
                             </ol>
                         </div>
                         <div class="col-lg-2">
@@ -41,12 +43,12 @@
                 <div class="row">
 
                     <div class="col-md-9 hs-area">
-                        <img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.findById(param['id']).fileId}"/>
+                        <img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.photo.fileId}"/>
                     </div>
 
                     <div class="col-md-3">
-                        <h3>#{photoBean.findById(param['id']).name}</h3>
-                        <p>#{photoBean.findById(param['id']).description}</p>
+                        <h3>#{photoBean.photo.name}</h3>
+                        <p>#{photoBean.photo.description}</p>
                         <h3>Tags</h3>
                         <ul id="tagList">
                         </ul>
@@ -78,6 +80,7 @@
                     </div>
 
                 </div>
+                </c:if>
             </ui:define>
 
             <ui:define name="main_footer">
@@ -93,6 +96,7 @@
             </ui:define>
 
             <ui:define name="scripts">
+                <c:if test="#{photoBean.photo ne null}">
                 <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/hotspotter/jquery-hotspotter-1.7.9.min.css" />	
                 <script src="#{request.contextPath}/css/hotspotter/jquery-hotspotter-1.7.9.min.js"></script>
                 <script>
@@ -140,7 +144,7 @@
                             }
 
                             $(function() {
-                                $('.hs-area img').attr('data-imgdim', ["#{photoBean.findById(param['id']).width}", "#{photoBean.findById(param['id']).height}"].join(','));
+                                $('.hs-area img').attr('data-imgdim', ["#{photoBean.photo.width}", "#{photoBean.photo.height}"].join(','));
                                 refreshTags();
                                 $(window).resize(function() {
                                     refreshTags();
@@ -148,6 +152,7 @@
                             });
                             //]]>
                 </script>
+                </c:if>
             </ui:define>
 
         </ui:composition>

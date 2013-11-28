@@ -5,10 +5,12 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
     <f:metadata>
-        <f:viewAction action="#{userBean.redirectIfNotAuthorized}"/>
-        <f:viewParam name="id" value="#{albumBean.albumId}"/>
+        <f:viewParam id="ALBUM_ID" name="id" value="#{albumBean.albumId}" required="true" requiredMessage="Album ID must be specified."/>
+        <f:event type="preRenderView" listener="#{userBean.redirectIfNotAuthorized}" />
     </f:metadata>
+        
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
@@ -24,7 +26,7 @@
 
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Просмотр альбома
+                            Просмотр альбома #{param['id']}
                         </h1>
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
@@ -85,6 +87,7 @@
                 <script src="#{request.contextPath}/js/jquery.ui.widget.js"></script>
                 <script src="#{request.contextPath}/js/jquery.fileupload.js"></script>
                 <script>
+                    //<![CDATA[
                     /*jslint unparam: true */
                     /*global window, $ */
                     $(function() {
@@ -118,9 +121,8 @@
                         $('#progress .progress-bar').css('width', '0%');
                         $('#addFileModal').modal('hide');
                         resetPhotosList();
-                    }  
-                </script>
-                <script>
+                    } 
+                    
                     function requestPhotosList(url, callback) {
                         $.get(url)
                                 .done(function(data) {
@@ -185,6 +187,7 @@
                         item.append('<a href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
                         return item;
                     }
+                    //]]>
                 </script>
                 <script>
                     $(function() {

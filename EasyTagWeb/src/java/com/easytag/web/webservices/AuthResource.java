@@ -44,14 +44,18 @@ public class AuthResource {
     
     @POST
     @Path("register")
-    public String register(@FormParam("email") String email, @FormParam("password") String password) {
+    public String register(@Context HttpServletRequest req, @FormParam("email") String email, @FormParam("password") String password) {
         try {
             if (email == null || password == null) {
                 throw new TagException("Email or password cannot be empty.");
             }
             User user = new User(email, password);
             System.out.println("userMan = " + userMan);
-            userMan.registerUser(user.getEmail(), user.getPassword(), UserType.USER);
+            User u = userMan.registerUser(user.getEmail(), user.getPassword(), UserType.USER);
+            if (u != null) {
+                HttpSession session = SessionUtils.resetSession(req);
+                SessionUtils.setUserId(session, u.getId());
+            }
             JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
             return SimpleResponseWrapper.getJsonResponse(jr);
         } catch (TagException e) {
