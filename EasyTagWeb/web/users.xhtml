@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+        <f:viewAction action="#{userBean.redirectIfNotAuthorized}"/>
+    </f:metadata>
+    <h:body>
+        <ui:composition template="templates/main.xhtml">
+
+            <ui:param name="windowTitle" value="Albums - TagsCool"/>
+            <ui:param name="user" value="#{userBean.user}"/>
+            <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
+
+            <ui:define name="slider">
+            </ui:define>
+
+            <ui:define name="main_content">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Все пользователи 
+                        </h1>
+                        <div class="col-lg-11" style="padding-left: 0px;">
+                            <ol class="breadcrumb">
+                                <li><a href="users.xhtml">All users</a></li>                                
+                            </ol>
+                        </div>
+                        <div class="col-lg-1" style="margin-bottom: 20px;">                            
+                            <a href="#" class="btn btn-primary" onclick=" refreshAlbums(); return false;" title="Обновить"><span class="glyphicon glyphicon-refresh"></span></a>
+                        </div>
+                    </div>
+
+                </div><!-- /.row -->
+
+            </ui:define>
+
+            <ui:define name="main_footer">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Copyright © TagsCool 2013</p>
+                    </div>
+                </div>
+            </ui:define>
+            
+            <ui:define name="dialogs">
+
+            </ui:define>         
+
+            <ui:define name="scripts">
+                <script>
+                    
+                    $(function () {
+                        requestUsers();
+                    }); 
+
+                    function requestUserList(url) {
+                        $.get(url)
+                                .done(function(data) {
+                                    console.log(data);
+                                    if (data.responseCode === 1) {
+                                        var users = [];
+                                        users = data.data;
+                                        var n = 1;
+                                        var row = null;
+                                        var container = $('#main-content');
+                                        for (var i in users) {
+                                            console.log(users[i]);
+                                            if (row === null) {
+                                                row = $('<div class="albums row" />');
+                                            }
+                                            row.append(createItem(users[i]));
+                                            if ((n++) % 3 === 0) {
+                                                console.log("break");
+                                                container.append(row);
+                                                row = null;
+                                            }
+                                        }
+                                        if (n === 1) {
+                                            row = $('<div class="albums row"/>');
+                                            row.append('<p style="padding-left:30px;">No albums to show.</p>');
+                                        }
+                                        if (row !== null) {
+                                            container.append(row);
+                                        }
+                                    }
+                                })
+                                .fail(function() {
+                                    alert("error");
+                                });
+                    }
+
+                    function createItem(user) {
+                        var item = $('<div class="col-md-4 portfolio-item" />');
+                        item.attr("id", "user-" + user.id);                      
+                        item.append('<h3><p> user ' + user.id + '</p></h3>');                        
+                        return item;
+                    }
+                    
+                    function refreshAlbums() {
+                        $('#main-content .row.albums').remove();
+                        requestAlbums();
+                    }
+                </script>
+
+                <c:if test="#{param['id'] eq null}">
+                    <script>
+                        function requestUsers() {
+                            requestUserList('#{request.contextPath}/resources/auth/getUsers');
+                        }
+                    </script>
+                </c:if>
+                <c:if test="#{param['id'] ne null}">
+                    <script>
+                        function requestUsers() {
+                            requestUserList('#{request.contextPath}/resources/auth/getUsers');
+                        }
+                    </script>
+                </c:if>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+
+</html>

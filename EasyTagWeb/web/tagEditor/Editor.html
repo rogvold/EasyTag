@@ -79,7 +79,7 @@
                     success: function(responseText, statusText)  {
                         if (statusText === 'success'){                            
                             console.log(JSON.stringify(responseText));
-                            addTagsToDB(pId);
+                            addTagsToDB(pId);                            
                         }
                     },
                     dataType: "json"
@@ -116,7 +116,7 @@
                     );
                     //alert(JSON.stringify(tag1));
                 }            
-                
+                document.location.href = '../photo.xhtml?id=' + pId;    
             };
             
             loadTags = function(pId){
