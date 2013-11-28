@@ -17,6 +17,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import com.easytag.json.utils.TagExceptionWrapper;
+import java.util.List;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -155,7 +156,23 @@ public class AuthResource {
         }
     }
     
-    
+    @GET
+    @Path("getUsers")
+    public String getPhotosInAlbum(@Context HttpServletRequest req) {
+        try {
+            HttpSession session = req.getSession(false);
+            Long currentUserId = SessionUtils.getUserId(session);
+
+            if (currentUserId == null) {
+                throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            List<User> users = userMan.getAllUsers();
+            JsonResponse<List<User>> jr = new JsonResponse<List<User>>(ResponseConstants.OK, null, users);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException e) {
+            return TagExceptionWrapper.wrapException(e);
+        }
+    }
     
     /**
      * Retrieves representation of an instance of com.easytag.web.webservices.AuthResource

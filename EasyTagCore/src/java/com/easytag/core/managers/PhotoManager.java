@@ -42,7 +42,8 @@ public class PhotoManager implements PhotoManagerLocal {
 
     @Override
     public List<Photo> getPhotosInAlbum(Long albumId) {
-        Query q = em.createQuery("select p from Photo p where p.albumId = :albumId").setParameter("albumId", albumId);
+        Query q = em.createQuery("select p from Photo p where p.albumId = :albumId"
+                + " order by p.name").setParameter("albumId", albumId);
         List<Photo> list = q.getResultList();
         if (list == null || list.isEmpty()) {
             return Collections.EMPTY_LIST;
@@ -161,24 +162,24 @@ public class PhotoManager implements PhotoManagerLocal {
         
         List<Photo> currTag, currName;
         Query q = em.createQuery("select distinct p from "
-                    + "Photo p, EasyTag e where e.name like :query "
+                    + "Photo p, EasyTag e where LOWER(e.name) like LOWER(:query) "
                     + "and p.id = e.photoId").setParameter("query", "%" + words[0] + "%");            
         List<Photo> list = q.getResultList();
         q = em.createQuery("select p from "
-                    + "Photo p where p.name "
-                    + "like :query ").setParameter("query", "%" + words[0] + "%");
+                    + "Photo p where LOWER(p.name) "
+                    + "like LOWER(:query) ").setParameter("query", "%" + words[0] + "%");
         currName = q.getResultList();
         list.addAll(currName);        
         
         
         for(int i = 1; i < words.length; i++){        
             q = em.createQuery("select distinct p from "
-                    + "Photo p, EasyTag e where e.name like :query "
+                    + "Photo p, EasyTag e where LOWER(e.name) like LOWER(:query) "
                     + "and p.id = e.photoId").setParameter("query", "%" + words[i] + "%");
             currTag = q.getResultList();
             q = em.createQuery("select p from "
-                    + "Photo p where p.name "
-                    + "like :query ").setParameter("query", "%" + words[i] + "%");
+                    + "Photo p where LOWER(p.name) "
+                    + "like LOWER(:query) ").setParameter("query", "%" + words[i] + "%");
             currName = q.getResultList();
             currTag.addAll(currName);
             list.retainAll(currTag);

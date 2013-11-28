@@ -79,7 +79,7 @@
                     success: function(responseText, statusText)  {
                         if (statusText === 'success'){                            
                             console.log(JSON.stringify(responseText));
-                            addTagsToDB(pId);
+                            addTagsToDB(pId);                            
                         }
                     },
                     dataType: "json"
@@ -116,7 +116,7 @@
                     );
                     //alert(JSON.stringify(tag1));
                 }            
-                
+                document.location.href = '../photo.xhtml?id=' + pId;    
             };
             
             loadTags = function(pId){
@@ -156,11 +156,10 @@
                 $('.hs-area').hotspotter();
             }
             
-            $(function() {
-		//editPhoto(3);    
-                $('#spotContent').bind('blur', function (e) {
-                    Editor.curSpot.ttContent = $('#spotContent').val();
-                });   
+            $(function() {		  
+                $('#spotContent').bind('keyup click blur focus change paste', function() {
+                    Editor.curSpot.ttContent = $(this).val();
+                });
                 
                 currentPhotoId = getURLParameter('id');
                 $.ajax({
