@@ -37,6 +37,14 @@ public class UserBean implements Serializable {
         return user;
     }
     
+    public String disableCreateButton(String userId){
+        if (userId == "" || userId == null){
+            return "";
+        }
+        Long id = Long.parseLong(userId);
+        return (id == this.userId) ? "": "disabled";        
+    }
+    
     public User findById(String userId) {
         Long id = null;
         try {

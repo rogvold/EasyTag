@@ -3,13 +3,13 @@ package com.easytag.core.managers;
 import com.easytag.core.entity.jpa.Album;
 import com.easytag.core.entity.jpa.EasyTagFile;
 import com.easytag.core.entity.jpa.Photo;
+import com.easytag.core.enums.AlbumStatus;
 import com.easytag.core.enums.PhotoStatus;
 import com.easytag.exceptions.TagException;
 import com.easytag.utils.PreviewUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -43,7 +43,8 @@ public class PhotoManager implements PhotoManagerLocal {
     @Override
     public List<Photo> getPhotosInAlbum(Long albumId) {
         Query q = em.createQuery("select p from Photo p where p.albumId = :albumId"
-                + " order by p.name").setParameter("albumId", albumId);
+                + " and p.status <> :status"
+                + " order by p.name").setParameter("albumId", albumId).setParameter("status", PhotoStatus.DELETED);
         List<Photo> list = q.getResultList();
         if (list == null || list.isEmpty()) {
             return Collections.EMPTY_LIST;

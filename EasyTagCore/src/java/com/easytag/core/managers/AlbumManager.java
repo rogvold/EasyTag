@@ -31,7 +31,9 @@ public class AlbumManager implements AlbumManagerLocal {
 
     @Override
     public List<Album> getUserAlbums(Long userId) {
-        Query q = em.createQuery("select a from Album a where a.creatorId = :userId").setParameter("userId", userId);
+        Query q = em.createQuery("select a from Album a"
+                + " where a.status <> :status"
+                + " and a.creatorId = :userId").setParameter("userId", userId).setParameter("status", AlbumStatus.DELETED);
         List<Album> list = q.getResultList();
         if (list == null || list.isEmpty()) {
             return Collections.EMPTY_LIST;
