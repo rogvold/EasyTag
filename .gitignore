@@ -8,3 +8,4 @@ EasyTagWeb/dist/
 EasyTagCore/dist/
 EasyTagEE/dist/
 EasyTagCore/src/conf/persistence.xml
+EasyTagCore/setup/glassfish-resources.xml

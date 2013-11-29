@@ -28,7 +28,7 @@
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
-                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.findById(photo.albumId).creatorId}">#{userBean.findById(albumBean.findById(photoBean.photo.albumId).creatorId).email}</a></li>
+                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.findById(photo.albumId).creatorId}">user #{userBean.findById(albumBean.findById(photoBean.photo.albumId).creatorId).id}</a></li>
                                 <li><a href="#{request.contextPath}/album.xhtml?id=#{photoBean.photo.albumId}">#{albumBean.findById(photoBean.photo.albumId).name}</a></li>
                                 <li class="active">#{photoBean.photo.name}</li>
                             </ol>
@@ -85,7 +85,7 @@
 
             <ui:define name="main_footer">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12" onclick="alert(#{photoBean.prevId} + ' ' + #{photoBean.nextId})">
                         <p>Copyright © TagsCool 2013</p>
                     </div>
                 </div>
@@ -161,6 +161,16 @@
                                 $(window).resize(function() {
                                     refreshTags();
                                 });
+                                
+                                $(document).bind('keydown', function (e) {
+                                    if (e.keyCode === 39) {  //right arrow                                    
+                                        document.location.href = "#{request.contextPath}/photo.xhtml?id=" + #{photoBean.nextId};                                   
+                                    } 
+                                    if (e.keyCode === 37) {  //left arrow                                    
+                                        document.location.href = "#{request.contextPath}/photo.xhtml?id=" + #{photoBean.prevId};                                   
+                                    } 
+                                });
+                                
                             });
                             //]]>
                 </script>

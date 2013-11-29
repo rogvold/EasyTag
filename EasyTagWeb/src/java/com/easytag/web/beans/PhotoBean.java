@@ -3,6 +3,7 @@ package com.easytag.web.beans;
 import com.easytag.core.entity.jpa.Photo;
 import com.easytag.core.managers.PhotoManagerLocal;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -15,7 +16,10 @@ public class PhotoBean implements Serializable {
     private PhotoManagerLocal photoMan;
     
     private Long photoId;
+    private Long prevId;
+    private Long nextId;
     private Photo photo;
+    private List<Photo> albPh;
     
     
     public Photo getPhoto() {
@@ -39,9 +43,35 @@ public class PhotoBean implements Serializable {
         return photoId == null ? null : photoId.toString();
     }
 
+
     public void setPhotoId(String photoId) {
-        System.out.println("setPhotoId: "+photoId);
+        System.out.println("setPhotoId: " + photoId);
         this.photoId = Long.parseLong(photoId);
         this.photo = photoMan.getPhotoById(this.photoId);
+        this.albPh = photoMan.getPhotosInAlbum(photo.getAlbumId());        
+        int curr = albPh.indexOf(photo);
+        System.out.println("Current phIndex: " + curr);
+        int next = (curr + 1 == albPh.size())? 0: (curr + 1);
+        int prev = (curr == 0)? (albPh.size() - 1): (curr - 1);
+        this.nextId = albPh.get(next).getId(); 
+        this.prevId = albPh.get(prev).getId();
     }
+
+    public Long getPrevId() {
+        return prevId;
+    }
+
+    public void setPrevId(Long prevId) {
+        this.prevId = prevId;
+    }
+
+    public Long getNextId() {
+        return nextId;
+    }
+
+    public void setNextId(Long nextId) {
+        this.nextId = nextId;
+    }
+    
+    
 }

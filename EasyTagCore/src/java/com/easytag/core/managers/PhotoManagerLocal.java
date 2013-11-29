@@ -14,6 +14,7 @@ import javax.ejb.Local;
 public interface PhotoManagerLocal {
     
     public Photo getPhotoById(Long photoId);
+    
     public List<Photo> getPhotosInAlbum(Long albumId);
     
     public Integer getPhotosAmount(Long albumId) throws TagException;
@@ -30,5 +31,5 @@ public interface PhotoManagerLocal {
     //TODO find by tag
     public List<Photo> findPhotosByTagName(String query);
     
-    //TODO deletePhoto
+    //TODO deletePhoto       
 }
