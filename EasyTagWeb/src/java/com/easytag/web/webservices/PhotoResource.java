@@ -56,11 +56,39 @@ public class PhotoResource {
     @GET
     @Path("getPhoto")
     public String getPhotoById(@Context HttpServletRequest req, @QueryParam("photoId") Long photoId){
-        HttpSession session = req.getSession(false);
-        Long currentUserId = SessionUtils.getUserId(session);
-        Photo photo = phMan.getPhotoById(photoId);
-        JsonResponse<Photo> jr = new JsonResponse<Photo>(ResponseConstants.OK, null, photo);
-        return SimpleResponseWrapper.getJsonResponse(jr);
+        try {
+            HttpSession session = req.getSession(false);
+            Long currentUserId = SessionUtils.getUserId(session);
+
+            if (currentUserId == null) {
+                throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            
+            Photo photo = phMan.getPhotoById(photoId);
+            JsonResponse<Photo> jr = new JsonResponse<Photo>(ResponseConstants.OK, null, photo);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException e) {
+            return TagExceptionWrapper.wrapException(e);
+        }
+    }
+    
+    @GET
+    @Path("deletePhoto")
+    public String deletePhotoById(@Context HttpServletRequest req, @QueryParam("photoId") Long photoId){
+        try {
+            HttpSession session = req.getSession(false);
+            Long currentUserId = SessionUtils.getUserId(session);
+            
+            if (currentUserId == null) {
+                throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            
+            phMan.deletePhoto(photoId);
+            JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException e) {
+            return TagExceptionWrapper.wrapException(e);
+        }
     }
     
     @GET
