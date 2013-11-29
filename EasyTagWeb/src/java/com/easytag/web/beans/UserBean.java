@@ -41,9 +41,10 @@ public class UserBean implements Serializable {
         Long id = null;
         try {
             id = Long.parseLong(userId);
+            System.out.println("userid: " + id);
         } catch (Exception ex) {
         }
-        if (id == null || id == this.userId) {
+        if (id == null) { // || id == this.userId
             return user;
         }
         return userMan.getUserById(id);

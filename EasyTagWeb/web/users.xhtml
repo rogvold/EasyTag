@@ -11,7 +11,7 @@
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
-            <ui:param name="windowTitle" value="Albums - TagsCool"/>
+            <ui:param name="windowTitle" value="Users - TagsCool"/>
             <ui:param name="user" value="#{userBean.user}"/>
             <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
 
@@ -95,8 +95,10 @@
 
                     function createItem(user) {
                         var item = $('<div class="col-md-4 portfolio-item" />');
-                        item.attr("id", "user-" + user.id);                      
-                        item.append('<h3><p> user ' + user.id + '</p></h3>');                        
+                        item.attr("id", "user-" + user.id); 
+                        item.append('<a href="userAlbums.xhtml?id=' + user.id + '"><img class="img-responsive" src="#{request.contextPath}/img/user.jpg"/></a>');
+                        item.append('<h3><a href="album.xhtml?id=' + user.id + '"> user ' + user.id + '</a></h3>');
+                        //item.append('<p>' + user.description + '</p>');                        
                         return item;
                     }
                     

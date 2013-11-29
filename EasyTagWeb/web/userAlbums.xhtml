@@ -24,13 +24,13 @@
                     <div class="col-lg-12">
                         <h1 class="page-header">Альбомы пользователя
                             <b>
-                                #{userBean.findById(params['id']).email}
+                                user #{userBean.findById(param['id']).id}
                             </b>
                         </h1>
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
-                                <li class="active">user #{userBean.findById(params['id']).id}</li>
+                                <li class="active">user #{userBean.findById(param['id']).id}</li>
                             </ol>
                         </div>
                         <div class="col-lg-2" style="margin-bottom: 20px;">
