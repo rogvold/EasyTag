@@ -3,18 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <f:metadata>
-        <f:viewParam id="PHOTO_ID" name="id" value="#{photoBean.photoId}" required="true" requiredMessage="Photo ID must be specified." />
-        <f:event type="preRenderView" listener="#{userBean.redirectIfNotAuthorized}"/>
+        <f:viewAction action="#{userBean.redirectIfNotAuthorized}" />
+        <f:viewParam name="id" required="true" value="#{photoBean.photoId}" requiredMessage="PHOTO_ID is required"/>
+        <f:viewAction action="#{albumBean.setAlbumId(photoBean.photo.albumId)}" if="#{!empty param['id']}"/>
+        <f:viewAction action="#{userBean.setUserId(albumBean.album.creatorId)}" if="#{!empty param['id']}"/>
     </f:metadata>
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
             <ui:param name="windowTitle" value="Photo - TagsCool"/>
-            <ui:param name="user" value="#{userBean.user}"/>
-            <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
+            <ui:param name="user" value="#{currentUserBean.user}"/>
+            <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
 
             <ui:define name="slider">
 
@@ -28,13 +30,13 @@
                             <div class="col-lg-10" style="padding-left: 0px;">
                                 <ol class="breadcrumb">
                                     <li><a href="users.xhtml">All users</a></li>
-                                    <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.findById(photo.albumId).creatorId}">user #{userBean.findById(albumBean.findById(photoBean.photo.albumId).creatorId).id}</a></li>
-                                    <li><a href="#{request.contextPath}/album.xhtml?id=#{photoBean.photo.albumId}">#{albumBean.findById(photoBean.photo.albumId).name}</a></li>
+                                    <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{userBean.userId}">user #{userBean.userId}</a></li>
+                                    <li><a href="#{request.contextPath}/album.xhtml?id=#{albumBean.albumId}">#{albumBean.album.name}</a></li>
                                     <li class="active">#{photoBean.photo.name}</li>
                                 </ol>
                             </div>
                             <div class="col-lg-2">
-                                <a href="#{request.contextPath}/tagEditor/Editor.html?id=#{param['id']}" class="btn btn-primary">Редактировать</a>
+                                <a href="#{request.contextPath}/tagEditor/Editor.html?id=#{photoBean.photoId}" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}">Редактировать</a>
                             </div>
                         </div>
 
@@ -169,7 +171,7 @@
                         function refreshTags() {
                             $('.hs-area .hs-wrap').remove();
                             $('#tagList li').remove();
-                            appendTags('#{param['id']}');
+                            appendTags('#{photoBean.photoId}');
                         }
 
                         function toggleTags() {

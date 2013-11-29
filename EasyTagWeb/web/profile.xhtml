@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"   
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
     <f:metadata>
-        <f:event type="preRenderView" listener="#{userBean.redirectIfNotAuthorized}" />
+        <f:viewAction action="#{userBean.redirectIfNotAuthorized}"/>
+        <f:viewParam name="id" value="#{userBean.userId}"/>
+        <f:viewAction action="#{userBean.setUserId(null)}" if="#{empty param['id']}"/>
     </f:metadata>
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
             <ui:param name="windowTitle" value="Profile - TagsCool"/>
-            <ui:param name="user" value="#{userBean.user}"/>
-            <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
+            <ui:param name="user" value="#{currentUserBean.user}"/>
+            <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
 
             <ui:define name="slider">
             </ui:define>
@@ -23,24 +25,32 @@
 
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Профиль пользователя #{userBean.findById(param['id']).email}
+                            Профиль пользователя #{userBean.user.email}
                         </h1>
-                        <c:if test="#{userBean.isCurrent(param['id'])}">
+                        <c:if test="#{userBean.current}">
                             <div class="col-lg-10" style="padding-left: 0px;">
                                 <ol class="breadcrumb">
                                     <li><a href="users.xhtml">All users</a></li>
-                                    <li class="active">#{userBean.findById(param['id']).email}</li>
+                                    <li>
+                                        <h:link value="#{userBean.user.email}" outcome="/userAlbums"/>
+                                    </li>
+                                    <li class="active">My Profile</li>
                                 </ol>
                             </div>
                             <div class="col-lg-2" style="margin-bottom: 20px;">                            
                                 <a id="btnEditProfile" href="#editProfile" class="btn btn-primary" onclick="editProfile(); return false;" title="Редактировать"><span class="glyphicon glyphicon-edit"></span> Редактировать</a>
                             </div>
                         </c:if>
-                        <c:if test="#{!userBean.isCurrent(param['id'])}">
+                        <c:if test="#{!userBean.current}">
                             <div class="col-lg-12" style="padding-left: 0px;">
                                 <ol class="breadcrumb">
                                     <li><a href="users.xhtml">All users</a></li>
-                                    <li><a href="userAlbums.xhtml?id=#{param['id']}">#{userBean.findById(param['id']).email}</a></li>
+                                    <li>
+                                        <h:link value="#{userBean.user.email}" outcome="/userAlbums">
+                                            <f:param name="id" value="#{userBean.userId}"/>
+                                        </h:link>
+                                    </li>
+                                    <li class="active">Profile</li>
                                 </ol>
                             </div>
                         </c:if>
@@ -51,7 +61,7 @@
                     <div id="profileView">
                         Profile View
                     </div>
-                    <c:if test="#{userBean.isCurrent(param['id'])}">
+                    <c:if test="#{userBean.current}">
                         <div id="profileEdit" style="display: none;">
                             Profile Edit<br/>
                             
@@ -76,7 +86,7 @@
             </ui:define>         
 
             <ui:define name="scripts">
-                <c:if test="#{userBean.isCurrent(param['id'])}">
+                <c:if test="#{userBean.current}">
                 <script>
                     //<![CDATA[
                     function editProfile() {

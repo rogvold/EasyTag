@@ -8,8 +8,8 @@
         <ui:composition template="templates/main.xhtml">
 
             <ui:param name="windowTitle" value="TagsCool"/>
-            <ui:param name="user" value="#{userBean.user}"/>
-            <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
+            <ui:param name="user" value="#{currentUserBean.user}"/>
+            <ui:param name="loggedIn" value="${currentUserBean.userId ne null}"/>
 
             <ui:define name="slider">
                 <div id="myCarousel" class="carousel slide">

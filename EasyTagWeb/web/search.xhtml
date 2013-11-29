@@ -3,19 +3,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <f:metadata>
-        <f:viewParam name="id" value="#{albumBean.albumId}"/>
-        <f:event type="preRenderView" listener="#{userBean.redirectIfNotAuthorized}" />
+        <f:viewAction action="#{userBean.redirectIfNotAuthorized}" />
+        <f:viewAction action="#{userBean.setUserId(null)}"/>
     </f:metadata>
     
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
             <ui:param name="windowTitle" value="Search - TagsCool"/>
-            <ui:param name="user" value="#{userBean.user}"/>
-            <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
+            <ui:param name="user" value="#{currentUserBean.user}"/>
+            <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
 
             <ui:define name="slider">
             </ui:define>
@@ -31,7 +31,7 @@
                         </div>
                         <ol class="breadcrumb">
                             <li><a href="users.xhtml">All users</a></li>
-                            <li class="active">Search</li>
+                            <li class="active">Search tags</li>
                         </ol>
                     </div>
 

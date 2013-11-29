@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"   
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <f:metadata>
-        <f:event type="preRenderView" listener="#{userBean.redirectIfNotAuthorized}" />
-    </f:metadata>>
+        <f:viewAction action="#{userBean.redirectIfNotAuthorized}" />
+        <f:viewParam name="id" value="#{userBean.userId}"/>
+        <f:viewAction action="#{userBean.setUserId(null)}" if="#{empty param['id']}"/>
+    </f:metadata>
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
             <ui:param name="windowTitle" value="Albums - TagsCool"/>
-            <ui:param name="user" value="#{userBean.user}"/>
-            <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
+            <ui:param name="user" value="#{currentUserBean.user}"/>
+            <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
 
             <ui:define name="slider">
             </ui:define>
@@ -23,18 +25,18 @@
 
                     <div class="col-lg-12">
                         <h1 class="page-header">Альбомы пользователя
-                            <b>
-                                user #{userBean.findById(param['id']).id}
-                            </b>
+                            <small>
+                                user #{userBean.user.id}
+                            </small>
                         </h1>
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
-                                <li class="active">user #{userBean.findById(param['id']).id}</li>
+                                <li class="active">user #{userBean.user.id}</li>
                             </ol>
                         </div>
                         <div class="col-lg-2" style="margin-bottom: 20px;">
-                            <a href="#createAlbumModal" class="btn btn-primary" data-toggle="modal" title="Создать альбом">
+                            <a href="#createAlbumModal" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}" data-toggle="modal" title="Создать альбом">
                                 <span class="glyphicon glyphicon-plus"></span> Создать
                             </a>
                             <a href="#" class="btn btn-primary" onclick=" refreshAlbums(); return false;" title="Обновить"><span class="glyphicon glyphicon-refresh"></span></a>
@@ -75,10 +77,6 @@
                                     </form>
                                 </div>
                             </div>
-                            <!--                            <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                                        </div>-->
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->
@@ -87,7 +85,7 @@
             <ui:define name="scripts">
                 <script>
                     
-                    $(function () {
+                    $(function () {                        
                         requestAlbums();
                     }); 
                     
@@ -162,17 +160,17 @@
                     }
                 </script>
 
-                <c:if test="#{param['id'] eq null}">
+                <c:if test="#{userBean.userId eq null}">
                     <script>
                         function requestAlbums() {
                             requestAlbumList('#{request.contextPath}/resources/album/myAlbums');
                         }
                     </script>
                 </c:if>
-                <c:if test="#{param['id'] ne null}">
+                <c:if test="#{userBean.userId ne null}">
                     <script>
                         function requestAlbums() {
-                            requestAlbumList('#{request.contextPath}/resources/album/getUserAlbums?userId=#{param['id']}');
+                            requestAlbumList('#{request.contextPath}/resources/album/getUserAlbums?userId=#{userBean.userId}');
                         }
                     </script>
                 </c:if>

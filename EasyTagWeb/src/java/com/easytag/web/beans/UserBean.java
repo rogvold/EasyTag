@@ -7,42 +7,72 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 
-/**
- *
- * @author Shaykhlislamov Sabir (email: sha-sabir@yandex.ru)
- */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class UserBean implements Serializable {
-
-    @EJB
-    UserManagerLocal userMan;
-    
     private Long userId;
     private User user;
+    
+    @ManagedProperty("#{currentUserBean}")
+    private CurrentUserBean currentUserBean;
+    
+    @EJB
+    private UserManagerLocal userMan;
 
     @PostConstruct
     private void init() {
-        this.userId = new JSFHelper().getCurrentUserId();
-        this.user = userMan.getUserById(userId);
+        //setUserId(new JSFHelper().getRequest().getParameter("id"));
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getCurrentUser() {
+        return currentUserBean.getUser();
     }
     
+    public Long getCurrentUserId() {
+        return currentUserBean.getUserId();
+    }
+    
+    public String getUserId() {
+        return userId==null ? null : userId.toString();
+    }
+
     public User getUser() {
         return user;
     }
+
+    public void setUserId(String userId) {
+        System.out.println("setUserId = " + userId);
+        if (userId == null || userId.isEmpty()) {
+            this.userId = currentUserBean.getUserId();
+            user = currentUserBean.getUser();
+            System.out.println("... resolved to " + this.userId);
+            return;
+        }
+        try {
+            this.userId = Long.parseLong(userId);
+            user = userMan.getUserById(this.userId);
+        } catch (Exception ex) {
+            this.userId = null;
+        }
+    }
     
-    public boolean isCurrent(String id) {
-        if (userId == null)
+    public boolean isCurrent() {
+        if (currentUserBean.getUserId() == null)
             return false;
-        if (id == null || id.equals(""))
+        if (this.userId == null)
             return true;
-        return userId.toString().equals(id);
+        return currentUserBean.getUserId().toString().equals(this.userId.toString());
+    }
+
+    public void setCurrentUserBean(CurrentUserBean currentUserBean) {
+        this.currentUserBean = currentUserBean;
+    }
+    
+    public String getDisabledClass(boolean disable){
+        return disable ? "": "disabled";        
     }
     
     public User findById(String userId) {
@@ -58,11 +88,13 @@ public class UserBean implements Serializable {
         return userMan.getUserById(id);
     }
     
-    public void redirectIfNotAuthorized() {
+    public String redirectIfNotAuthorized() {
         System.out.println("UserBean.redirectIfNotAuthorized()");
         JSFHelper helper = new JSFHelper();
         if (helper.getCurrentUserId() == null) {
-            helper.redirect("/index?faces-redirect=true");
-        };
+            //helper.redirect("/index?faces-redirect=true");
+            return "/index?faces-redirect=true";
+        }
+        return null;
     }
 }
