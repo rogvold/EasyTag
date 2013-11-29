@@ -37,6 +37,14 @@ public class UserBean implements Serializable {
         return user;
     }
     
+    public boolean isCurrent(String id) {
+        if (userId == null)
+            return false;
+        if (id == null || id.equals(""))
+            return true;
+        return userId.toString().equals(id);
+    }
+    
     public User findById(String userId) {
         Long id = null;
         try {

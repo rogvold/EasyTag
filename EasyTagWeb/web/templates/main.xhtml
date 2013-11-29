@@ -68,19 +68,24 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#{request.contextPath}/search.xhtml">Search</a></li>
+                        <li>&nbsp;&nbsp;</li>
                         <c:if test="#{!loggedIn}">
                             <li><a data-toggle="modal" href="#myModal" class=""  >Log in</a></li>
                         </c:if>
                         <c:if test="#{loggedIn}">
                             <li><a href="javascript:void(0);"><b>Welcome, #{user.email}</b></a></li>
-                            <li class="dropdown">
+                            <li><a href="#{request.contextPath}/profile.xhtml" id="myAlbumsButton" >My profile</a></li>
+                            <li><a href="#{request.contextPath}/userAlbums.xhtml" id="myAlbumsButton" >My albums</a></li>
+                            <li><a href="javascript:void();" id="logoutButton" >Log out</a></li> 
+<!--                            <li class="dropdown">
                                 <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Navigation <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
+                                    <li><a href="#{request.contextPath}/profile.xhtml" id="myAlbumsButton" >My profile</a></li>
                                     <li><a href="#{request.contextPath}/userAlbums.xhtml" id="myAlbumsButton" >My albums</a></li>
                                     <li><a href="javascript:void();" id="logoutButton" >Log out</a></li> 
                                 </ul>
-                            </li>
-                            <li><a href="#{request.contextPath}/search.xhtml">Search</a></li>
+                            </li>-->
                         </c:if>
                     </ul>
                 </div><!-- /.navbar-collapse -->

@@ -6,7 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <f:metadata>
-        <f:viewAction action="#{userBean.redirectIfNotAuthorized}"/>
+        <f:event type="preRenderView" listener="#{userBean.redirectIfNotAuthorized}" />
     </f:metadata>
     <h:body>
         <ui:composition template="templates/main.xhtml">

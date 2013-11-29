@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{userBean.redirectIfNotAuthorized}" />
+    </f:metadata>
+    <h:body>
+        <ui:composition template="templates/main.xhtml">
+
+            <ui:param name="windowTitle" value="Profile - TagsCool"/>
+            <ui:param name="user" value="#{userBean.user}"/>
+            <ui:param name="loggedIn" value="#{userBean.userId ne null}"/>
+
+            <ui:define name="slider">
+            </ui:define>
+
+            <ui:define name="main_content">
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Профиль пользователя #{userBean.findById(param['id']).email}
+                        </h1>
+                        <c:if test="#{userBean.isCurrent(param['id'])}">
+                            <div class="col-lg-10" style="padding-left: 0px;">
+                                <ol class="breadcrumb">
+                                    <li><a href="users.xhtml">All users</a></li>
+                                    <li class="active">#{userBean.findById(param['id']).email}</li>
+                                </ol>
+                            </div>
+                            <div class="col-lg-2" style="margin-bottom: 20px;">                            
+                                <a id="btnEditProfile" href="#editProfile" class="btn btn-primary" onclick="editProfile(); return false;" title="Редактировать"><span class="glyphicon glyphicon-edit"></span> Редактировать</a>
+                            </div>
+                        </c:if>
+                        <c:if test="#{!userBean.isCurrent(param['id'])}">
+                            <div class="col-lg-12" style="padding-left: 0px;">
+                                <ol class="breadcrumb">
+                                    <li><a href="users.xhtml">All users</a></li>
+                                    <li><a href="userAlbums.xhtml?id=#{param['id']}">#{userBean.findById(param['id']).email}</a></li>
+                                </ol>
+                            </div>
+                        </c:if>
+                    </div>
+
+                </div><!-- /.row -->
+                <div class="row">
+                    <div id="profileView">
+                        Profile View
+                    </div>
+                    <c:if test="#{userBean.isCurrent(param['id'])}">
+                        <div id="profileEdit" style="display: none;">
+                            Profile Edit<br/>
+                            
+                            <a id="btnSaveProfile" href="#viewProfile" class="btn btn-success" onclick="saveProfile(); return false;" title="Сохранить"><span class="glyphicon glyphicon-ok"></span> Сохранить</a>
+                            <a id="btnCancel" href="#cancelProfile" class="btn btn-icon" onclick="cancelEdit(); return false;" title="Отмена"><span class="glyphicon glyphicon-remove"></span> Отмена</a>
+                        </div>
+                    </c:if>
+                </div>
+
+            </ui:define>
+
+            <ui:define name="main_footer">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Copyright © TagsCool 2013</p>
+                    </div>
+                </div>
+            </ui:define>
+            
+            <ui:define name="dialogs">
+
+            </ui:define>         
+
+            <ui:define name="scripts">
+                <c:if test="#{userBean.isCurrent(param['id'])}">
+                <script>
+                    //<![CDATA[
+                    function editProfile() {
+                        $('#profileView').hide();
+                        $('#profileEdit').show();
+                        $('#btnEditProfile').addClass('disabled');
+                    }
+                    
+                    function clearForm() {
+                        
+                    }
+                    
+                    function cancelEdit() {
+                        clearForm();
+                        $('#profileView').show();
+                        $('#profileEdit').hide();
+                        $('#btnEditProfile').removeClass('disabled');
+                    }
+                    
+                    function saveProfile() {
+                        
+                        cancelEdit();
+                    }
+                    //]]>
+                </script>
+                </c:if>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+
+</html>
