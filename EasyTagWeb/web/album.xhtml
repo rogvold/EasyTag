@@ -5,12 +5,12 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    
+
     <f:metadata>
         <f:viewParam id="ALBUM_ID" name="id" value="#{albumBean.albumId}" required="true" requiredMessage="Album ID must be specified."/>
         <f:event type="preRenderView" listener="#{userBean.redirectIfNotAuthorized}" />
     </f:metadata>
-        
+
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
@@ -37,7 +37,8 @@
                         </div>
                         <div class="col-lg-2" style="margin-bottom: 20px;">
                             <a href="#addFileModal" class="btn btn-primary" data-toggle="modal" title="Добавить фото..."><span class="glyphicon glyphicon-plus"></span> Добавить</a>
-                            <a href="#" class="btn btn-primary" onclick=" resetPhotosList(); return false;" title="Обновить"><span class="glyphicon glyphicon-refresh"></span></a>
+                            <a href="#" class="btn btn-primary" onclick=" resetPhotosList();
+                                    return false;" title="Обновить"><span class="glyphicon glyphicon-refresh"></span></a>
                         </div>
                     </div>
 
@@ -87,107 +88,109 @@
                 <script src="#{request.contextPath}/js/jquery.ui.widget.js"></script>
                 <script src="#{request.contextPath}/js/jquery.fileupload.js"></script>
                 <script>
-                    //<![CDATA[
-                    /*jslint unparam: true */
-                    /*global window, $ */
-                    $(function() {
-                        'use strict';
-                        // Change this to the location of your server-side upload handler:
-                        var url = '#{request.contextPath}/resources/file/upload';
-                        $('#fileupload').fileupload({
-                            url: url,
-                            dataType: 'json',
-                            done: function(e, data) {
-                                console.log(data);
-                            },
-                            progressall: function(e, data) {
-                                var progress = parseInt(data.loaded / data.total * 100, 10);
-                                $('#progress').show();
-                                $('#progress .progress-bar').css(
-                                        'width',
-                                        progress + '%'
-                                        );
-                                console.log("progress="+progress);
-                                if (progress >= 100) {
-                                    onUploadFinished();
-                                }
-                            }
-                        }).prop('disabled', !$.support.fileInput)
-                                .parent().addClass($.support.fileInput ? undefined : 'disabled');
-                    });
-                    
-                    function onUploadFinished() {
-                        $('#progress').hide();
-                        $('#progress .progress-bar').css('width', '0%');
-                        $('#addFileModal').modal('hide');
-                        resetPhotosList();
-                    } 
-                    
-                    function requestPhotosList(url, callback) {
-                        $.get(url)
-                                .done(function(data) {
-                                    console.log(data);
-                                    if (data.responseCode === 1) {
-                                        var photos = [];
-                                        photos = data.data;
-                                        callback(photos);
-                                    }
-                                })
-                                .fail(function() {
-                                    alert("error");
+                                //<![CDATA[
+                                /*jslint unparam: true */
+                                /*global window, $ */
+                                $(function() {
+                                    'use strict';
+                                    // Change this to the location of your server-side upload handler:
+                                    var url = '#{request.contextPath}/resources/file/upload';
+                                    $('#fileupload').fileupload({
+                                        url: url,
+                                        dataType: 'json',
+                                        done: function(e, data) {
+                                            console.log(data);
+                                        },
+                                        progressall: function(e, data) {
+                                            var progress = parseInt(data.loaded / data.total * 100, 10);
+                                            $('#progress').show();
+                                            $('#progress .progress-bar').css(
+                                                    'width',
+                                                    progress + '%'
+                                                    );
+                                            console.log("progress=" + progress);
+                                            if (progress >= 100) {
+                                                onUploadFinished();
+                                            }
+                                        }
+                                    }).prop('disabled', !$.support.fileInput)
+                                            .parent().addClass($.support.fileInput ? undefined : 'disabled');
                                 });
-                    }
 
-                    function resetPhotosList() {
-                        clearPhotosList();
-                        row = $('<div class="row photos"/>');
-                        row.append('<p style="padding-left:30px;">Loading list of photos...</p>');
-                        row.appendTo('#main-content');
-                        requestPhotosList(
-                                '#{request.contextPath}/resources/Photo/getPhotos?albumId=#{param['id']}',
-                                                function(photos) {
-                                                    clearPhotosList();
-                                                    addAllPhotos(photos);
+                                function onUploadFinished() {
+                                    $('#progress').hide();
+                                    $('#progress .progress-bar').css('width', '0%');
+                                    $('#addFileModal').modal('hide');
+                                    resetPhotosList();
+                                }
+
+                                function requestPhotosList(url, callback) {
+                                    $.get(url)
+                                            .done(function(data) {
+                                                console.log(data);
+                                                if (data.responseCode === 1) {
+                                                    var photos = [];
+                                                    photos = data.data;
+                                                    callback(photos);
                                                 }
-                                        );
-                      }
+                                            })
+                                            .fail(function() {
+                                                alert("error");
+                                            });
+                                }
 
-                    function addAllPhotos(photos) {
-                        var n = 1;
-                        var row = null;
-                        var container = $('#main-content');
-                        for (var i in photos) {
-                            console.log(photos[i]);
-                            if (row === null) {
-                                row = $('<div class="row photos" />');
-                            }
-                            row.append(createItem(photos[i]));
-                            if ((n++) % 4 === 0) {
-                                console.log("break");
-                                container.append(row);
-                                row = null;
-                            }
-                        }
-                        if (n === 1) {
-                            row = $('<div class="row photos"/>');
-                            row.append('<p style="padding-left:30px;">No photos to show.</p>');
-                        }
-                        if (row !== null) {
-                            container.append(row);
-                        }
-                    }
+                                function resetPhotosList() {
+                                    clearPhotosList();
+                                    row = $('<div class="row photos"/>');
+                                    row.append('<p style="padding-left:30px;">Loading list of photos...</p>');
+                                    row.appendTo('#main-content');
+                                    requestPhotosList(
+                                            '#{request.contextPath}/resources/Photo/getPhotos?albumId=#{param['id']}',
+                                                            function(photos) {
+                                                                clearPhotosList();
+                                                                addAllPhotos(photos);
+                                                            }
+                                                    );
+                                }
 
-                    function clearPhotosList() {
-                        $("#main-content .row.photos").remove();
-                    }
+                                function addAllPhotos(photos) {
+                                    var n = 1;
+                                    var row = null;
+                                    var container = $('#main-content');
+                                    for (var i in photos) {
+                                        console.log(photos[i]);
+                                        if (row === null) {
+                                            row = $('<div class="row photos" />');
+                                        }
+                                        row.append(createItem(photos[i]));
+                                        if ((n++) % 4 === 0) {
+                                            console.log("break");
+                                            container.append(row);
+                                            row = null;
+                                        }
+                                    }
+                                    if (n === 1) {
+                                        row = $('<div class="row photos"/>');
+                                        row.append('<p style="padding-left:30px;">No photos to show.</p>');
+                                    }
+                                    if (row !== null) {
+                                        container.append(row);
+                                    }
+                                }
 
-                    function createItem(photo) {
-                        var item = $('<div class="col-md-3 portfolio-item" />');
-                        item.attr("id", "photo-" + photo.id);
-                        item.append('<a href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
-                        return item;
-                    }
-                    //]]>
+                                function clearPhotosList() {
+                                    $("#main-content .row.photos").remove();
+                                }
+
+                                function createItem(photo) {
+                                    var item = $('<div class="col-md-3 portfolio-item imageSub" />');
+                                    item.attr("id", "photo-" + photo.id);
+                                    item.append('<a href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
+                                    item.append('<div class="blackbg"></div>');
+                                    item.append('<div class="label">' + photo.name + '</div>');
+                                    return item;
+                                }
+                                //]]>
                 </script>
                 <script>
                     $(function() {

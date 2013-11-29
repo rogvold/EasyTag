@@ -6,8 +6,8 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <f:metadata>
-        <f:viewAction action="#{userBean.redirectIfNotAuthorized}"/>
         <f:viewParam name="id" value="#{albumBean.albumId}"/>
+        <f:event type="preRenderView" listener="#{userBean.redirectIfNotAuthorized}" />
     </f:metadata>
     
     <h:body>
@@ -90,9 +90,11 @@
                     }
 
                     function createItem(photo) {
-                        var item = $('<div class="col-md-3 portfolio-item" />');
+                        var item = $('<div class="col-md-3 portfolio-item imageSub" />');
                         item.attr("id", "photo-" + photo.id);
-                        item.append('<a href="#{request.contextPath}/photo.xhtml?id='+photo.id+'"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id='+photo.previewId+'"/></a>');
+                        item.append('<a href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
+                        item.append('<div class="blackbg"></div>');
+                        item.append('<div class="label">' + photo.name + '</div>');
                         return item;
                     }
                 </script>

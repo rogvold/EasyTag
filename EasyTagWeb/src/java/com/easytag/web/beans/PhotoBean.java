@@ -89,4 +89,8 @@ public class PhotoBean implements Serializable {
     public Long getPhId(int ind) {
         return row.get(ind).getId();
     }   
+    
+    public Photo getRelatedPhoto(int ind) {
+        return row.get(ind);
+    }
 }
