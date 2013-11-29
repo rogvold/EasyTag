@@ -1,11 +1,14 @@
 package com.easytag.core.managers;
 
 import com.easytag.core.entity.jpa.Album;
+import com.easytag.core.entity.jpa.Photo;
 import com.easytag.core.enums.AlbumStatus;
 import com.easytag.core.enums.AlbumType;
+import com.easytag.core.enums.PhotoStatus;
 import com.easytag.exceptions.TagException;
 import java.util.Collections;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +23,9 @@ public class AlbumManager implements AlbumManagerLocal {
 
     @PersistenceContext(unitName = "EasyTagCorePU")
     EntityManager em;
+    
+    @EJB
+    PhotoManagerLocal pMan;
 
     @Override
     public Album getAlbumById(Long albumId) {
@@ -77,5 +83,22 @@ public class AlbumManager implements AlbumManagerLocal {
             throw new TagException("updateAlbum: id is not specified");
         }
         return em.merge(album);
+    }
+
+    @Override
+    public void removeAlbum(Long id) throws TagException {
+        Album a = getAlbumById(id);
+        if (a == null){
+            throw new TagException("Album is not specified");
+        }
+        
+        List<Photo> photos = pMan.getPhotosInAlbum(id);
+        for(Photo p:photos){
+            p.setStatus(PhotoStatus.DELETED);  
+            em.merge(p);
+        }
+        a.setStatus(AlbumStatus.DELETED);
+        
+        em.merge(a);
     }
 }

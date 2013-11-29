@@ -164,11 +164,14 @@ public class PhotoManager implements PhotoManagerLocal {
         List<Photo> currTag, currName;
         Query q = em.createQuery("select distinct p from "
                     + "Photo p, EasyTag e where LOWER(e.name) like LOWER(:query) "
-                    + "and p.id = e.photoId").setParameter("query", "%" + words[0] + "%");            
+                    + "and p.status <> :status "
+                    + "and p.id = e.photoId")
+                    .setParameter("query", "%" + words[0] + "%").setParameter("status", PhotoStatus.DELETED);            
         List<Photo> list = q.getResultList();
         q = em.createQuery("select p from "
-                    + "Photo p where LOWER(p.name) "
-                    + "like LOWER(:query) ").setParameter("query", "%" + words[0] + "%");
+                    + "Photo p where LOWER(p.name) "                
+                    + "like LOWER(:query) and p.status <> :status")
+                    .setParameter("query", "%" + words[0] + "%").setParameter("status", PhotoStatus.DELETED);
         currName = q.getResultList();
         list.addAll(currName);        
         
@@ -176,11 +179,14 @@ public class PhotoManager implements PhotoManagerLocal {
         for(int i = 1; i < words.length; i++){        
             q = em.createQuery("select distinct p from "
                     + "Photo p, EasyTag e where LOWER(e.name) like LOWER(:query) "
-                    + "and p.id = e.photoId").setParameter("query", "%" + words[i] + "%");
+                    + "and p.status <> :status "
+                    + "and p.id = e.photoId")
+                    .setParameter("query", "%" + words[i] + "%").setParameter("status", PhotoStatus.DELETED);
             currTag = q.getResultList();
             q = em.createQuery("select p from "
                     + "Photo p where LOWER(p.name) "
-                    + "like LOWER(:query) ").setParameter("query", "%" + words[i] + "%");
+                    + "like LOWER(:query) and p.status <> :status")
+                    .setParameter("query", "%" + words[i] + "%").setParameter("status", PhotoStatus.DELETED);
             currName = q.getResultList();
             currTag.addAll(currName);
             list.retainAll(currTag);
@@ -191,5 +197,15 @@ public class PhotoManager implements PhotoManagerLocal {
             return Collections.EMPTY_LIST;
         }
         return list;
+    }
+
+    @Override
+    public void deletePhoto(Long photoId) throws TagException {
+        Photo p = getPhotoById(photoId);
+        if (p == null){
+            throw new TagException("Photo is not specified");
+        }
+        p.setStatus(PhotoStatus.DELETED);
+        em.merge(p);
     }
 }

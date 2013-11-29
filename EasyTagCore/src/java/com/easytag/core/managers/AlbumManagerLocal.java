@@ -19,5 +19,5 @@ public interface AlbumManagerLocal {
     public Album updateAlbum(Album album) throws TagException;
     
     //TODO remove Album
-    
+    public void removeAlbum(Long id) throws TagException;
 }

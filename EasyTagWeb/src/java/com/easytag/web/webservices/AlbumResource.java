@@ -58,6 +58,25 @@ public class AlbumResource {
             return TagExceptionWrapper.wrapException(e);
         }
     }
+    
+    @GET
+    @Path("removeAlbum")
+    public String removeAlbumById(@Context HttpServletRequest req, @QueryParam("albumId") Long albumId){
+        try {
+            HttpSession session = req.getSession(false);
+            Long currentUserId = SessionUtils.getUserId(session);
+            
+            if (currentUserId == null) {
+                throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            
+            alMan.removeAlbum(albumId);
+            JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException e) {
+            return TagExceptionWrapper.wrapException(e);
+        }
+    }
 
     @POST
     @Path("create")

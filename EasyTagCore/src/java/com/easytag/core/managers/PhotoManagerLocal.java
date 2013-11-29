@@ -30,6 +30,7 @@ public interface PhotoManagerLocal {
     
     //TODO find by tag
     public List<Photo> findPhotosByTagName(String query);
-    
+        
     //TODO deletePhoto       
+    public void deletePhoto(Long photoId) throws TagException;
 }
