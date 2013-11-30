@@ -157,6 +157,24 @@
                         });
                     }
 
+                    function deletePhoto(id) {
+                        $.ajax({
+                            type: "GET",
+                            url: "#{request.contextPath}/resources/Photo/deletePhoto?photoId=" + id,                   
+                            success: function(responseText, statusText)  {
+                                if (statusText === 'success'){      
+                                    console.log(responseText.data);
+                                    resetPhotosList();
+                                }
+                            },
+                            dataType: "json"
+                        });
+                    }
+
+                    function editPhoto(id) {
+                        document.location.href = '#{request.contextPath}/tagEditor/Editor.html?id=' + id;
+                    }
+
                     function addAllPhotos(photos) {
                         var n = 1;
                         var row = null;
@@ -186,31 +204,35 @@
                         $("#main-content .row.photos").remove();
                     }
 
-                    function createItem(photo) {
-                        var item = $('<div class="col-md-3 portfolio-item imageSub" />');
-                        item.attr("id", "photo-" + photo.id);
-                        item.append('<a href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
-                        item.append('<div class="blackbg"></div>');
-                        item.append('<div class="label">' + photo.name + '</div>');
-
-                        var isCurrent = #{userBean.current};
-                        if (isCurrent) {
-                            item.append('<div class="label deleteButton" style="top: 0">\n\
-                    <a href="#" class="btn btn-danger label" \n\
-                        onclick=" deletePhoto(' + photo.id + '); \n\
-                        return false;" title="Удалить">\n\
-                        <span class="glyphicon glyphicon-remove">\n\
-                        </span>\n\
-                    </a> \n\
-                 </div>  ');
-                        }
-                        return item;
-                    }
-                                                        
-                  $(function() {
-                        resetPhotosList();
-                  });
-                                                        //]]>
+                                function createItem(photo) {
+                                    var item = $('<div class="col-md-3 portfolio-item imageSub" />');
+                                    item.attr("id", "photo-" + photo.id);
+                                    item.append('<a href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
+                                    item.append('<div class="blackbg"></div>');
+                                    item.append('<div class="label">' + photo.name + '</div>');
+                                    
+                                    var isCurrent = #{userBean.current};
+                                    if (isCurrent){
+                                        item.append('<div class="label deleteButton" style="top: 0">\n\
+                                                        <a href="#" class="btn btn-danger label" \n\
+                                                            onclick=" deletePhoto(' + photo.id + '); \n\
+                                                            return false;" title="Удалить">\n\
+                                                            <span class="glyphicon glyphicon-remove">\n\
+                                                            </span>\n\
+                                                        </a> \n\
+                                                     </div>  ');
+                                        item.append('<div class="label deleteButton" style="top: 0; right: 25px">\n\
+                                                        <a href="#" class="btn btn-primary label" \n\
+                                                            onclick=" editPhoto(' + photo.id + '); \n\
+                                                            return false;" title="Редактировать">\n\
+                                                            <span class="glyphicon glyphicon-edit">\n\
+                                                            </span>\n\
+                                                        </a> \n\
+                                                     </div>  ');
+                                    }
+                                    return item;
+                                }
+                                //]]>
                 </script>
                 <script>
                     $(function() {
