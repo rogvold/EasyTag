@@ -5,6 +5,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       >
     <h:body>
+
         <ui:composition template="templates/main.xhtml">
 
             <ui:param name="windowTitle" value="TagsCool"/>
@@ -23,23 +24,32 @@
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner">
                         <div class="item active">
-                            <div class="fill" style="background-image:url('http://placehold.it/1900x1080&amp;text=Slide One');"></div>
-                            <div class="carousel-caption">
-                                <h1>TagsCool - Manage your knowledge</h1>
+                            <div class="fill" style="background-image:url('./img/slider/1_2.png');"></div>
+                            <div class="carousel-caption" style="text-align: center;">
+                                <h1 style="background-color: #8B6508; height: 65px; 
+                                    font-weight: bold; display: inline-block; padding: 8px; width: 800px; 
+                                    opacity: 0.7;
+                                    font-size: 44px;
+                                    " 
+                                    >
+                                    <span style="color: black;" >
+                                        <span style="background-color: #FFCC33; padding-left: 10px; padding-right: 10px;">TagsCool</span>
+                                    </span> - Manage your knowledge
+                                </h1>
                             </div>
                         </div>
-                        <div class="item">
-                            <div class="fill" style="background-image:url('http://placehold.it/1900x1080&amp;text=Slide Two');"></div>
-                            <div class="carousel-caption">
-                                <h1>Ready to Style Add Content</h1>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="fill" style="background-image:url('http://placehold.it/1900x1080&amp;text=Slide Three');"></div>
-                            <div class="carousel-caption">
-                                <h1>Additional Layout Options at <a href="http://startbootstrap.com">http://startbootstrap.com</a></h1>
-                            </div>
-                        </div>
+                        <!--                        <div class="item">
+                                                    <div class="fill" style="background-image:url('http://placehold.it/1900x1080&amp;text=Slide Two');"></div>
+                                                    <div class="carousel-caption">
+                                                        <h1>Ready to Style Add Content</h1>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="fill" style="background-image:url('http://placehold.it/1900x1080&amp;text=Slide Three');"></div>
+                                                    <div class="carousel-caption">
+                                                        <h1>Additional Layout Options at <a href="http://startbootstrap.com">http://startbootstrap.com</a></h1>
+                                                    </div>
+                                                </div>-->
                     </div>
 
                     <!-- Controls -->
@@ -55,36 +65,58 @@
             <ui:define name="main_content">
                 <div class="row">
                     <div class="col-lg-4 col-md-4">
-                        <h3><i class="icon-ok-circle"></i> Bootstrap 3 Built</h3>
-                        <p>The 'Modern Business' website template by <a href="http://startbootstrap.com">Start Bootstrap</a> is built with <a href="http://getbootstrap.com">Bootstrap 3</a>. Make sure you're up to date with latest Bootstrap documentation!</p>
+                        <h3><i class="icon-arrow-up"></i>Upload materials</h3>
+                        <p style="font-size: 18px;">
+                            Upload photos of your handwritten materials
+                        </p>
                     </div>
                     <div class="col-lg-4 col-md-4">
-                        <h3><i class="icon-pencil"></i> Ready to Style and Edit</h3>
-                        <p>Your ready to go with this pre-built page structure, now all you need to do is add your own custom stylings! You can see some free themes over at <a href="http://bootswatch.com">Bootswatch</a>, or come up with your own using <a href="http://getbootstrap.com/customize/">the Bootstrap customizer</a>!</p>
+                        <h3><i class="icon-tags"></i>Tag fragments on them</h3>
+                        <p style="font-size: 18px;">
+                            Tag significant fragments on your photos
+                        </p>
                     </div>
                     <div class="col-lg-4 col-md-4">
-                        <h3><i class="icon-folder-open-alt"></i> Many Page Options</h3>
-                        <p>This template features many common pages that you might see on a business website. Pages include: about, contact, portfolio variations, blog, pricing, FAQ, 404, services, and general multi-purpose pages.</p>
+                        <h3><i class="icon-search"></i>Search for fragments </h3>
+                        <p style="font-size: 18px;">
+                            Search for fragments by keywords
+                        </p>
                     </div>
                 </div><!-- /.row -->
             </ui:define>
 
             <ui:define name="main_footer">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <p>Copyright © TagsCool 2013</p>
-                    </div>
-                </div>
+                <!--                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p>Copyright © TagsCool 2013</p>
+                                    </div>
+                                </div>-->
             </ui:define>
 
             <ui:define name="dialogs">
                 <!-- Modal -->
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog" style="width: 340px;" >
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Авторизация</h4>
+                            <div class="modal-header" style="font-size: 20px;">
+                                <!--                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+                                <span id="signInHeader">
+                                    <span class="modal-title myTitle" style="" >
+                                        Sign in 
+                                    </span>
+                                    <span style="float: right;" class="myTitle" >
+                                        <span style="opacity: 0.5;">or</span> <a href="javascript: void();" style="" onclick="$('#loginForm').hide(); $('#registrationForm').show();$('#regHeader').show(); $('#signInHeader').hide(); "  >Create an Account</a>
+                                    </span>
+                                </span>
+
+                                <span id="regHeader" style="display: none;">
+                                    <span class="modal-title myTitle"  style="" >
+                                        Create an Account
+                                    </span>
+                                    <span style="float: right;" class="myTitle" >
+                                        <span style="opacity: 0.5;">or</span>  <a href="javascript: void();"  id="orName" onclick="$('#loginForm').show(); $('#registrationForm').hide(); $('#regHeader').hide(); $('#signInHeader').show();  "  >Sign In</a>
+                                    </span>
+                                </span>
                             </div>
                             <div class="modal-body">
                                 <div id="authForm">
@@ -92,56 +124,49 @@
 
 
                                     <div id="loginForm">
-                                        <h3 style="text-align: center;">
-                                            Вход в систему
-                                        </h3>
-                                        <div style="display: block; width: 400px; margin: 0 auto; text-align: center; ">
-                                            <form id="login_form" action="#{request.contextPath}/resources/auth/login" method="POST">
-                                                <input type="text" placeholder="Email" id="loginEmail" name="email" style="margin-bottom: 20px; width: 400px;" />
-                                                <input type="password" placeholder="Password" id="loginPassword" name="password" style="margin-bottom: 20px; width: 400px;" />
+                                        <div style="display: block; width: 400px; margin: 0 auto;  ">
+                                            <form id="login_form" action="#{request.contextPath}/resources/auth/login">
+                                                <span style="color: #747474; text-align: left; ">
+                                                    Email address
+                                                </span>
+                                                <input type="text" placeholder="Email" id="loginEmail" class="form-control" name="email" style="margin-bottom: 20px; width: 280px;" />
+                                                <span style="color: #747474; text-align: left; ">
+                                                    Password
+                                                </span>
+                                                <input type="password" placeholder="Password" class="form-control"  id="loginPassword" name="password" style="margin-bottom: 20px; width: 280px;" />
                                                 <br/>
-                                                <button onclick="" class="btn" id="loginButton" style=" margin-bottom: 0px; cursor: pointer;">
-                                                    Вход
+                                                <button onclick="" class="btn btn-primary" id="loginButton" style="cursor: pointer;">
+                                                    Sign in
                                                 </button>
-
-                                                <!--                            <span  class="fuckingToggler" >
-                                                                                Создать аккаунт 
-                                                                            </span>-->
                                             </form>
                                         </div>
                                     </div>
-                                    <div id="registrationForm" style="display: block;">
-                                        <h3 style="text-align: center;">
-                                            Создать аккаунт
-                                        </h3>
-                                        <div style="display: block; width: 400px; margin: 0 auto; text-align: center; ">
+                                    <div id="registrationForm" style="display: none;">
+                                        <!--                                <h3 style="text-align: center;">
+                                                                            Создать аккаунт
+                                                                        </h3>-->
+                                        <div style="display: block; width: 400px; margin: 0 auto; ">
                                             <form id="registration_form" method="post" action="#{request.contextPath}/resources/auth/register">
-                                                <input type="text" placeholder="Login" id="registrationEmail" name="email" style="margin-bottom: 20px; width: 400px;" />
+                                                <input type="text" placeholder="Login"   class="form-control"  id="registrationEmail" name="email" style="margin-bottom: 20px;  width: 280px;" />
 
-                                                <input type="password" placeholder="Password" id="registrationPassword" name="password" style="margin-bottom: 20px; width: 400px;" />
+                                                <input type="password" placeholder="Password"  class="form-control"  id="registrationPassword" name="password" style="margin-bottom: 20px; width: 280px;" />
 
-                                                <input type="password" placeholder="Confirm password" id="registrationConfirmPassword" name="passwordConfirmation" style="margin-bottom: 20px; width: 400px;" />
+                                                <input type="password" placeholder="Confirm password"  class="form-control"  id="registrationConfirmPassword" name="passwordConfirmation" style="margin-bottom: 20px; width: 280px;" />
 
                                                 <br/>
-                                                <button class="btn" id="registerButton" style=" margin-bottom: 20px;  cursor: pointer;">
-                                                    Регистрация нового пользователя
+                                                <button  class="btn btn-primary" id="registerButton" style=" margin-bottom: 20px;  cursor: pointer;">
+                                                    Register
                                                 </button>
 
-                                                <!--                            <a href="javascript:void();" onclick="toggleForms();" >
-                                                                                У меня уже есть аккаунт
-                                                                            </a>-->
                                             </form>
                                         </div>
                                     </div>
                                     <div id="authErrorBlock" style="display: none;" >
-                                        Something is wrong
+                                        <!--                                        Something is wrong-->
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <!--                        <button type="button" class="btn btn-primary">Save changes</button>-->
-                            </div>
+
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->
