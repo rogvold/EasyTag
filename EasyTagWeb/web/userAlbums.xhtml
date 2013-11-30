@@ -59,7 +59,7 @@
 
             <ui:define name="dialogs">
                 <!-- Modal -->
-                <div class="modal fade" id="createAlbumModal" tabindex="-1" role="dialog" aria-labelledby="createAlbumModalLabel" aria-hidden="true">
+                <div class="modal fade" id="createAlbumModal" role="dialog" aria-labelledby="createAlbumModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -69,7 +69,7 @@
                             <div class="modal-body">
                                 <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
                                     <form id="createAlbumForm" action="#{request.contextPath}/resources/album/create" method="POST">
-                                        <input type="text" placeholder="Название альбома" id="albumName" name="name" style="margin-bottom: 20px; width: 100%;" />
+                                        <input type="text" placeholder="Название альбома" id="albumName" name="name" style="margin-bottom: 20px; width: 100%;" autofocus="true"/>
                                         <textarea placeholder="Описание альбома" id="albumDescription" name="description" style="margin-bottom: 20px; width: 100%;" rows="4" />
                                         <input type="text" placeholder="Ключевые слова через запятую" id="albumTags" value="#{albumBean.album.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
                                         <br/>
@@ -110,6 +110,10 @@
                                     }
                                 });
                         return false;
+                    });
+                    
+                    $('#createAlbumModal').on('shown', function () {
+                        $('#albumName').focus();
                     });
                     
                     function deleteAlbum(id) {

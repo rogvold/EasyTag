@@ -77,9 +77,7 @@ public class UserManager implements UserManagerLocal {
         profile.setFirstName(firstName);
         profile.setLastName(lastName);
         profile.setDescription(description);
-//        if (email != null) {
-//            setEmailToProfile(profile, user, email);
-//        }
+        profile.recalculateFullName();
         return em.merge(profile);
     }
     

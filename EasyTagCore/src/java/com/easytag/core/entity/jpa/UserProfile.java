@@ -19,12 +19,11 @@ public class UserProfile implements Serializable {
     @Column(length = 2000)
     private String description;
     private String avatarSrc;
-    @Transient
     private String fullName;
 
     public String getFullName() {
         if (fullName == null || fullName.isEmpty()) {
-            fullName = calculateFulName();
+            recalculateFullName();
         }
         return fullName;
     }
@@ -43,26 +42,29 @@ public class UserProfile implements Serializable {
         this.lastName = lastName;
         this.description = description;
         this.avatarSrc = avatarSrc;
-        this.fullName = calculateFulName();
+        recalculateFullName();
     }
 
     public UserProfile(User user) {
         this.email = user.getEmail();
         this.id = user.getId();
-        this.fullName = calculateFulName();
+        recalculateFullName();
     }
     
-    private String calculateFulName() {
+    public void recalculateFullName() {
         if (firstName != null && !firstName.isEmpty()) {
             if (lastName != null && !lastName.isEmpty()) {
-                return firstName + lastName;
+                fullName = firstName + " " + lastName;
+                return;
             }
-            return firstName;
+            fullName = firstName;
+            return;
         }
         if (lastName != null && !lastName.isEmpty()) {
-                return lastName;
+                fullName = lastName;
+                return;
         }
-        return email;
+        fullName = email;
     }
     
     public Long getId() {
