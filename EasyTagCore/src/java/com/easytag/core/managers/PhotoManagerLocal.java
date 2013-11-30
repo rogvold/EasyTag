@@ -17,8 +17,7 @@ public interface PhotoManagerLocal {
     
     public List<Photo> getPhotosInAlbum(Long albumId);
     
-    public Integer getPhotosAmount(Long albumId) throws TagException;
-    
+    public Integer getPhotosAmount(Long albumId) throws TagException;    
 
     public Photo addPhoto(Long userId, Long albumId, String name, String description, String tags, Long fileId, Long height, Long width) throws TagException;
     
@@ -33,4 +32,6 @@ public interface PhotoManagerLocal {
         
     //TODO deletePhoto       
     public void deletePhoto(Long photoId) throws TagException;
+
+    public Photo updatePhoto(Photo originalPhoto);
 }

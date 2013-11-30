@@ -214,4 +214,14 @@ public class PhotoManager implements PhotoManagerLocal {
         p.setStatus(PhotoStatus.DELETED);
         em.merge(p);
     }
+
+    @Override
+    public Photo updatePhoto(Photo photo) {
+        if (photo == null)
+            return null;
+        if (photo.getId() == null)
+            return null;
+        em.persist(photo);
+        return photo;
+    }
 }
