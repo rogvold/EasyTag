@@ -22,14 +22,15 @@
             </ui:define>
 
             <ui:define name="main_content">
-                <div class="row">
+                <div class="row" style="">
 
                     <div class="col-lg-12">
-                        <h1 class="page-header">
-                            Профиль пользователя #{userBean.userProfile.userFullName}
-                        </h1>
                         <c:if test="#{userBean.current}">
-                            <div class="col-lg-10" style="padding-left: 0px;">
+                            <h1 class="page-header">
+                                My profile
+
+                            </h1>
+                            <div class="col-lg-12" style="padding-left: 0px;">
                                 <ol class="breadcrumb">
                                     <li><a href="users.xhtml">All users</a></li>
                                     <li>
@@ -38,11 +39,15 @@
                                     <li class="active">My Profile</li>
                                 </ol>
                             </div>
-                            <div class="col-lg-2" style="margin-bottom: 20px;">                            
-                                <a id="btnEditProfile" href="#editProfile" class="btn btn-primary" onclick="editProfile(); return false;" title="Редактировать"><span class="glyphicon glyphicon-edit"></span> Редактировать</a>
-                            </div>
+                            <!--                            <div class="col-lg-2" style="margin-bottom: 20px;">                            
+                                                            <a id="btnEditProfile" href="#editProfile" class="btn btn-primary" onclick="editProfile(); return false;" title="Редактировать"><span class="glyphicon glyphicon-edit"></span> Редактировать</a>
+                                                        </div>-->
                         </c:if>
                         <c:if test="#{!userBean.current}">
+                            <h1>
+                                Profile of user 
+                                <span style="font-weight: bold;">#{userBean.userProfile.userFullName}</span>
+                            </h1>
                             <div class="col-lg-12" style="padding-left: 0px;">
                                 <ol class="breadcrumb">
                                     <li><a href="users.xhtml">All users</a></li>
@@ -58,22 +63,27 @@
                     </div>
 
                 </div><!-- /.row -->
-                <div class="row">
-                    <div id="profileView">
-                        Profile View
-                    </div>
+                <div class="row" style="padding-left: 20px;">
+                    <!--                    <div id="profileView">
+                                            Profile View
+                                        </div>-->
                     <c:if test="#{userBean.current}">
-                        <div id="profileEdit" style="display: none;">
-                            Profile Edit<br/>
+                        <div id="profileEdit" style="display: block;">
+                            <!--                            Profile Edit<br/>-->
+                            
+                            <h3>
+                                You can edit your profile here
+                            </h3>
+                            <br/>
                             <form id="profileInfo">
-                                <input type="text" placeholder="Email" id="Email" name="email" style="margin-bottom: 20px; width: 400px;"/>
-                                <input type="text" placeholder="FirstName" id="FirstName" name="firstName" style="margin-bottom: 20px; width: 400px;"/>
-                                <input type="text" placeholder="LastName" id="LastName" name="lastName" style="margin-bottom: 20px; width: 400px;"/>
-                                <input type="text" placeholder="Description" id="Description" name="description" style="margin-bottom: 20px; width: 400px;"/>
+                                <input type="text" placeholder="Email" id="Email"  name="email" style="margin-bottom: 20px; display: none; width: 400px;"/>
+                                <input type="text" class="form-control" placeholder="FirstName" id="FirstName" name="firstName" style="margin-bottom: 20px; width: 400px;" value="#{userBean.userProfile.firstName}" />
+                                <input type="text" class="form-control" placeholder="LastName" id="LastName" name="lastName" style="margin-bottom: 20px; width: 400px;"  value="#{userBean.userProfile.lastName}"  />
+                                <input type="text" class="form-control" placeholder="Description" id="Description" name="description" style="margin-bottom: 20px; width: 400px;"  value="#{userBean.userProfile.description}"  />
                                 <!--<input type="text" placeholder="AvatarSrc" id="AvatarSrc" name="avatarSrc" style="margin-bottom: 20px; width: 400px;"/>-->
                             </form>
-                            <a id="btnSaveProfile" href="#viewProfile" class="btn btn-success" onclick="saveProfile(); return false;" title="Сохранить"><span class="glyphicon glyphicon-ok"></span> Сохранить</a>
-                            <a id="btnCancel" href="#cancelProfile" class="btn btn-icon" onclick="cancelEdit(); return false;" title="Отмена"><span class="glyphicon glyphicon-remove"></span> Отмена</a>
+                            <a id="btnSaveProfile" href="javascript:void();" class="btn btn-success" onclick="saveProfile(); return false;" title="Save"><span class="glyphicon glyphicon-ok"></span>Save</a>
+                            <a id="btnCancel" href="javascript:void();" class="btn btn-icon" onclick="cancelEdit(); return false;" title="Cancel"><span class="glyphicon glyphicon-remove"></span>Cancel</a>
                         </div>
                     </c:if>
                 </div>
@@ -87,40 +97,43 @@
                     </div>
                 </div>
             </ui:define>
-            
+
             <ui:define name="dialogs">
 
             </ui:define>         
 
             <ui:define name="scripts">
                 <c:if test="#{userBean.current}">
-                <script>
-                    //<![CDATA[
-                    function editProfile() {
-                        $('#profileView').hide();
-                        $('#profileEdit').show();
-                        $('#btnEditProfile').addClass('disabled');
-                    }
+                    <script>
+                        //<![CDATA[
+                        function editProfile() {
+                            $('#profileView').hide();
+                            $('#profileEdit').show();
+                            $('#btnEditProfile').addClass('disabled');
+                        }
                     
-                    function clearForm() {
+                        function clearForm() {
                         
-                    }
+                        }
                     
-                    function cancelEdit() {
-                        clearForm();
-                        $('#profileView').show();
-                        $('#profileEdit').hide();
-                        $('#btnEditProfile').removeClass('disabled');
-                    }
+                        function cancelEdit() {
+                            window.location.reload();
+//                            clearForm();
+//                            $('#profileView').show();
+//                            $('#profileEdit').hide();
+//                            $('#btnEditProfile').removeClass('disabled');
+                        }
                     
-                    function saveProfile() {
-                        var profileInfoObj = $('#profileInfo').serializeObject();
-                        $.post('#{request.contextPath}/resources/user/' + '#{userBean.currentUserId}' + '/update', {data: JSON.stringify(profileInfoObj)})
-//                        $.post('#{request.contextPath}/resources/user/' + '#{userBean.currentUserId}' + '/update', {data: profileInfoObj});
-                        cancelEdit();
-                    }
-                    //]]>
-                </script>
+                        function saveProfile() {
+                            var profileInfoObj = $('#profileInfo').serializeObject();
+                            $.post('#{request.contextPath}/resources/user/' + '#{userBean.currentUserId}' + '/update', {data: JSON.stringify(profileInfoObj)}).done(function(){
+                                window.location.reload();
+                            });
+                            //                        $.post('#{request.contextPath}/resources/user/' + '#{userBean.currentUserId}' + '/update', {data: profileInfoObj});
+//                            cancelEdit();
+                        }
+                        //]]>
+                    </script>
                 </c:if>
             </ui:define>
 
