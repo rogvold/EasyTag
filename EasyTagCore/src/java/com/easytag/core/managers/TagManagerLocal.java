@@ -16,13 +16,13 @@ public interface TagManagerLocal {
     
     public List<EasyTag> getEasyTagsInPhoto(Long photoId);
     
-    public EasyTag createEasyTag(Long userId, Long photoId, String name, String description, Double x, Double y, Double width, Double height) throws TagException;
+    public EasyTag createEasyTag(Long userId, Long photoId, String name, String description, Double x, Double y, Double width, Double height, String extUrl) throws TagException;
     
     public void assertTagExistance(Long photoId, Double x, Double y, Double width, Double height) throws TagException;
     
     public void removeEasyTag(Long userId, Long easyTagId) throws TagException;
     
-    public EasyTag modifyEasyTag(Long userId, Long photoId, String name, String description, Double x, Double y, Double width, Double height) throws TagException;
+    public EasyTag modifyEasyTag(Long userId, Long photoId, String name, String description, Double x, Double y, Double width, Double height, String extUrl) throws TagException;
     
     public List<EasyTag> findEasyTagByName(String name) throws TagException;
     

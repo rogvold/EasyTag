@@ -1,12 +1,9 @@
 package com.easytag.web.webservices;
 
-import com.easytag.core.entity.jpa.EasyTag;
 import com.easytag.core.entity.jpa.User;
-import com.easytag.core.managers.TagManagerLocal;
+import com.easytag.core.entity.jpa.UserProfile;
 import com.easytag.core.managers.UserManagerLocal;
 import com.easytag.exceptions.TagException;
-import com.easytag.json.utils.JsonError;
-import com.easytag.json.utils.JsonResponse;
 import com.easytag.json.utils.ResponseConstants;
 import com.easytag.json.utils.TagExceptionWrapper;
 import com.easytag.web.utils.SessionUtils;
@@ -55,17 +52,23 @@ public class UserResource {
             if (currentUserId == null) {
                 throw new TagException("Access denied: you should sign in first.", ResponseConstants.NOT_AUTHORIZED_CODE);
             }
+            if (!currentUserId.equals(userId)) {
+                throw new TagException("Access denied: you can not update another user profile.", ResponseConstants.ACCESS_DENIED_CODE);
+            }
             User user = userMan.getUserById(userId);
             if (user == null) {
                 throw new TagException("Specified userId doesn't exist.");
             }
-            User updatedProfile = new Gson().fromJson(jsonData, User.class);
-            updatedProfile.setId(userId);
-            updatedProfile.setPassword(user.getPassword());
-            updatedProfile.setEmail(user.getEmail());
-            updatedProfile = userMan.updateUser(updatedProfile);
-            updatedProfile.setPassword(null);
-            return Response.ok(new Gson().toJson(updatedProfile)).build();
+            UserProfile updatedProfile = new Gson().fromJson(jsonData, UserProfile.class);
+            UserProfile resultProfile = userMan.getUserProfile(user);
+            // TODO: remove, when avatar implemented
+            if (updatedProfile.getAvatarSrc() == null) {
+                updatedProfile.setAvatarSrc(resultProfile.getAvatarSrc());
+            }
+            
+            resultProfile.updateFromProfile(updatedProfile);
+            resultProfile = userMan.updateUserProfile(resultProfile);
+            return Response.ok(new Gson().toJson(resultProfile)).build();
         } catch (TagException ex) {
             return Response.ok(TagExceptionWrapper.wrapException(ex)).build();
         } catch (Exception ex) {

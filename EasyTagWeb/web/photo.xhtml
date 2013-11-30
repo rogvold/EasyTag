@@ -17,6 +17,7 @@
             <ui:param name="windowTitle" value="Photo - TagsCool"/>
             <ui:param name="user" value="#{currentUserBean.user}"/>
             <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
+            <ui:param name="userProfile" value="#{userBean.userProfile}"/>
 
             <ui:define name="slider">
 
@@ -125,12 +126,16 @@
                     <script>
                         //<![CDATA[
 
-                        function appendTag(x, y, w, h, name, id) {
+                        function appendTag(x, y, w, h, name, id, url) {
                             $('.hs-area').append('<div class="hs-wrap ' + id + '">\n\
                                 <div class="red-spot" data-coord="' + x + ',' + y + '" \n\
                                 data-dim="' + w + ',' + h + ',0" data-activeon="hover">\n\
                                 </div><div class="tt-wrap"><div class="tip-tooltip" data-anim="goin" \n\
                                 data-dir="top">' + name + '</div></div></div>');
+                            console.log(url);
+                            if (!(url === null || url === undefined || url === '')) { // is Url
+                                $('.' + id + ' .red-spot').wrap('<a href="' + url + '" target="_blank"></a>');
+                            }
                             $('<li/>').text(name).appendTo('#tagList')
                                     .bind('mouseover', function() {
                                         $(this).css('color', 'red');
@@ -158,7 +163,8 @@
                                                     spots[i].width,
                                                     spots[i].height,
                                                     spots[i].name,
-                                                    spots[i].id);
+                                                    spots[i].id,
+                                                    spots[i].externalUrl);
                                         }
                                         $('.hs-area').hotspotter();
                                         $('.hs-wrap').css('left', "+=15"); // hs-area padding

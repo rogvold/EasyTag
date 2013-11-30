@@ -16,6 +16,7 @@
             <ui:param name="windowTitle" value="Albums - TagsCool"/>
             <ui:param name="user" value="#{currentUserBean.user}"/>
             <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
+            <ui:param name="userProfile" value="#{userBean.userProfile}"/>
 
             <ui:define name="slider">
             </ui:define>
@@ -26,13 +27,13 @@
                     <div class="col-lg-12">
                         <h1 class="page-header">Альбомы пользователя
                             <small>
-                                user #{userBean.user.id}
+                                #{userBean.userProfile.userFullName}
                             </small>
                         </h1>
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
-                                <li class="active">user #{userBean.user.id}</li>
+                                <li class="active">#{userBean.userProfile.userFullName}</li>
                             </ol>
                         </div>
                         <div class="col-lg-2" style="margin-bottom: 20px;">
@@ -70,6 +71,7 @@
                                     <form id="createAlbumForm" action="#{request.contextPath}/resources/album/create" method="POST">
                                         <input type="text" placeholder="Название альбома" id="albumName" name="name" style="margin-bottom: 20px; width: 100%;" />
                                         <textarea placeholder="Описание альбома" id="albumDescription" name="description" style="margin-bottom: 20px; width: 100%;" rows="4" />
+                                        <input type="text" placeholder="Ключевые слова через запятую" id="albumTags" value="#{albumBean.album.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
                                         <br/>
                                         <button class="btn" id="createButton" style="margin-bottom: 0px; cursor: pointer;">
                                             Создать альбом
@@ -91,10 +93,7 @@
                     }); 
                     
                     $('#createButton').click(function() {
-                        var a = {
-                            name: $('#albumName').val(),
-                            description: $('#albumDescription').val()
-                        };
+                        var a = $('#createAlbumForm').serializeObject();
                         console.log(a);
                         if (a.name === undefined || a.name === '') {
                             return;
@@ -103,6 +102,9 @@
                                 .done(function(data) {
                                     console.log(data);
                                     if (data.responseCode === 1) {
+                                        $("#albumName").val('');
+                                        $("#albumDescription").val('');
+                                        $("#albumTags").val('');
                                         $('#createAlbumModal').modal('hide');
                                         refreshAlbums();
                                     }

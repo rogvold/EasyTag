@@ -18,6 +18,7 @@
             <ui:param name="windowTitle" value="Album - TagsCool"/>
             <ui:param name="user" value="#{currentUserBean.user}"/>
             <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
+            <ui:param name="userProfile" value="#{userBean.userProfile}"/>
 
             <ui:define name="slider">
             </ui:define>
@@ -39,15 +40,15 @@
                         <div class="col-lg-2" style="margin-bottom: 20px;">
                             <form style="display: inline;" action="#{request.contextPath}/resources/file/upload" method="POST" enctype="multipart/form-data">
                                 <span class="btn btn-primary fileinput-button #{userBean.getDisabledClass(userBean.current)}" title="Добавить фотографии...">
-                                    <span class="glyphicon glyphicon-plus"></span>
-                                    Добавить
+                                    <i class="glyphicon glyphicon-plus"></i>
                                     <input type="file" id="fileupload" name="file" multiple="true"/>
                                 </span>    
-
                                 <input type="hidden" name="album_id" value="#{albumBean.albumId}" />
                             </form>
-                            <a href="#" class="btn btn-primary" onclick=" resetPhotosList();
-                                    return false;" title="Обновить"><span class="glyphicon glyphicon-refresh"></span></a>
+                            <a href="#editAlbumModal" data-toggle="modal" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}" title="Редактировать альбом...">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </a>
+                            <a href="#" class="btn btn-primary" onclick=" resetPhotosList(); return false;" title="Обновить"><span class="glyphicon glyphicon-refresh"></span></a>
                         </div>
                     </div>
 
@@ -92,14 +93,40 @@
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->
+                
+                <!-- Modal -->
+                <div class="modal fade" id="editAlbumModal" tabindex="-1" role="dialog" aria-labelledby="editAlbumModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Редактирование албома</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
+                                    <form id="editAlbumForm" action="#{request.contextPath}/resources/album/#{albumBean.albumId}/update" method="POST">
+                                        <input type="hidden" name="id" value="#{albumBean.albumId}"/>
+                                        <input type="text" placeholder="Название альбома" id="albumName" value="#{albumBean.album.name}" name="name" style="margin-bottom: 20px; width: 100%;" />
+                                        <textarea placeholder="Описание альбома" id="albumDescription" name="description" style="text-align: left; margin-bottom: 20px; width: 100%;" rows="4">#{albumBean.album.description}</textarea>
+                                        <input type="text" placeholder="Ключевые слова через запятую" id="albumTags" value="#{albumBean.album.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
+                                        <br/>
+                                        <button class="btn btn-success" id="saveButton" style="margin-bottom: 0px; cursor: pointer;">
+                                            <i class="glyphicon glyphicon-ok"></i>
+                                            Сохранить
+                                        </button>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
             </ui:define>
 
             <ui:define name="scripts">
-                <link rel="stylesheet" href="#{request.contextPath}/css/jquery.fileupload.css" type="text/css"/>
-                <script src="#{request.contextPath}/js/jquery.ui.widget.js"></script>
-                <script src="#{request.contextPath}/js/jquery.fileupload.js"></script>
                 <script>
                     //<![CDATA[
+                    
                     function onUploadsStarted(e, o, x) {
                         console.log(x);
                         $('#progress').show();
@@ -157,6 +184,24 @@
                         });
                     }
 
+                    function deletePhoto(id) {
+                        $.ajax({
+                            type: "GET",
+                            url: "#{request.contextPath}/resources/Photo/deletePhoto?photoId=" + id,                   
+                            success: function(responseText, statusText)  {
+                                if (statusText === 'success'){      
+                                    console.log(responseText.data);
+                                    resetPhotosList();
+                                }
+                            },
+                            dataType: "json"
+                        });
+                    }
+
+                    function editPhoto(id) {
+                        document.location.href = '#{request.contextPath}/tagEditor/Editor.html?id=' + id;
+                    }
+
                     function addAllPhotos(photos) {
                         var n = 1;
                         var row = null;
@@ -186,39 +231,62 @@
                         $("#main-content .row.photos").remove();
                     }
 
-                    function createItem(photo) {
-                        var item = $('<div class="col-md-3 portfolio-item imageSub" />');
-                        item.attr("id", "photo-" + photo.id);
-                        item.append('<a href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
-                        item.append('<div class="blackbg"></div>');
-                        item.append('<div class="label">' + photo.name + '</div>');
-
-                        var isCurrent = #{userBean.current};
-                        if (isCurrent) {
-                            item.append('<div class="label deleteButton" style="top: 0">\n\
-                    <a href="#" class="btn btn-danger label" \n\
-                        onclick=" deletePhoto(' + photo.id + '); \n\
-                        return false;" title="Удалить">\n\
-                        <span class="glyphicon glyphicon-remove">\n\
-                        </span>\n\
-                    </a> \n\
-                 </div>  ');
-                        }
-                        return item;
-                    }
-                                                        
-                  $(function() {
-                        resetPhotosList();
-                  });
-                                                        //]]>
+                                function createItem(photo) {
+                                    var item = $('<div class="col-md-3 portfolio-item imageSub" />');
+                                    item.attr("id", "photo-" + photo.id);
+                                    item.append('<a href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
+                                    item.append('<div class="blackbg"></div>');
+                                    item.append('<div class="label">' + photo.name + '</div>');
+                                    
+                                    var isCurrent = #{userBean.current};
+                                    if (isCurrent){
+                                        item.append('<div class="label deleteButton" style="top: 0">\n\
+                                                        <a href="#" class="btn btn-danger label" \n\
+                                                            onclick=" deletePhoto(' + photo.id + '); \n\
+                                                            return false;" title="Удалить">\n\
+                                                            <span class="glyphicon glyphicon-remove">\n\
+                                                            </span>\n\
+                                                        </a> \n\
+                                                     </div>  ');
+                                        item.append('<div class="label deleteButton" style="top: 0; right: 25px">\n\
+                                                        <a href="#" class="btn btn-primary label" \n\
+                                                            onclick=" editPhoto(' + photo.id + '); \n\
+                                                            return false;" title="Редактировать">\n\
+                                                            <span class="glyphicon glyphicon-edit">\n\
+                                                            </span>\n\
+                                                        </a> \n\
+                                                     </div>  ');
+                                    }
+                                    return item;
+                                }
+                                //]]>
                 </script>
                 <script>
                     $(function() {
                         resetPhotosList();
                     });
                 </script>
+                
+                <link rel="stylesheet" href="#{request.contextPath}/css/jquery.fileupload.css" type="text/css"/>
                 <c:if test="#{userBean.current}">
-                    <script>
+                <script src="#{request.contextPath}/js/jquery.ui.widget.js"></script>
+                <script src="#{request.contextPath}/js/jquery.fileupload.js"></script>
+                    <script>         
+                        $('#saveButton').click(function() {
+                            var a = $('#editAlbumForm').serializeObject();
+                            console.log(a);
+                            if (a.name === undefined || a.name === '') {
+                                return false;
+                            }
+                            $.post('#{request.contextPath}/resources/album/#{albumBean.albumId}/update', {data: JSON.stringify(a)})
+                                    .done(function(data) {
+                                        console.log(data);
+                                        if (data.responseCode === 1) {
+                                            $('#editAlbumModal').modal('hide');
+                                        }
+                                    });
+                            return false;
+                        });
                         /*jslint unparam: true */
                         /*global window, $ */
                         $(function() {
@@ -228,6 +296,7 @@
                             $('#fileupload').fileupload({
                                 url: url,
                                 dataType: 'json',
+                                acceptCharset: 'ISO-8859-1',
                                 sequentialUploads: true,
                                 start: onUploadsStarted,
                                 stop: onUploadFinished,

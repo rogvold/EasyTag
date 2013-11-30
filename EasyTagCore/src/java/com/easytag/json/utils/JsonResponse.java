@@ -15,6 +15,10 @@ public class JsonResponse<T> {
         this.data = object;
     }
 
+    public JsonResponse() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public JsonError getError() {
         return error;
     }

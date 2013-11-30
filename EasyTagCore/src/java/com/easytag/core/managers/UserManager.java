@@ -1,6 +1,7 @@
 package com.easytag.core.managers;
 
 import com.easytag.core.entity.jpa.User;
+import com.easytag.core.entity.jpa.UserProfile;
 import com.easytag.core.enums.UserType;
 import com.easytag.exceptions.TagException;
 import com.easytag.utils.StringUtils;
@@ -49,24 +50,54 @@ public class UserManager implements UserManagerLocal {
     }
 
     @Override
+    public UserProfile getUserProfile(User user) {
+        Long userId = user.getId();
+        return em.find(UserProfile.class, userId);
+    }
+    
+    @Override
     public User login(String email, String password) throws TagException {
         checkAuthorisationData(email, password);
         return getUserByEmail(email);
     }
 
     @Override
-    public User updateUserInfo(Long userId, String firstName, String lastName, String avatarSrc) {
+    public UserProfile updateUserProfile(Long userId, String firstName, String lastName, String avatarSrc, String email, String description) {
         if (userId == null) {
             return null;
         }
-        User u = getUserById(userId);
-        if (u == null) {
+        User user = getUserById(userId);
+        if (user == null) {
             return null;
         }
-        u.setAvatarSrc(avatarSrc);
-        u.setFirstName(firstName);
-        u.setLastName(lastName);
-        return em.merge(u);
+        UserProfile profile = getUserProfile(user);
+        profile.setAvatarSrc(avatarSrc);
+        profile.setFirstName(firstName);
+        profile.setLastName(lastName);
+        profile.setDescription(description);
+//        if (email != null) {
+//            setEmailToProfile(profile, user, email);
+//        }
+        return em.merge(profile);
+    }
+    
+    private void setEmailToProfile(UserProfile profile, User user, String email) {
+        System.out.println("0");
+        profile.setEmail(email);
+        System.out.println("1");
+        if (user == null) {
+            user = getUserById(profile.getId());
+        }
+        System.out.println("2");
+        user.setEmail(email);
+        System.out.println("3");
+        em.merge(user);
+        System.out.println("4");
+    }
+    
+    @Override
+    public UserProfile updateUserProfile(UserProfile profile) {
+        return this.updateUserProfile(profile.getId(), profile.getFirstName(), profile.getLastName(), profile.getAvatarSrc(), profile.getEmail(), profile.getDescription());
     }
 
     @Override
@@ -81,7 +112,10 @@ public class UserManager implements UserManagerLocal {
         user.setEmail(email);
         user.setPassword(password);
         user.setUserType(type);
-        return em.merge(user);
+        User createdUser = em.merge(user);
+        UserProfile profile = new UserProfile(createdUser);
+        em.merge(profile);
+        return createdUser;
     }
 
     @Override

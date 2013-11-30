@@ -25,7 +25,6 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -76,12 +75,12 @@ public class FileResource {
                 error = new JsonError("User is not logged in.", ResponseConstants.NOT_AUTHORIZED_CODE);
                 throw new IllegalArgumentException("Unauthorised operation.");
             }
-//            if (albumId == null) {
-//                error = new JsonError("Album was not specified.", ResponseConstants.NOT_AUTHORIZED_CODE);
-//                throw new IllegalArgumentException("albumID == null.");
-//            }
+            if (albumId == null) {
+                error = new JsonError("Album was not specified.", ResponseConstants.NOT_AUTHORIZED_CODE);
+                throw new IllegalArgumentException("albumID == null.");
+            }
 
-            final String fileName = fileDetail.getFileName();
+            final String fileName = StringUtils.decode(fileDetail.getFileName(), "ISO-8859-1");
             if (!isSupportedFormat(fileName)) {
                 error = new JsonError("File '" + fileName + "' is not supported.", ResponseConstants.ACCESS_DENIED_CODE);
                 throw new RuntimeException("Unsupported format of the file: " + fileDetail.getFileName());

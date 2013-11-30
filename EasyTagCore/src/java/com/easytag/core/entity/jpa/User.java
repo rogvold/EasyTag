@@ -18,30 +18,13 @@ public class User implements Serializable {
     private Long id;
     private String email;
     private String password;
-    private String firstName;
-    private String lastName;
-    @Column(length = 2000)
-    private String description;
     @Enumerated(EnumType.STRING)
     private UserType userType;
-    private String avatarSrc;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User(String email, String password, String firstName, String lastName, String description, String avatarSrc, UserType userType) {
+    public User(String email, String password, UserType userType) {
         this.email = email;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.description = description;
         this.userType = userType;
-        this.avatarSrc = avatarSrc;
     }
 
     public User(String email, String password) {
@@ -53,21 +36,14 @@ public class User implements Serializable {
     public User() {
     }
 
-    public String getAvatarSrc() {
-        return avatarSrc;
+    public Long getId() {
+        return id;
     }
 
-    public void setAvatarSrc(String avatarSrc) {
-        this.avatarSrc = avatarSrc;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public String getEmail() {
         return email;
@@ -75,22 +51,6 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -131,6 +91,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "com.easytag.core.entity.jpa.User[ id=" + id + " ]";
+        return "com.easytag.core.entity.jpa.User[id=" + id + "]";
     }
 }

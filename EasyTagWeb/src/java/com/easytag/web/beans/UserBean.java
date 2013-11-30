@@ -1,6 +1,7 @@
 package com.easytag.web.beans;
 
 import com.easytag.core.entity.jpa.User;
+import com.easytag.core.entity.jpa.UserProfile;
 import com.easytag.core.managers.UserManagerLocal;
 import com.easytag.web.utils.JSFHelper;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import javax.faces.bean.ViewScoped;
 public class UserBean implements Serializable {
     private Long userId;
     private User user;
+    private UserProfile userProfile;
     
     @ManagedProperty("#{currentUserBean}")
     private CurrentUserBean currentUserBean;
@@ -43,17 +45,25 @@ public class UserBean implements Serializable {
         return user;
     }
 
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+    
     public void setUserId(String userId) {
         System.out.println("setUserId = " + userId);
         if (userId == null || userId.isEmpty()) {
             this.userId = currentUserBean.getUserId();
             user = currentUserBean.getUser();
             System.out.println("... resolved to " + this.userId);
+            if (user != null) { // if user logged in
+                userProfile = userMan.getUserProfile(user);
+            }
             return;
         }
         try {
             this.userId = Long.parseLong(userId);
             user = userMan.getUserById(this.userId);
+            userProfile = userMan.getUserProfile(user);
         } catch (Exception ex) {
             this.userId = null;
         }

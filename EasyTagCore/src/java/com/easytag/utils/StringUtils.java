@@ -1,6 +1,7 @@
 package com.easytag.utils;
 
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -149,7 +150,12 @@ public class StringUtils {
         if (value == null) {
             return null;
         }
-        return new String(value.getBytes(charset));
+        try {
+            return new String(value.getBytes(charset), "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            ex.printStackTrace();
+            return value;
+        }
     }
 
     public static String convertEncodings(String value, String srcCharset, String dstCharset) {

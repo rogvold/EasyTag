@@ -419,6 +419,7 @@ Spot.prototype.select= function() {
     $('#spotWidth').attr('value', this.$edSpot.css('width')); 
     $('#spotHeight').attr('value', this.$edSpot.css('height'));
     $('#spotContent').attr('value', this.ttContent);
+    $('#spotUrl').attr('value', this.spLink);
 };
 
 /*
