@@ -22,7 +22,8 @@
             </ui:define>
 
             <ui:define name="main_content">
-                <div class="row">
+                <div>
+                    <img src="#{request.contextPath}/img/ajax-loader-spinner.gif" class="loading_image" style="display: none;" id="loading_image"/>
                 </div>
             </ui:define>
 
@@ -40,16 +41,16 @@
             <ui:define name="scripts">
                 <script>
                     $(function () {
-                        //add progress bar
+                        $('#loading_image').show();
                         $.get('#{request.contextPath}/resources/album/#{albumBean.albumId}/download')
                                 .done(function (response) {
-                                    // remove progress bar
+                                    $('#loading_image').hide();
                                     if (response.responseCode === 1) {
                                         location.href = '#{request.contextPath}/resources/file/download?id=' + response.data.id;
                                     }
                                 })
                                 .error(function (e) {
-                                    // remove progress bar
+                                   $('#loading_image').hide();
                                    console.log(e); 
                                 });   
                     });
