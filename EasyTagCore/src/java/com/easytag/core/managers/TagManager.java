@@ -42,7 +42,7 @@ public class TagManager implements TagManagerLocal {
     }
 
     @Override
-    public EasyTag createEasyTag(Long userId, Long photoId, String name, String description, Double x, Double y, Double width, Double height) throws TagException{
+    public EasyTag createEasyTag(Long userId, Long photoId, String name, String description, Double x, Double y, Double width, Double height, String extUrl) throws TagException{
         if ((x == null) || (y == null) || (width == 0) || (height == 0)){
             throw new TagException("x, y, width or heigth is not specified");
         }
@@ -58,7 +58,7 @@ public class TagManager implements TagManagerLocal {
         }
         
         assertTagExistance(photoId, x, y, width, height);        
-        EasyTag tag = new EasyTag(photoId, name, description, x, y, width, height);
+        EasyTag tag = new EasyTag(photoId, name, description, x, y, width, height, extUrl);
         return em.merge(tag);
         
     }
@@ -90,7 +90,7 @@ public class TagManager implements TagManagerLocal {
     }
 
     @Override
-    public EasyTag modifyEasyTag(Long userId, Long photoId, String name, String description, Double x, Double y, Double width, Double height) throws TagException {
+    public EasyTag modifyEasyTag(Long userId, Long photoId, String name, String description, Double x, Double y, Double width, Double height, String extUrl) throws TagException {
         if ((x == null) || (y == null) || (width == 0) || (height == 0)){
             throw new TagException("x, y, width or heigth is not specified");
         }
@@ -106,7 +106,7 @@ public class TagManager implements TagManagerLocal {
         }
         
         // create - assert )
-        EasyTag tag = new EasyTag(photoId, name, description, x, y, width, height);
+        EasyTag tag = new EasyTag(photoId, name, description, x, y, width, height, extUrl);
         return em.merge(tag);
     }
 

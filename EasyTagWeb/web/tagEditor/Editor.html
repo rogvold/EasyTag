@@ -41,18 +41,19 @@
                 Editor.togglePreview();
             };
             
-            setContent = function(i, content){
+            setContent = function(i, content, url){
                 Editor.spotPool[i].ttContent = content;
+                Editor.spotPool[i].spLink = url;
             };
             
-            addNewSpot = function(x, y, w, h, content){
+            addNewSpot = function(x, y, w, h, content, url){
                 Editor.newSpot(new Spot("red-spot",x,y));
                 var i = Editor.spotPool.length - 1;
                 
                 Editor.curSpot.$edSpot.css('width', w);
                 Editor.curSpot.$edSpot.css('height', h);
                 Editor.updateSpotDim();
-                setContent(i, content);      
+                setContent(i, content, url);      
             } 
             
             uploadFile = function(){
@@ -99,7 +100,8 @@
                         x: spots[i].coord[0],
                         y: spots[i].coord[1],
                         width: spots[i].dim[0], 
-                        height: spots[i].dim[1]                    
+                        height: spots[i].dim[1], 
+                        externalUrl: spots[i].spLink
                     }; 
                     
                     $.post(
@@ -136,8 +138,11 @@
                                     spots[i].y, 
                                     spots[i].width, 
                                     spots[i].height,
-                                    spots[i].name);
-                            }    
+                                    spots[i].name,
+                                    spots[i].externalUrl);
+                            }  
+                            $('#spotContent').attr('value', Editor.curSpot.ttContent);
+                            $('#spotUrl').attr('value', Editor.curSpot.spLink);
                         }
                     },
                     dataType: "json"
@@ -162,6 +167,10 @@
             $(function() {		  
                 $('#spotContent').bind('keyup click blur focus change paste', function() {
                     Editor.curSpot.ttContent = $(this).val();
+                });
+                
+                $('#spotUrl').bind('keyup click blur focus change paste', function() {
+                    Editor.curSpot.spLink = $(this).val();
                 });
                 
                 currentPhotoId = getURLParameter('id');
@@ -342,6 +351,10 @@
                                         <tr>
                                                 <td>content:</td>
                                                 <td> <input id="spotContent" value=""/> </td>
+                                        </tr>
+                                        <tr>
+                                                <td>url:</td>
+                                                <td> <input id="spotUrl" value=""/> </td>
                                         </tr>
                                 </tbody>
                         </table>                        

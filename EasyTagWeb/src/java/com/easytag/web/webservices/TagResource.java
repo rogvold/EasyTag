@@ -114,7 +114,7 @@ public class TagResource {
             }
            // createEasyTag(Long userId, Long photoId, String name, String description, Double x, Double y, Double width, Double height)
             eTag = tagMan.createEasyTag(currentUserId, eTag.getPhotoId(), eTag.getName(),
-                    eTag.getDescription(), eTag.getX(), eTag.getY(), eTag.getWidth(), eTag.getHeight());
+                    eTag.getDescription(), eTag.getX(), eTag.getY(), eTag.getWidth(), eTag.getHeight(), eTag.getExternalUrl());
             JsonResponse<EasyTag> jr = new JsonResponse<EasyTag>(ResponseConstants.OK, null, eTag);
             return SimpleResponseWrapper.getJsonResponse(jr);
         } catch (TagException e) {
@@ -164,7 +164,7 @@ public class TagResource {
             }
            // createEasyTag(Long userId, Long photoId, String name, String description, Double x, Double y, Double width, Double height)
             eTag = tagMan.modifyEasyTag(currentUserId, eTag.getPhotoId(), eTag.getName(),
-                    eTag.getDescription(), eTag.getX(), eTag.getY(), eTag.getWidth(), eTag.getHeight());
+                    eTag.getDescription(), eTag.getX(), eTag.getY(), eTag.getWidth(), eTag.getHeight(), eTag.getExternalUrl());
             JsonResponse<EasyTag> jr = new JsonResponse<EasyTag>(ResponseConstants.OK, null, eTag);
             return SimpleResponseWrapper.getJsonResponse(jr);
         } catch (TagException e) {
