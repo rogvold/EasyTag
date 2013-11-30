@@ -37,7 +37,12 @@
                                 </ol>
                             </div>
                             <div class="col-lg-2">
-                                <a href="#{request.contextPath}/tagEditor/Editor.html?id=#{photoBean.photoId}" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}">Редактировать</a>
+                                <a href="#editPhotoModal" data-toggle="modal" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}" title="Edit info...">
+                                    <i class="glyphicon glyphicon-pencil"></i>
+                                </a>
+                                <a href="#{request.contextPath}/tagEditor/Editor.html?id=#{photoBean.photoId}" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}" title="Edit tags...">
+                                    <i class="glyphicon glyphicon-tags"></i>
+                                </a>
                             </div>
                         </div>
 
@@ -111,7 +116,33 @@
             </ui:define>
 
             <ui:define name="dialogs">
+                <!-- Modal -->
+                <div class="modal fade" id="editPhotoModal" role="dialog" aria-labelledby="editPhotoModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Редактирование фотографии</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
+                                    <form id="editPhotoForm" action="#{request.contextPath}/resources/photo/#{photoBean.photoId}/update" method="POST">
+                                        <input type="hidden" name="id" value="#{photoBean.photoId}"/>
+                                        <input type="text" placeholder="Название фотографии" id="photoName" value="#{photoBean.photo.name}" name="name" style="margin-bottom: 20px; width: 100%;" autofocus="true" />
+                                        <textarea placeholder="Описание фотографии" id="photoDescription" name="description" style="text-align: left; margin-bottom: 20px; width: 100%;" rows="4">#{photoBean.photo.description}</textarea>
+                                        <input type="text" placeholder="Ключевые слова через запятую" id="photoTags" value="#{photoBean.photo.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
+                                        <br/>
+                                        <button class="btn btn-success" id="saveButton" style="margin-bottom: 0px; cursor: pointer;">
+                                            <i class="glyphicon glyphicon-ok"></i>
+                                            Сохранить
+                                        </button>
 
+                                    </form>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
             </ui:define>
 
             <ui:define name="scripts">
