@@ -19,7 +19,21 @@ public class UserProfile implements Serializable {
     @Column(length = 2000)
     private String description;
     private String avatarSrc;
+    @Transient
+    private String fullName;
 
+    public String getFullName() {
+        if (fullName == null || fullName.isEmpty()) {
+            fullName = calculateFulName();
+        }
+        return fullName;
+    }
+
+    @Deprecated
+    public String getUserFullName() {
+        return getFullName();
+    }
+    
     public UserProfile() {
     }
 
@@ -29,11 +43,26 @@ public class UserProfile implements Serializable {
         this.lastName = lastName;
         this.description = description;
         this.avatarSrc = avatarSrc;
+        this.fullName = calculateFulName();
     }
 
     public UserProfile(User user) {
         this.email = user.getEmail();
         this.id = user.getId();
+        this.fullName = calculateFulName();
+    }
+    
+    private String calculateFulName() {
+        if (firstName != null && !firstName.isEmpty()) {
+            if (lastName != null && !lastName.isEmpty()) {
+                return firstName + lastName;
+            }
+            return firstName;
+        }
+        if (lastName != null && !lastName.isEmpty()) {
+                return lastName;
+        }
+        return email;
     }
     
     public Long getId() {
@@ -90,19 +119,6 @@ public class UserProfile implements Serializable {
         this.email = anotherProfile.email;
         this.description = anotherProfile.description;
         this.avatarSrc = anotherProfile.avatarSrc;
-    }
-    
-    public String getUserFullName() {
-        if (firstName != null && !firstName.isEmpty()) {
-            if (lastName != null && !lastName.isEmpty()) {
-                return firstName + lastName;
-            }
-            return firstName;
-        }
-        if (lastName != null && !lastName.isEmpty()) {
-                return lastName;
-        }
-        return email;
     }
     
     @Override
