@@ -93,24 +93,35 @@
                     function createItem(photo) {
                         var item = $('<div class="col-md-3 portfolio-item imageSub" />');
                         item.attr("id", "photo-" + photo.id);
-                        item.append('<a href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
+                        var hash = '#'+ getURLParameter('q');
+                        console.log(hash);
+                        item.append('<a href="#{request.contextPath}/photo.xhtml?id=' + photo.id + hash + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
                         item.append('<div class="blackbg"></div>');
                         item.append('<div class="label">' + photo.name + '</div>');
                         return item;
                     }
                 </script>
                 <script>
+                    function getURLParameter(name) {
+                        var ret = decodeURI(
+                            (RegExp(name + '=' + '(.+?)(&amp;|$)').exec(location.search)||[,null])[1]
+                        );  
+                        return ret === 'null' ? '': ret;
+                    }
+                    
                     $(function() {
                         $('#query').bind('keydown', function (e) {
                             if (e.keyCode === 13) {
                                 $('.result').remove();
-                                var query = $('#query').val()
+                                var query = $('#query').val();                                    
+                                window.history.replaceState({q: query}, "Search - TagsCool", "/EasyTagWeb/search.xhtml?q=" + query);
+                                console.log("param q: " + getURLParameter('q'));
                                 requestPhotosList('#{request.contextPath}/resources/Photo/findPhotos?q=' + query);
-                                window.history.pushState("object or string", "Search - TagsCool", "/EasyTagWeb/search.xhtml?q=" + query);
                             }                              
                         });
+                        $('#query').val(getURLParameter('q'));
                         
-                        requestPhotosList('#{request.contextPath}/resources/Photo/findPhotos?q=#{param['q']}');
+                        requestPhotosList('#{request.contextPath}/resources/Photo/findPhotos?q=' + getURLParameter('q'));
                     });
                 </script>
             </ui:define>
