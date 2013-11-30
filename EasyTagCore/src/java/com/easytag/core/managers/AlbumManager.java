@@ -2,9 +2,11 @@ package com.easytag.core.managers;
 
 import com.easytag.core.entity.jpa.Album;
 import com.easytag.core.entity.jpa.Photo;
+import com.easytag.core.entity.jpa.Vote;
 import com.easytag.core.enums.AlbumStatus;
 import com.easytag.core.enums.AlbumType;
 import com.easytag.core.enums.PhotoStatus;
+import com.easytag.core.enums.VoteType;
 import com.easytag.exceptions.TagException;
 import java.util.Collections;
 import java.util.List;
@@ -100,5 +102,36 @@ public class AlbumManager implements AlbumManagerLocal {
         a.setStatus(AlbumStatus.DELETED);
         
         em.merge(a);
+    }
+
+    @Override
+    public void likeAlbum(Long userId, Long albumId) {
+        if (!isVoted(userId, albumId)) {
+            Vote like = new Vote(userId, albumId, VoteType.LIKE);
+            em.merge(like);
+        }
+    }
+
+    @Override
+    public void dislikeAlbum(Long userId, Long albumId) {
+        if (!isVoted(userId, albumId)) {
+            Vote dislike = new Vote(userId, albumId, VoteType.DISLIKE);
+            em.merge(dislike);
+        }
+    }
+
+    @Override
+    public void deleteVote(Long userId, Long albumId) {
+        Query q = em.createQuery("delete from Votes v where v.userId = :userId and v.albumId = :albumId")
+                .setParameter("userId", userId).setParameter("albumId", albumId);
+        q.executeUpdate();
+    }
+
+    @Override
+    public boolean isVoted(Long userId, Long albumId) {
+        Query q = em.createQuery("select v from Votes v where v.userId = :userId and v.albumId = :albumId")
+                .setParameter("userId", userId).setParameter("albumId", albumId);
+        List<Vote> votes = q.getResultList();
+        return !(votes == null || votes.isEmpty());
     }
 }
