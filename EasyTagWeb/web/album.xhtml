@@ -33,7 +33,7 @@
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
-                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.album.creatorId}">user #{userBean.userId}</a></li>
+                                <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.album.creatorId}">#{userBean.userProfile.userFullName}</a></li>
                                 <li class="active">#{albumBean.album.name}</li>
                             </ol>
                         </div>

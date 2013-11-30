@@ -5,6 +5,8 @@ import com.easytag.core.entity.jpa.UserProfile;
 import com.easytag.core.enums.UserType;
 import com.easytag.exceptions.TagException;
 import com.easytag.utils.StringUtils;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -163,11 +165,18 @@ public class UserManager implements UserManagerLocal {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        List<User> list = em.createQuery("select u from User u where u.userType = :tp").setParameter("tp", UserType.USER).getResultList();
-        if (list == null || list.isEmpty()) {
-            return null;
+    public List<UserProfile> getAllUserProfiles() {
+        List<User> users = em.createQuery("select u from User u where u.userType = :tp").setParameter("tp", UserType.USER).getResultList();
+        if (users == null) {
+            return Collections.emptyList();
         }
-        return list;
+        List<UserProfile> profiles = new ArrayList<UserProfile>(users.size());
+        for (User user : users) {
+            profiles.add(getUserProfile(user));
+        }
+        if (profiles.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return profiles;
     }
 }

@@ -1,6 +1,7 @@
 package com.easytag.web.webservices;
 
 import com.easytag.core.entity.jpa.User;
+import com.easytag.core.entity.jpa.UserProfile;
 import com.easytag.core.enums.UserType;
 import com.easytag.core.managers.UserManagerLocal;
 import com.easytag.exceptions.TagException;
@@ -166,8 +167,8 @@ public class AuthResource {
             if (currentUserId == null) {
                 throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
             }
-            List<User> users = userMan.getAllUsers();
-            JsonResponse<List<User>> jr = new JsonResponse<List<User>>(ResponseConstants.OK, null, users);
+            List<UserProfile> profiles = userMan.getAllUserProfiles();
+            JsonResponse<List<UserProfile>> jr = new JsonResponse<List<UserProfile>>(ResponseConstants.OK, null, profiles);
             return SimpleResponseWrapper.getJsonResponse(jr);
         } catch (TagException e) {
             return TagExceptionWrapper.wrapException(e);

@@ -34,6 +34,6 @@ public interface UserManagerLocal {
     
     public User getUserByEmail(String email);
     
-    public List<User> getAllUsers();
+    public List<UserProfile> getAllUserProfiles();
     
 }
