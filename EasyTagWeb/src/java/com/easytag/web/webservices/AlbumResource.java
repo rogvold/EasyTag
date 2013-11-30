@@ -1,7 +1,6 @@
 package com.easytag.web.webservices;
 
 import com.easytag.core.entity.jpa.Album;
-import com.easytag.core.entity.jpa.User;
 import com.easytag.core.managers.AlbumManagerLocal;
 import com.easytag.exceptions.TagException;
 import com.easytag.json.utils.JsonResponse;
@@ -67,7 +66,7 @@ public class AlbumResource {
             Long currentUserId = SessionUtils.getUserId(session);
             
             if (currentUserId == null) {
-                throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
+                throw new TagException("you should login first", ResponseConstants.NOT_AUTHORIZED_CODE);
             }
             
             alMan.removeAlbum(albumId);
@@ -75,6 +74,39 @@ public class AlbumResource {
             return SimpleResponseWrapper.getJsonResponse(jr);
         } catch (TagException e) {
             return TagExceptionWrapper.wrapException(e);
+        }
+    }
+    
+    @POST
+    @Path("/{albumId}/update")
+    public String updateAlbum(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+        try {
+            HttpSession session = SessionUtils.getSession(req, false);
+            Long userId = SessionUtils.getUserId(session);
+            if (userId == null) {
+                throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            Album originalAlbum = alMan.getAlbumById(albumId);
+            if (originalAlbum == null) {
+                throw new TagException("Album doesn't exist.");
+            }
+            if (!userId.equals(originalAlbum.getCreatorId())) {
+                throw new TagException("Operation is not permitted: you must be owner of the album to delete it.", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            Album album = new Gson().fromJson(data, Album.class);
+            if (album == null) {
+                throw new TagException("Unabled to parse Album from json-string");
+            }
+            
+            originalAlbum.setName(album.getName());
+            originalAlbum.setDescription(album.getDescription());
+            originalAlbum.setTags(album.getTags());
+            
+            originalAlbum = alMan.updateAlbum(originalAlbum);
+            JsonResponse<Album> jr = new JsonResponse<Album>(ResponseConstants.OK, null, originalAlbum);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException ex) {
+            return TagExceptionWrapper.wrapException(ex);
         }
     }
 

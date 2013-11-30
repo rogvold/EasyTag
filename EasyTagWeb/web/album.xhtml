@@ -104,11 +104,13 @@
                             <div class="modal-body">
                                 <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
                                     <form id="editAlbumForm" action="#{request.contextPath}/resources/album/#{albumBean.albumId}/update" method="POST">
+                                        <input type="hidden" name="id" value="#{albumBean.albumId}"/>
                                         <input type="text" placeholder="Название альбома" id="albumName" value="#{albumBean.album.name}" name="name" style="margin-bottom: 20px; width: 100%;" />
                                         <textarea placeholder="Описание альбома" id="albumDescription" name="description" style="text-align: left; margin-bottom: 20px; width: 100%;" rows="4">#{albumBean.album.description}</textarea>
                                         <input type="text" placeholder="Ключевые слова через запятую" id="albumTags" value="#{albumBean.album.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
                                         <br/>
-                                        <button class="btn" id="createButton" style="margin-bottom: 0px; cursor: pointer;">
+                                        <button class="btn btn-success" id="saveButton" style="margin-bottom: 0px; cursor: pointer;">
+                                            <i class="glyphicon glyphicon-ok"></i>
                                             Сохранить
                                         </button>
 
@@ -123,6 +125,7 @@
             <ui:define name="scripts">
                 <script>
                     //<![CDATA[
+                    
                     function onUploadsStarted(e, o, x) {
                         console.log(x);
                         $('#progress').show();
@@ -267,7 +270,22 @@
                 <c:if test="#{userBean.current}">
                 <script src="#{request.contextPath}/js/jquery.ui.widget.js"></script>
                 <script src="#{request.contextPath}/js/jquery.fileupload.js"></script>
-                    <script>
+                    <script>         
+                        $('#saveButton').click(function() {
+                            var a = $('#editAlbumForm').serializeObject();
+                            console.log(a);
+                            if (a.name === undefined || a.name === '') {
+                                return false;
+                            }
+                            $.post('#{request.contextPath}/resources/album/#{albumBean.albumId}/update', {data: JSON.stringify(a)})
+                                    .done(function(data) {
+                                        console.log(data);
+                                        if (data.responseCode === 1) {
+                                            $('#editAlbumModal').modal('hide');
+                                        }
+                                    });
+                            return false;
+                        });
                         /*jslint unparam: true */
                         /*global window, $ */
                         $(function() {

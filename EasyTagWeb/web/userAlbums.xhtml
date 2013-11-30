@@ -92,10 +92,7 @@
                     }); 
                     
                     $('#createButton').click(function() {
-                        var a = {
-                            name: $('#albumName').val(),
-                            description: $('#albumDescription').val()
-                        };
+                        var a = $('#createAlbumForm').serializeObject();
                         console.log(a);
                         if (a.name === undefined || a.name === '') {
                             return;
@@ -104,6 +101,9 @@
                                 .done(function(data) {
                                     console.log(data);
                                     if (data.responseCode === 1) {
+                                        $("#albumName").val('');
+                                        $("#albumDescription").val('');
+                                        $("#albumTags").val('');
                                         $('#createAlbumModal').modal('hide');
                                         refreshAlbums();
                                     }

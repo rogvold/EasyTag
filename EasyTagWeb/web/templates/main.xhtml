@@ -127,6 +127,23 @@
         <!-- Bootstrap core JavaScript -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="js/jquery.js"></script>
+        <script>
+            $.fn.serializeObject = function() {
+                            var o = {};
+                            var a = this.serializeArray();
+                            $.each(a, function() {
+                                if (o[this.name] !== undefined) {
+                                    if (!o[this.name].push) {
+                                        o[this.name] = [o[this.name]];
+                                    }
+                                    o[this.name].push(this.value || '');
+                                } else {
+                                    o[this.name] = this.value || '';
+                                }
+                            });
+                            return o;
+                        };
+        </script>
         <script src="js/bootstrap.js"></script>
         <!--        <script src="js/bootstrap-modal.js"></script>-->
         <script src="js/modern-business.js"></script>
