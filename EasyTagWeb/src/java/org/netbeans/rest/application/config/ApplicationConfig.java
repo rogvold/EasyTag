@@ -39,6 +39,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.easytag.web.webservices.PhotoResource.class);
         resources.add(com.easytag.web.webservices.TagResource.class);
         resources.add(com.easytag.web.webservices.TestResource.class);
+        resources.add(com.easytag.web.webservices.UserResource.class);
     }
     
 }
