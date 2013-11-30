@@ -295,6 +295,7 @@
                             $('#fileupload').fileupload({
                                 url: url,
                                 dataType: 'json',
+                                acceptCharset: 'ISO-8859-1',
                                 sequentialUploads: true,
                                 start: onUploadsStarted,
                                 stop: onUploadFinished,
