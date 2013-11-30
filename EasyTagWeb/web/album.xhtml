@@ -95,7 +95,7 @@
                 </div><!-- /.modal -->
                 
                 <!-- Modal -->
-                <div class="modal fade" id="editAlbumModal" tabindex="-1" role="dialog" aria-labelledby="editAlbumModalLabel" aria-hidden="true">
+                <div class="modal fade" id="editAlbumModal" role="dialog" aria-labelledby="editAlbumModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -106,7 +106,7 @@
                                 <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
                                     <form id="editAlbumForm" action="#{request.contextPath}/resources/album/#{albumBean.albumId}/update" method="POST">
                                         <input type="hidden" name="id" value="#{albumBean.albumId}"/>
-                                        <input type="text" placeholder="Название альбома" id="albumName" value="#{albumBean.album.name}" name="name" style="margin-bottom: 20px; width: 100%;" />
+                                        <input type="text" placeholder="Название альбома" id="albumName" value="#{albumBean.album.name}" name="name" style="margin-bottom: 20px; width: 100%;" autofocus="true" />
                                         <textarea placeholder="Описание альбома" id="albumDescription" name="description" style="text-align: left; margin-bottom: 20px; width: 100%;" rows="4">#{albumBean.album.description}</textarea>
                                         <input type="text" placeholder="Ключевые слова через запятую" id="albumTags" value="#{albumBean.album.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
                                         <br/>
@@ -287,6 +287,10 @@
                                     });
                             return false;
                         });
+                        $('#editAlbumModal').on('shown', function () {
+                            $('#albumName').focus();
+                        });
+                        
                         /*jslint unparam: true */
                         /*global window, $ */
                         $(function() {
