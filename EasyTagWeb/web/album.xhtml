@@ -58,9 +58,15 @@
 
                 </div><!-- /.row -->
                 <div class="row" style="padding: 0px 15px;" >
-                    <p>
-                        #{albumBean.album.description} 
-                    </p>
+                    <c:if test="#{!( empty albumBean.album.description) }">
+                        <h3>
+                            Description
+                        </h3>
+                        <p>
+                            #{albumBean.album.description } 
+                        </p>
+                        <hr/>
+                    </c:if>
                 </div>
             </ui:define>
 
@@ -75,7 +81,7 @@
             <ui:define name="dialogs">
                 <!-- Modal -->
                 <div class="modal fade" id="addFileModal" tabindex="-1" role="dialog" aria-labelledby="addFileModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog" style="" >
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="display: none;">×</button>
@@ -104,19 +110,19 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="editAlbumModal" role="dialog" aria-labelledby="editAlbumModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog" style="width: 470px;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Редактирование албома</h4>
+                                <h4 class="modal-title">Edit album</h4>
                             </div>
                             <div class="modal-body">
                                 <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
                                     <form id="editAlbumForm" action="#{request.contextPath}/resources/album/#{albumBean.albumId}/update" method="POST">
                                         <input type="hidden" name="id" value="#{albumBean.albumId}"/>
-                                        <input type="text" placeholder="Название альбома" id="albumName" value="#{albumBean.album.name}" name="name" style="margin-bottom: 20px; width: 100%;" autofocus="true" />
-                                        <textarea placeholder="Описание альбома" id="albumDescription" name="description" style="text-align: left; margin-bottom: 20px; width: 100%;" rows="4">#{albumBean.album.description}</textarea>
-                                        <input type="text" placeholder="Ключевые слова через запятую" id="albumTags" value="#{albumBean.album.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
+                                        <input type="text" placeholder="Album name"  class="form-control" id="albumName" value="#{albumBean.album.name}" name="name" style="margin-bottom: 20px; width: 100%;" autofocus="true" />
+                                        <textarea placeholder="Album description" id="albumDescription"  class="form-control"  name="description" style="text-align: left; margin-bottom: 20px; width: 100%;" rows="4">#{albumBean.album.description}</textarea>
+                                        <input type="text" placeholder="Key words separated by comma"  class="form-control"   id="albumTags" value="#{albumBean.album.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
                                         <br/>
                                         <button class="btn btn-success" id="saveButton" style="margin-bottom: 0px; cursor: pointer;">
                                             <i class="glyphicon glyphicon-ok"></i>
@@ -240,9 +246,9 @@
                     }
 
                     function createItem(photo) {
-                        var item = $('<div class="col-md-3 portfolio-item imageSub" />');
+                        var item = $('<div class="col-md-3 portfolio-item imageSub" style="display: inline-block;" />');
                         item.attr("id", "photo-" + photo.id);
-                        item.append('<a title="' + photo.description +'" href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
+                        item.append('<a title="' + ((photo.description == undefined) ? 'description is not specified' : photo.description ) +'" href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
                         item.append('<div class="blackbg"></div>');
                         item.append('<div class="label">' + photo.name + '</div>');
                                     
@@ -251,7 +257,7 @@
                             item.append('<div class="label deleteButton" style="top: 0">\n\
                                                         <a href="#" class="btn btn-danger label" \n\
                                                             onclick=" deletePhoto(' + photo.id + '); \n\
-                                                            return false;" title="Удалить">\n\
+                                                            return false;" title="Delete">\n\
                                                             <span class="glyphicon glyphicon-remove">\n\
                                                             </span>\n\
                                                         </a> \n\
@@ -259,7 +265,7 @@
                             item.append('<div class="label deleteButton" style="top: 0; right: 25px">\n\
                                                         <a href="#" class="btn btn-primary label" \n\
                                                             onclick=" editPhoto(' + photo.id + '); \n\
-                                                            return false;" title="Редактировать">\n\
+                                                            return false;" title="Edit">\n\
                                                             <span class="glyphicon glyphicon-edit">\n\
                                                             </span>\n\
                                                         </a> \n\
