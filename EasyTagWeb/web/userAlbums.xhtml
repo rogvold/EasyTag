@@ -70,6 +70,7 @@
                                     <form id="createAlbumForm" action="#{request.contextPath}/resources/album/create" method="POST">
                                         <input type="text" placeholder="Название альбома" id="albumName" name="name" style="margin-bottom: 20px; width: 100%;" />
                                         <textarea placeholder="Описание альбома" id="albumDescription" name="description" style="margin-bottom: 20px; width: 100%;" rows="4" />
+                                        <input type="text" placeholder="Ключевые слова через запятую" id="albumTags" value="#{albumBean.album.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
                                         <br/>
                                         <button class="btn" id="createButton" style="margin-bottom: 0px; cursor: pointer;">
                                             Создать альбом
