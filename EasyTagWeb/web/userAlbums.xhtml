@@ -16,6 +16,7 @@
             <ui:param name="windowTitle" value="Albums - TagsCool"/>
             <ui:param name="user" value="#{currentUserBean.user}"/>
             <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
+            <ui:param name="userProfile" value="#{userBean.userProfile}"/>
 
             <ui:define name="slider">
             </ui:define>
@@ -26,13 +27,13 @@
                     <div class="col-lg-12">
                         <h1 class="page-header">Альбомы пользователя
                             <small>
-                                user #{userBean.user.id}
+                                #{userBean.userProfile.userFullName}
                             </small>
                         </h1>
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
-                                <li class="active">user #{userBean.user.id}</li>
+                                <li class="active">#{userBean.userProfile.userFullName}</li>
                             </ol>
                         </div>
                         <div class="col-lg-2" style="margin-bottom: 20px;">
