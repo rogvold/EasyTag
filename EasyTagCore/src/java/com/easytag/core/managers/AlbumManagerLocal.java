@@ -20,4 +20,12 @@ public interface AlbumManagerLocal {
     
     //TODO remove Album
     public void removeAlbum(Long id) throws TagException;
+    
+    public void likeAlbum(Long userId, Long albumId);
+    public void dislikeAlbum(Long userId, Long albumId);
+    public void deleteVote(Long userId, Long albumId);
+    public boolean isVoted(Long userId, Long albumId);
+    public boolean isLiked(Long userId, Long albumId);
+    public long getTotalLikes(Long albumId);
+    public long getTotalDislikes(Long albumId);
 }

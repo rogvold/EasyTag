@@ -173,7 +173,7 @@ public class PhotoManager implements PhotoManagerLocal {
                     + "like LOWER(:query) and p.status <> :status")
                     .setParameter("query", "%" + words[0] + "%").setParameter("status", PhotoStatus.DELETED);
         currName = q.getResultList();
-        diff = list;
+        diff = new ArrayList<Photo>(list);
         diff.retainAll(currName);
         currName.removeAll(diff);
         list.addAll(currName);     
@@ -191,7 +191,7 @@ public class PhotoManager implements PhotoManagerLocal {
                     + "like LOWER(:query) and p.status <> :status")
                     .setParameter("query", "%" + words[i] + "%").setParameter("status", PhotoStatus.DELETED);
             currName = q.getResultList();
-            diff = currTag;
+            diff = new ArrayList<Photo>(currTag);
             diff.retainAll(currName);
             currName.removeAll(diff);
             currTag.addAll(currName);            

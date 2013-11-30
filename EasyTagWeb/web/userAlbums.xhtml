@@ -25,11 +25,13 @@
                 <div class="row">
 
                     <div class="col-lg-12">
-                        <h1 class="page-header">Альбомы пользователя
-                            <small>
+                        <h2 class="page-header">Albums of user 
+                            <!--                            <small>-->
+                            <b>
                                 #{userBean.userProfile.userFullName}
-                            </small>
-                        </h1>
+                            </b>
+                            <!--                            </small>-->
+                        </h2>
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
@@ -39,7 +41,7 @@
                         <div class="col-lg-2" style="margin-bottom: 20px;">
                             <a href="#createAlbumModal" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}" data-toggle="modal" title="Создать альбом">
                                 <span class="glyphicon glyphicon-plus"></span>
-                                Создать
+                                Create
                             </a>
                             <a href="#" class="btn btn-primary" onclick=" refreshAlbums(); return false;" title="Обновить"><span class="glyphicon glyphicon-refresh"></span></a>
                         </div>
@@ -60,21 +62,21 @@
             <ui:define name="dialogs">
                 <!-- Modal -->
                 <div class="modal fade" id="createAlbumModal" role="dialog" aria-labelledby="createAlbumModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog" style="width: 470px;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Создание албома</h4>
+                                <h4 class="modal-title">Album creation</h4>
                             </div>
                             <div class="modal-body">
                                 <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
                                     <form id="createAlbumForm" action="#{request.contextPath}/resources/album/create" method="POST">
-                                        <input type="text" placeholder="Название альбома" id="albumName" name="name" style="margin-bottom: 20px; width: 100%;" autofocus="true"/>
-                                        <textarea placeholder="Описание альбома" id="albumDescription" name="description" style="margin-bottom: 20px; width: 100%;" rows="4" />
-                                        <input type="text" placeholder="Ключевые слова через запятую" id="albumTags" value="#{albumBean.album.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
+                                        <input type="text"  class="form-control"  placeholder="Album name" id="albumName" name="name" style="margin-bottom: 20px; width: 100%;" autofocus="true"/>
+                                        <textarea placeholder="Album description"  class="form-control"  id="albumDescription" name="description" style="margin-bottom: 20px; width: 100%;" rows="4" />
+                                        <input type="text"  class="form-control"  placeholder="Key words separated by comma" id="albumTags" value="#{albumBean.album.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
                                         <br/>
-                                        <button class="btn" id="createButton" style="margin-bottom: 0px; cursor: pointer;">
-                                            Создать альбом
+                                        <button class="btn btn-success" id="createButton" style="margin-bottom: 0px; cursor: pointer;">
+                                            Create album
                                         </button>
 
                                     </form>
@@ -99,16 +101,16 @@
                             return;
                         }
                         $.post('#{request.contextPath}/resources/album/create', {data: JSON.stringify(a)})
-                                .done(function(data) {
-                                    console.log(data);
-                                    if (data.responseCode === 1) {
-                                        $("#albumName").val('');
-                                        $("#albumDescription").val('');
-                                        $("#albumTags").val('');
-                                        $('#createAlbumModal').modal('hide');
-                                        refreshAlbums();
-                                    }
-                                });
+                        .done(function(data) {
+                            console.log(data);
+                            if (data.responseCode === 1) {
+                                $("#albumName").val('');
+                                $("#albumDescription").val('');
+                                $("#albumTags").val('');
+                                $('#createAlbumModal').modal('hide');
+                                refreshAlbums();
+                            }
+                        });
                         return false;
                     });
                     
@@ -132,51 +134,51 @@
 
                     function requestAlbumList(url) {
                         $.get(url)
-                                .done(function(data) {
-                                    console.log(data);
-                                    if (data.responseCode === 1) {
-                                        var albums = [];
-                                        albums = data.data;
-                                        var n = 1;
-                                        var row = null;
-                                        var container = $('#main-content');
-                                        for (var i in albums) {
-                                            console.log(albums[i]);
-                                            if (row === null) {
-                                                row = $('<div class="albums row" />');
-                                            }
-                                            row.append(createItem(albums[i]));
-                                            if ((n++) % 3 === 0) {
-                                                console.log("break");
-                                                container.append(row);
-                                                row = null;
-                                            }
-                                        }
-                                        if (n === 1) {
-                                            row = $('<div class="albums row"/>');
-                                            row.append('<p style="padding-left:30px;">No albums to show.</p>');
-                                        }
-                                        if (row !== null) {
-                                            container.append(row);
-                                        }
+                        .done(function(data) {
+                            console.log(data);
+                            if (data.responseCode === 1) {
+                                var albums = [];
+                                albums = data.data;
+                                var n = 1;
+                                var row = null;
+                                var container = $('#main-content');
+                                for (var i in albums) {
+                                    console.log(albums[i]);
+                                    if (row === null) {
+                                        row = $('<div class="albums row" />');
                                     }
-                                })
-                                .fail(function() {
-                                    alert("error");
-                                });
+                                    row.append(createItem(albums[i]));
+                                    if ((n++) % 6 === 0) {
+                                        console.log("break");
+                                        container.append(row);
+                                        row = null;
+                                    }
+                                }
+                                if (n === 1) {
+                                    row = $('<div class="albums row"/>');
+                                    row.append('<p style="padding-left:30px;">No albums to show.</p>');
+                                }
+                                if (row !== null) {
+                                    container.append(row);
+                                }
+                            }
+                        })
+                        .fail(function() {
+                            alert("error");
+                        });
                     }
 
                     function createItem(album) {
-                        var item = $('<div class="col-md-4 portfolio-item imageSub" />');
+                        var item = $('<div class="col-md-2 portfolio-item imageSub" />');
                         item.attr("id", "album-" + album.id);
                         var isCurrent = #{userBean.current};
                         if (isCurrent){
                             item.append('<div class="label deleteButton" style="top: 0"><a href="#" class="btn btn-danger label" onclick=" deleteAlbum('+ album.id +'); return false;" title="Удалить"><span class="glyphicon glyphicon-remove"></span></a></div>  ');
                         }
                         
-                        item.append('<a href="album.xhtml?id=' + album.id + '"><img class="img-responsive" src="#{request.contextPath}/img/folder.png"/></a>');
-                        item.append('<h3><a href="album.xhtml?id=' + album.id + '">' + album.name + '</a></h3>');
-                        item.append('<p>' + album.description + '</p>');                        
+                        item.append('<a title="' + album.description +'" href="album.xhtml?id=' + album.id + '"><img class="img-responsive" src="#{request.contextPath}/img/folder.png"/></a>');
+                        item.append('<h4 style="text-align: center;"  ><a href="album.xhtml?id=' + album.id + '">' + album.name + '</a></h4>');
+//                        item.append('<p>' + album.description + '</p>');                        
                         return item;
                     }
                     

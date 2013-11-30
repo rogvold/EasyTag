@@ -57,18 +57,18 @@ public class AlbumResource {
             return TagExceptionWrapper.wrapException(e);
         }
     }
-    
+
     @GET
     @Path("removeAlbum")
-    public String removeAlbumById(@Context HttpServletRequest req, @QueryParam("albumId") Long albumId){
+    public String removeAlbumById(@Context HttpServletRequest req, @QueryParam("albumId") Long albumId) {
         try {
             HttpSession session = req.getSession(false);
             Long currentUserId = SessionUtils.getUserId(session);
-            
+
             if (currentUserId == null) {
                 throw new TagException("you should login first", ResponseConstants.NOT_AUTHORIZED_CODE);
             }
-            
+
             alMan.removeAlbum(albumId);
             JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
             return SimpleResponseWrapper.getJsonResponse(jr);
@@ -76,7 +76,7 @@ public class AlbumResource {
             return TagExceptionWrapper.wrapException(e);
         }
     }
-    
+
     @POST
     @Path("/{albumId}/update")
     public String updateAlbum(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
@@ -97,11 +97,11 @@ public class AlbumResource {
             if (album == null) {
                 throw new TagException("Unabled to parse Album from json-string");
             }
-            
+
             originalAlbum.setName(album.getName());
             originalAlbum.setDescription(album.getDescription());
             originalAlbum.setTags(album.getTags());
-            
+
             originalAlbum = alMan.updateAlbum(originalAlbum);
             JsonResponse<Album> jr = new JsonResponse<Album>(ResponseConstants.OK, null, originalAlbum);
             return SimpleResponseWrapper.getJsonResponse(jr);
@@ -127,13 +127,13 @@ public class AlbumResource {
 
             //TODO(Vitaly): wrap this string with trycatch block throwing TagException
             Album album = new Gson().fromJson(data, Album.class);
-            
+
             if (album == null) {
                 throw new TagException("cannot deserialize album");
             }
 
             album = alMan.createAlbum(currentUserId, album.getName(), album.getDescription(), album.getTags(), album.getCategories(), null, album.getAvatarSrc());
-            
+
             JsonResponse<Album> jr = new JsonResponse<Album>(ResponseConstants.OK, null, album);
             return SimpleResponseWrapper.getJsonResponse(jr);
         } catch (TagException e) {
@@ -151,27 +151,81 @@ public class AlbumResource {
         return SimpleResponseWrapper.getJsonResponse(jr);
     }
 
-    /**
-     * Retrieves representation of an instance of
-     * com.easytag.web.webservices.AlbumResource
-     *
-     * @return an instance of java.lang.String
-     */
-    @GET
-    @Produces("application/json")
-    public String getJson() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
+    @POST
+    @Path("/{albumId}/like")
+    public String like(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+        try {
+            HttpSession session = SessionUtils.getSession(req, false);
+            Long userId = SessionUtils.getUserId(session);
+            if (userId == null) {
+                throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            alMan.likeAlbum(userId, albumId);
+            long likes = alMan.getTotalLikes(albumId);
+            long dislikes = alMan.getTotalDislikes(albumId);
+            String result = "{\"likes\": " + likes + ", \"dislikes\": " + dislikes;
+            return result;
+        } catch (TagException ex) {
+            return TagExceptionWrapper.wrapException(ex);
+        }
     }
-
-    /**
-     * PUT method for updating or creating an instance of AlbumResource
-     *
-     * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
-     */
-    @PUT
-    @Consumes("application/json")
-    public void putJson(String content) {
+    
+    @POST
+    @Path("/{albumId}/dislike")
+    public String dislike(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+        try {
+            HttpSession session = SessionUtils.getSession(req, false);
+            Long userId = SessionUtils.getUserId(session);
+            if (userId == null) {
+                throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            alMan.dislikeAlbum(userId, albumId);
+            long likes = alMan.getTotalLikes(albumId);
+            long dislikes = alMan.getTotalDislikes(albumId);
+            String result = "{\"likes\": " + likes + ", \"dislikes\": " + dislikes;
+            return result;
+        } catch (TagException ex) {
+            return TagExceptionWrapper.wrapException(ex);
+        }
+    }
+    
+    @POST
+    @Path("/{albumId}/cancelLike")
+    public String cancelLike(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+        try {
+            HttpSession session = SessionUtils.getSession(req, false);
+            Long userId = SessionUtils.getUserId(session);
+            if (userId == null) {
+                throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            alMan.deleteVote(userId, albumId);
+            long likes = alMan.getTotalLikes(albumId);
+            long dislikes = alMan.getTotalDislikes(albumId);
+            String result = "{\"likes\": " + likes + ", \"dislikes\": " + dislikes;
+            return result;
+        } catch (TagException ex) {
+            return TagExceptionWrapper.wrapException(ex);
+        }
+    }
+    
+    @POST
+    @Path("/{albumId}/isVoted")
+    public String isVoted(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+        try {
+            HttpSession session = SessionUtils.getSession(req, false);
+            Long userId = SessionUtils.getUserId(session);
+            if (userId == null) {
+                throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            if (alMan.isVoted(userId, albumId)) {
+                if (alMan.isLiked(userId, albumId)) {
+                    return "{\"voted\": like";
+                }
+                return "{\"voted\": dislike";
+            }
+            return "{\"voted\": none}";
+        } catch (TagException ex) {
+            return TagExceptionWrapper.wrapException(ex);
+        }
     }
 }
