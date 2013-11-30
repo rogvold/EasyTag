@@ -161,7 +161,7 @@ public class PhotoManager implements PhotoManagerLocal {
                 
         String[] words = query.split("\\s+");
         
-        List<Photo> currTag, currName;
+        List<Photo> currTag, currName, diff;
         Query q = em.createQuery("select distinct p from "
                     + "Photo p, EasyTag e where LOWER(e.name) like LOWER(:query) "
                     + "and p.status <> :status "
@@ -173,7 +173,10 @@ public class PhotoManager implements PhotoManagerLocal {
                     + "like LOWER(:query) and p.status <> :status")
                     .setParameter("query", "%" + words[0] + "%").setParameter("status", PhotoStatus.DELETED);
         currName = q.getResultList();
-        list.addAll(currName);        
+        diff = list;
+        diff.retainAll(currName);
+        currName.removeAll(diff);
+        list.addAll(currName);     
         
         
         for(int i = 1; i < words.length; i++){        
@@ -188,7 +191,10 @@ public class PhotoManager implements PhotoManagerLocal {
                     + "like LOWER(:query) and p.status <> :status")
                     .setParameter("query", "%" + words[i] + "%").setParameter("status", PhotoStatus.DELETED);
             currName = q.getResultList();
-            currTag.addAll(currName);
+            diff = currTag;
+            diff.retainAll(currName);
+            currName.removeAll(diff);
+            currTag.addAll(currName);            
             list.retainAll(currTag);
         }     
         
