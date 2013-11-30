@@ -109,6 +109,20 @@
                                 });
                         return false;
                     });
+                    
+                    function deleteAlbum(id) {
+                        $.ajax({
+                            type: "GET",
+                            url: "#{request.contextPath}/resources/album/removeAlbum?albumId=" + id,                   
+                            success: function(responseText, statusText)  {
+                                if (statusText === 'success'){      
+                                    console.log(responseText.data);
+                                    refreshAlbums();
+                                }
+                            },
+                            dataType: "json"
+                        });
+                    }
 
                     function requestAlbumList(url) {
                         $.get(url)
@@ -147,11 +161,16 @@
                     }
 
                     function createItem(album) {
-                        var item = $('<div class="col-md-4 portfolio-item" />');
+                        var item = $('<div class="col-md-4 portfolio-item imageSub" />');
                         item.attr("id", "album-" + album.id);
+                        var isCurrent = #{userBean.current};
+                        if (isCurrent){
+                            item.append('<div class="label deleteButton" style="top: 0"><a href="#" class="btn btn-primary label" onclick=" deleteAlbum('+ album.id +'); return false;" title="Удалить"><span class="glyphicon glyphicon-remove"></span></a></div>  ');
+                        }
+                        
                         item.append('<a href="album.xhtml?id=' + album.id + '"><img class="img-responsive" src="#{request.contextPath}/img/folder.png"/></a>');
                         item.append('<h3><a href="album.xhtml?id=' + album.id + '">' + album.name + '</a></h3>');
-                        item.append('<p>' + album.description + '</p>');
+                        item.append('<p>' + album.description + '</p>');                        
                         return item;
                     }
                     

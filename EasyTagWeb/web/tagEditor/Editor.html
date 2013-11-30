@@ -90,7 +90,7 @@
                 
                 
                 var spots = Editor.spotPool;
-                
+                var syn = spots.length;
                 for(var i = 0; i < spots.length; i++){
                     var tag = {
                         photoId: pId,
@@ -110,13 +110,16 @@
                                 //alert(JSON.stringify(responseText) + ' ' + statusText);
                                 // alert(responseText);
                                 console.log(JSON.stringify(responseText));
+                                syn--;                                
+                                if (syn == 0){
+                                    document.location.href = '../photo.xhtml?id=' + pId;    
+                                }
                             }
                         },
                         'json'
                     );
                     //alert(JSON.stringify(tag1));
-                }            
-                document.location.href = '../photo.xhtml?id=' + pId;    
+                }                  
             };
             
             loadTags = function(pId){
