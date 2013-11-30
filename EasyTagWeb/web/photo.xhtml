@@ -70,7 +70,7 @@
                         <div class="col-lg-12">
                             <h3 class="page-header">Nearby photo</h3>
                         </div>
-
+                        
                         <div class="col-sm-3 col-xs-6 imageSub">
                             <a href="#{request.contextPath}/photo.xhtml?id=#{photoBean.getPhId(0)}">
                                 <img class="img-responsive img-customer" src="#{request.contextPath}/resources/file/download?id=#{photoBean.getPreviewId(0)}"/>
@@ -126,8 +126,9 @@
                             </div>
                             <div class="modal-body">
                                 <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
-                                    <form id="editPhotoForm" action="#{request.contextPath}/resources/photo/#{photoBean.photoId}/update" method="POST">
+                                    <form id="editPhotoForm" action="#{request.contextPath}/resources/photo/update" method="POST">
                                         <input type="hidden" name="id" value="#{photoBean.photoId}"/>
+                                        <input type="hidden" name="albumId" value="#{albumBean.albumId}"/>
                                         <input type="text" placeholder="Название фотографии" id="photoName" value="#{photoBean.photo.name}" name="name" style="margin-bottom: 20px; width: 100%;" autofocus="true" />
                                         <textarea placeholder="Описание фотографии" id="photoDescription" name="description" style="text-align: left; margin-bottom: 20px; width: 100%;" rows="4">#{photoBean.photo.description}</textarea>
                                         <input type="text" placeholder="Ключевые слова через запятую" id="photoTags" value="#{photoBean.photo.tags}" name="tags" style="margin-bottom: 20px; width: 100%;" />
@@ -158,8 +159,13 @@
                         //<![CDATA[
 
                         function appendTag(x, y, w, h, name, id, url) {
+                            var query = window.location.hash.substr(1).toLowerCase();
+                            var hasTag = (name.toLowerCase().indexOf(query) >= 0);
+                            var color = (hasTag && window.location.hash !== "") ? 'yellow': 'red';
+                            console.log("color: " + color);
                             $('.hs-area').append('<div class="hs-wrap ' + id + '">\n\
-                                <div class="red-spot" data-coord="' + x + ',' + y + '" \n\
+                                <div class="red-spot" style="border-color:' + color +
+                                    '" data-coord="' + x + ',' + y + '" \n\
                                 data-dim="' + w + ',' + h + ',0" data-activeon="hover">\n\
                                 </div><div class="tt-wrap"><div class="tip-tooltip" data-anim="goin" \n\
                                 data-dir="top">' + name + '</div></div></div>');
@@ -167,7 +173,7 @@
                             if (!(url === null || url === undefined || url === '')) { // is Url
                                 $('.' + id + ' .red-spot').wrap('<a href="' + url + '" target="_blank"></a>');
                             }
-                            $('<li/>').text(name).appendTo('#tagList')
+                            var li = $('<li style="cursor:default"/>').text(name).appendTo('#tagList')
                                     .bind('mouseover', function() {
                                         $(this).css('color', 'red');
                                         $('.' + id + ' .red-spot').addClass('active');
@@ -178,6 +184,7 @@
                                         $('.' + id + ' .red-spot').removeClass('active')
                                         $('.' + id + ' .tt-wrap').css('display', 'none');
                                     });
+                             if (color === 'yellow') li.css('font-weight', 'bold') 
                         }
 
                         function appendTags(pId) {
@@ -231,6 +238,26 @@
                                 }
                             });
 
+                        });
+                        
+                        $('#saveButton').click(function() {
+                            var a = $('#editPhotoForm').serializeObject();
+                            console.log(a);
+                            if (a.name === undefined || a.name === '') {
+                                return false;
+                            }
+                            $.post('#{request.contextPath}/resources/Photo/update', {data: JSON.stringify(a)})
+                                    .done(function(data) {
+                                        console.log(data);
+                                        if (data.responseCode === 1) {
+                                            $('#editPhotoModal').modal('hide');
+                                            window.location.reload();
+                                        }
+                                    });
+                            return false;
+                        });
+                        $('#editPhotoModal').on('shown', function () {
+                            $('#photoName').focus();
                         });
                         //]]>
                     </script>

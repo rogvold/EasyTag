@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.easytag.web.webservices;
 
 import com.easytag.core.entity.jpa.Photo;
@@ -21,10 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -32,11 +25,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-/**
- * REST Web Service
- *
- * @author Vitaly
- */
 @Path("Photo")
 @Stateless
 @Produces(MediaType.APPLICATION_JSON)
@@ -69,6 +57,50 @@ public class PhotoResource {
             return SimpleResponseWrapper.getJsonResponse(jr);
         } catch (TagException e) {
             return TagExceptionWrapper.wrapException(e);
+        }
+    }
+    
+    @POST
+    @Path("update")
+    public String updatePhoto(@Context HttpServletRequest req, @FormParam("data") String data) {
+        try {
+            HttpSession session = SessionUtils.getSession(req, false);
+            Long userId = SessionUtils.getUserId(session);
+            if (userId == null) {
+                throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            Photo photo = new Gson().fromJson(data, Photo.class);
+            if (photo == null) {
+                throw new TagException("Unabled to parse Photo from json-string");
+            }
+            if (photo.getId() == null || photo.getAlbumId() == null) {
+                throw new TagException("Parameter photoId mustn't be null.");
+            }
+            
+            Photo originalPhoto = phMan.getPhotoById(photo.getId());
+            if (originalPhoto == null) {
+                throw new TagException("Photo doesn't exist.");
+            }
+            
+            // check tphoto owner!
+//            if (!userId.equals(originalPhoto.getCreatorId())) {
+//                throw new TagException("Operation is not permitted: you must be owner of the album to delete it.", ResponseConstants.NOT_AUTHORIZED_CODE);
+//            }
+            
+            if (photo.getAlbumId() != null) {
+                originalPhoto.setAlbumId(photo.getAlbumId());
+            }
+            
+            
+            originalPhoto.setName(photo.getName());
+            originalPhoto.setDescription(photo.getDescription());
+            originalPhoto.setTags(photo.getTags());
+            
+            originalPhoto = phMan.updatePhoto(originalPhoto);
+            JsonResponse<Photo> jr = new JsonResponse<Photo>(ResponseConstants.OK, null, originalPhoto);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException ex) {
+            return TagExceptionWrapper.wrapException(ex);
         }
     }
     
@@ -175,26 +207,4 @@ public class PhotoResource {
         }
     }
     
-    
-
-    /**
-     * Retrieves representation of an instance of com.easytag.web.utils.PhotoResource
-     * @return an instance of java.lang.String
-     */
-    @GET
-    @Produces("application/json")
-    public String getJson() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * PUT method for updating or creating an instance of PhotoResource
-     * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
-     */
-    @PUT
-    @Consumes("application/json")
-    public void putJson(String content) {
-    }
 }
