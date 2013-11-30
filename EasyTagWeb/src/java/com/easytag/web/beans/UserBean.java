@@ -16,6 +16,7 @@ import javax.faces.bean.ViewScoped;
 public class UserBean implements Serializable {
     private Long userId;
     private User user;
+    private UserProfile userProfile;
     
     @ManagedProperty("#{currentUserBean}")
     private CurrentUserBean currentUserBean;
@@ -45,7 +46,7 @@ public class UserBean implements Serializable {
     }
 
     public UserProfile getUserProfile() {
-        return userMan.getUserProfile(user);
+        return userProfile;
     }
     
     public void setUserId(String userId) {
@@ -54,11 +55,15 @@ public class UserBean implements Serializable {
             this.userId = currentUserBean.getUserId();
             user = currentUserBean.getUser();
             System.out.println("... resolved to " + this.userId);
+            if (user != null) { // if user logged in
+                userProfile = userMan.getUserProfile(user);
+            }
             return;
         }
         try {
             this.userId = Long.parseLong(userId);
             user = userMan.getUserById(this.userId);
+            userProfile = userMan.getUserProfile(user);
         } catch (Exception ex) {
             this.userId = null;
         }

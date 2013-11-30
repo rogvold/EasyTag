@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name="profiles")
 public class UserProfile implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
+    @Id // todo: make foreign key in order to delete profile when deleting user
     private Long id;
     private String email;
     private String firstName;
@@ -90,6 +90,19 @@ public class UserProfile implements Serializable {
         this.email = anotherProfile.email;
         this.description = anotherProfile.description;
         this.avatarSrc = anotherProfile.avatarSrc;
+    }
+    
+    public String getUserFullName() {
+        if (firstName != null && !firstName.isEmpty()) {
+            if (lastName != null && !lastName.isEmpty()) {
+                return firstName + lastName;
+            }
+            return firstName;
+        }
+        if (lastName != null && !lastName.isEmpty()) {
+                return lastName;
+        }
+        return email;
     }
     
     @Override

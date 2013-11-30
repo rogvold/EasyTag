@@ -16,6 +16,7 @@
             <ui:param name="windowTitle" value="Profile - TagsCool"/>
             <ui:param name="user" value="#{currentUserBean.user}"/>
             <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
+            <ui:param name="userProfile" value="#{userBean.userProfile}"/>
 
             <ui:define name="slider">
             </ui:define>
@@ -25,14 +26,14 @@
 
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Профиль пользователя #{userBean.user.email}
+                            Профиль пользователя #{userBean.userProfile.userFullName}
                         </h1>
                         <c:if test="#{userBean.current}">
                             <div class="col-lg-10" style="padding-left: 0px;">
                                 <ol class="breadcrumb">
                                     <li><a href="users.xhtml">All users</a></li>
                                     <li>
-                                        <h:link value="#{userBean.user.email}" outcome="/userAlbums"/>
+                                        <h:link value="#{userBean.userProfile.userFullName}" outcome="/userAlbums"/>
                                     </li>
                                     <li class="active">My Profile</li>
                                 </ol>
@@ -46,7 +47,7 @@
                                 <ol class="breadcrumb">
                                     <li><a href="users.xhtml">All users</a></li>
                                     <li>
-                                        <h:link value="#{userBean.user.email}" outcome="/userAlbums">
+                                        <h:link value="#{userBean.userProfile.userFullName}" outcome="/userAlbums">
                                             <f:param name="id" value="#{userBean.userId}"/>
                                         </h:link>
                                     </li>
@@ -113,7 +114,9 @@
                     }
                     
                     function saveProfile() {
-                        $.post('#{request.contextPath}/resources/user/' + '#{userBean.currentUserId}' + '/update', {data: $('#profileInfo').serialize()});
+                        var profileInfoObj = $('#profileInfo').serializeObject();
+                        $.post('#{request.contextPath}/resources/user/' + '#{userBean.currentUserId}' + '/update', {data: JSON.stringify(profileInfoObj)})
+//                        $.post('#{request.contextPath}/resources/user/' + '#{userBean.currentUserId}' + '/update', {data: profileInfoObj});
                         cancelEdit();
                     }
                     //]]>
