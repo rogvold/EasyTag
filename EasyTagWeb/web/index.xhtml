@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
+<!DOCTYPE html [
+    <!ENTITY mdash "&#8212;"> 
+]>
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"   
@@ -30,20 +32,10 @@
                         <div class="item active">
                             <div class="fill" style="background-image:url('./img/slider/1_2.png');"></div>
                             <div class="carousel-caption" style="text-align: center;">
-                                <h1 style="
-                                    
-/*                                    background-color: #8B6508;*/
-                                    background-color: black;
-                                    
-                                    height: 65px; 
-                                    font-weight: bold; display: inline-block; padding: 8px; width: 800px; 
-                                    opacity: 0.7;
-                                    font-size: 44px;
-                                    " 
-                                    >
-                                    <span style="color: black;" >
+                                <h1 id="responsive-headline" style="background-color: black; font-weight: bold; display: inline-block; padding: 8px; width:100%; opacity: 0.7;">
+                                    <span style="color: black; width: 100%;" >
                                         <span style="background-color: #FFCC33; padding-left: 10px; padding-right: 10px;">TagsCool</span>
-                                    </span> - Manage your knowledge
+                                    </span> &mdash; Manage your knowledge
                                 </h1>
                             </div>
                         </div>
@@ -74,19 +66,19 @@
             <ui:define name="main_content">
                 <div class="row">
                     <div class="col-lg-4 col-md-4">
-                        <h3><i class="icon-arrow-up"></i>Upload materials</h3>
+                        <h3><i class="icon-arrow-up"></i> Upload materials</h3>
                         <p style="font-size: 18px;">
                             Upload photos of your handwritten materials
                         </p>
                     </div>
                     <div class="col-lg-4 col-md-4">
-                        <h3><i class="icon-tags"></i>Tag fragments on them</h3>
+                        <h3><i class="icon-tags"></i> Tag fragments on them</h3>
                         <p style="font-size: 18px;">
                             Tag significant fragments on your photos
                         </p>
                     </div>
                     <div class="col-lg-4 col-md-4">
-                        <h3><i class="icon-search"></i>Search for fragments </h3>
+                        <h3><i class="icon-search"></i> Search for fragments </h3>
                         <p style="font-size: 18px;">
                             Search for fragments by keywords
                         </p>
@@ -189,6 +181,9 @@
                         padding: 50px 0;
                     }
                 </style>
+                <script>
+                    $("#responsive-headline").fitText(2);
+                </script>
             </ui:define>
 
         </ui:composition>
