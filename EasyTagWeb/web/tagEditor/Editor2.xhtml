@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+        <f:viewAction action="#{userBean.redirectIfNotAuthorized}" />
+        <f:viewParam name="id" required="true" value="#{photoBean.photoId}" requiredMessage="PHOTO_ID is required"/>
+        <f:viewAction action="#{albumBean.setAlbumId(photoBean.photo.albumId)}" if="#{!empty param['id']}"/>
+        <f:viewAction action="#{userBean.setUserId(albumBean.album.creatorId)}" if="#{!empty param['id']}"/>
+    </f:metadata>
+    <h:body>
+        <ui:composition template="../templates/main.xhtml">
+
+            <ui:param name="windowTitle" value="Photo - TagsCool"/>
+            <ui:param name="user" value="#{currentUserBean.user}"/>
+            <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
+            <ui:param name="userProfile" value="#{userBean.userProfile}"/>
+
+            <ui:define name="slider">
+
+            </ui:define>
+
+            <ui:define name="main_content">
+                <c:if test="#{photoBean.photo ne null}">
+                    <div class="row" style="padding-top: 20px;">
+                        <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding-left: 0px;">
+                                <ol class="breadcrumb">
+                                    <li><a href="../users.xhtml">All users</a></li>
+                                    <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{userBean.userId}">user #{userBean.userId}</a></li>
+                                    <li><a href="#{request.contextPath}/album.xhtml?id=#{albumBean.albumId}">#{albumBean.album.name}</a></li>
+                                    <li class="active">
+                                        <a href="#{request.contextPath}/photo.xhtml?id=#{photoBean.photo.id}">
+                                            #{photoBean.photo.name}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        Editor
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <!-- editor is here-->
+
+
+                    </div>
+
+                </c:if>
+            </ui:define>
+
+            <ui:define name="main_footer">
+                <div class="row">
+                    <div class="col-lg-12" onclick="alert(#{photoBean.prevId} + ' ' + #{photoBean.nextId})">
+                        <p>Copyright © TagsCool 2013</p>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="dialogs">
+
+
+            </ui:define>
+
+            <ui:define name="scripts">
+                <c:if test="#{photoBean.photo ne null}">
+                    
+                    
+                    
+                    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/hotspotter/jquery-hotspotter-1.7.9.min.css" />	
+                    <script src="#{request.contextPath}/css/hotspotter/jquery-hotspotter-1.7.9.min.js"></script>
+                </c:if>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+
+</html>
