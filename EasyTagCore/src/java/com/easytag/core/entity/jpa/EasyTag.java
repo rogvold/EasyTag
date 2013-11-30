@@ -22,20 +22,17 @@ public class EasyTag implements Serializable {
     @Column(length = 2000)
     private String name;
     @Column(length = 2000)
-    private String description;
-    /**
-     * все значения в долях x - это TOP; y - LEFT; width, height - ширина и длина
-     * тега
-     */
+    private String description;    
     private Double x;
     private Double y;
     private Double width;
     private Double height;
+    private String externalUrl;
 
     public EasyTag() {
     }
 
-    public EasyTag(Long photoId, String name, String description, Double x, Double y, Double width, Double height) {
+    public EasyTag(Long photoId, String name, String description, Double x, Double y, Double width, Double height, String externalUrl) {
         this.photoId = photoId;
         this.name = name;
         this.description = description;
@@ -43,6 +40,7 @@ public class EasyTag implements Serializable {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.externalUrl = externalUrl;
     }
 
     public String getDescription() {
@@ -107,6 +105,14 @@ public class EasyTag implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getExternalUrl() {
+        return externalUrl;
+    }
+
+    public void setExternalUrl(String externalUrl) {
+        this.externalUrl = externalUrl;
     }
 
     @Override

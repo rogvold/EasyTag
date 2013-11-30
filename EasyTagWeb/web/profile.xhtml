@@ -64,7 +64,13 @@
                     <c:if test="#{userBean.current}">
                         <div id="profileEdit" style="display: none;">
                             Profile Edit<br/>
-                            
+                            <form id="profileInfo">
+                                <input type="text" placeholder="Email" id="Email" name="email" style="margin-bottom: 20px; width: 400px;"/>
+                                <input type="text" placeholder="FirstName" id="FirstName" name="firstName" style="margin-bottom: 20px; width: 400px;"/>
+                                <input type="text" placeholder="LastName" id="LastName" name="lastName" style="margin-bottom: 20px; width: 400px;"/>
+                                <input type="text" placeholder="Description" id="Description" name="description" style="margin-bottom: 20px; width: 400px;"/>
+                                <!--<input type="text" placeholder="AvatarSrc" id="AvatarSrc" name="avatarSrc" style="margin-bottom: 20px; width: 400px;"/>-->
+                            </form>
                             <a id="btnSaveProfile" href="#viewProfile" class="btn btn-success" onclick="saveProfile(); return false;" title="Сохранить"><span class="glyphicon glyphicon-ok"></span> Сохранить</a>
                             <a id="btnCancel" href="#cancelProfile" class="btn btn-icon" onclick="cancelEdit(); return false;" title="Отмена"><span class="glyphicon glyphicon-remove"></span> Отмена</a>
                         </div>
@@ -107,7 +113,7 @@
                     }
                     
                     function saveProfile() {
-                        
+                        $.post('#{request.contextPath}/resources/user/' + '#{userBean.currentUserId}' + '/update', {data: $('#profileInfo').serialize()});
                         cancelEdit();
                     }
                     //]]>

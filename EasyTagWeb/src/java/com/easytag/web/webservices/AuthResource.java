@@ -104,36 +104,36 @@ public class AuthResource {
         return "reogfdgd";
     }
 
-    @POST
-    @Path("update")
-    public String update(@Context HttpServletRequest req,@FormParam("data") String data) {
-        try {
-            HttpSession session = req.getSession(false);
-            Long currentUserId = SessionUtils.getUserId(session);
-
-            if (currentUserId == null) {
-                throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
-            }
-
-            if (data == null) {
-                throw new TagException("data is null");
-            }
-            User user = new Gson().fromJson(data, User.class);
-            if (user == null) {
-                throw new TagException("Gson: can't convert user");
-            }
-            if (user.getId() == null) {
-                throw new TagException("user id is not specified");
-            }
-
-            user = userMan.updateUserInfo(user.getId(), user.getFirstName(), user.getLastName(), user.getAvatarSrc());
-
-            JsonResponse<User> jr = new JsonResponse<User>(ResponseConstants.OK, null, user);
-            return SimpleResponseWrapper.getJsonResponse(jr);
-        } catch (TagException e) {
-            return TagExceptionWrapper.wrapException(e);
-        }
-    }
+//    @POST
+//    @Path("update")
+//    public String update(@Context HttpServletRequest req,@FormParam("data") String data) {
+//        try {
+//            HttpSession session = req.getSession(false);
+//            Long currentUserId = SessionUtils.getUserId(session);
+//
+//            if (currentUserId == null) {
+//                throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
+//            }
+//
+//            if (data == null) {
+//                throw new TagException("data is null");
+//            }
+//            User user = new Gson().fromJson(data, User.class);
+//            if (user == null) {
+//                throw new TagException("Gson: can't convert user");
+//            }
+//            if (user.getId() == null) {
+//                throw new TagException("user id is not specified");
+//            }
+//
+//            user = userMan.updateUserInfo(user.getId(), user.getFirstName(), user.getLastName(), user.getAvatarSrc());
+//
+//            JsonResponse<User> jr = new JsonResponse<User>(ResponseConstants.OK, null, user);
+//            return SimpleResponseWrapper.getJsonResponse(jr);
+//        } catch (TagException e) {
+//            return TagExceptionWrapper.wrapException(e);
+//        }
+//    }
 
     @GET
     @Path("currentUser")
