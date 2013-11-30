@@ -29,6 +29,13 @@
                     <div class="col-lg-12">
                         <h2 class="page-header">
                             View album <b>#{albumBean.album.name}</b>
+                            <span style="float: right;">
+                                <i id="likeButton" class="icon-thumbs-up clickable" ></i> 
+                                <span id="likesNumber" style="margin-right: 20px;">12345</span>
+
+                                <i id="displikeButton" class="icon-thumbs-down clickable"></i>
+                                <span id="dislikesNumber" style="">12</span>
+                            </span>
                         </h2>
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <ol class="breadcrumb">
@@ -138,6 +145,16 @@
             </ui:define>
 
             <ui:define name="scripts">
+                <style>
+                    i.clickable{
+                        cursor: pointer;
+                    }
+                    i.clickable:hover{
+                        color: blue;
+                    }
+                </style>
+
+
                 <script>
                     //<![CDATA[
                     
