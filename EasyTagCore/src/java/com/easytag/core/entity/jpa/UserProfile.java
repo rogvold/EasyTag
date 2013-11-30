@@ -64,7 +64,7 @@ public class UserProfile implements Serializable {
                 fullName = lastName;
                 return;
         }
-        fullName = email;
+        fullName = "user " + getId();
     }
     
     public Long getId() {
