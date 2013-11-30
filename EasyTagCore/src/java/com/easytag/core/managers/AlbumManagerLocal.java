@@ -25,4 +25,7 @@ public interface AlbumManagerLocal {
     public void dislikeAlbum(Long userId, Long albumId);
     public void deleteVote(Long userId, Long albumId);
     public boolean isVoted(Long userId, Long albumId);
+    public boolean isLiked(Long userId, Long albumId);
+    public long getTotalLikes(Long albumId);
+    public long getTotalDislikes(Long albumId);
 }
