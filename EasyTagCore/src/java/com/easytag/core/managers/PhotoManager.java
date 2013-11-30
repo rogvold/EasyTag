@@ -143,7 +143,7 @@ public class PhotoManager implements PhotoManagerLocal {
         
         try {
             PreviewUtils.makePreview(path, prevPath);
-        } catch (Exception e) {
+        } catch (Exception e) {            
             throw new TagException("can't make a preview");
         }
         
