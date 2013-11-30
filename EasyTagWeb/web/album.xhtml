@@ -37,7 +37,15 @@
                             </ol>
                         </div>
                         <div class="col-lg-2" style="margin-bottom: 20px;">
-                            <a href="#addFileModal" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}" data-toggle="modal" title="Добавить фото..."><span class="glyphicon glyphicon-plus"></span> Добавить</a>
+                            <form style="display: inline;" action="#{request.contextPath}/resources/file/upload" method="POST" enctype="multipart/form-data">
+                                <span class="btn btn-primary fileinput-button">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    Добавить
+                                    <input type="file" id="fileupload" name="file" multiple="true"/>
+                                </span>    
+                            
+                                <input type="hidden" name="album_id" value="#{albumBean.albumId}" />
+                            </form>
                             <a href="#" class="btn btn-primary" onclick=" resetPhotosList();
                                     return false;" title="Обновить"><span class="glyphicon glyphicon-refresh"></span></a>
                         </div>
@@ -61,19 +69,19 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title">Добавить фотографию</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="display: none;">×</button>
+                                <h4 class="modal-title">Загрузка фотографий...</h4>
                             </div>
                             <div class="modal-body">
-                                <div style="display: block; max-width: 400px; margin: 0 auto; text-align: center; ">
+                                <div style="display: block; min-width: 300px; margin: 0 auto; text-align: center; ">
                                     <!-- The global progress bar -->
                                     <div id="progress" class="progress progress-striped" style="display: none;">
                                         <div class="progress-bar progress-bar-success"></div>
                                     </div>
-                                    <form action="#{request.contextPath}/resources/file/upload" method="POST" enctype="multipart/form-data">
-                                        <input type="file" id="fileupload" name="file" value="Choose image..." multiple="true" />
-                                        <input type="hidden" name="album_id" value="#{albumBean.albumId}" />
-                                    </form>
+                                    <span class="btn btn-danger" onclick="window.location.reload();">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                        <span>Cancel</span>
+                                    </span>
                                 </div>
                             </div>
                             <!--                            <div class="modal-footer">
@@ -86,6 +94,7 @@
             </ui:define>
 
             <ui:define name="scripts">
+                <link rel="stylesheet" href="#{request.contextPath}/css/jquery.fileupload.css" type="text/css"/>
                 <script src="#{request.contextPath}/js/jquery.ui.widget.js"></script>
                 <script src="#{request.contextPath}/js/jquery.fileupload.js"></script>
                 <script>
@@ -99,9 +108,13 @@
                                     $('#fileupload').fileupload({
                                         url: url,
                                         dataType: 'json',
+                                        sequentialUploads: true,
+                                        start: onUploadsStarted,
+                                        stop: onUploadFinished,
                                         done: function(e, data) {
                                             console.log(data);
                                         },
+                                        error: onUploadFinished,
                                         progressall: function(e, data) {
                                             var progress = parseInt(data.loaded / data.total * 100, 10);
                                             $('#progress').show();
@@ -110,19 +123,26 @@
                                                     progress + '%'
                                                     );
                                             console.log("progress=" + progress);
-                                            if (progress >= 100) {
-                                                onUploadFinished();
-                                            }
+//                                            if (progress >= 100) {
+//                                                onUploadFinished();
+//                                            }
                                         }
                                     }).prop('disabled', !$.support.fileInput)
                                             .parent().addClass($.support.fileInput ? undefined : 'disabled');
                                 });
+                                
+                                function onUploadsStarted(e, o, x) {
+                                    console.log(x);
+                                    $('#progress').show();
+                                    $('#progress .progress-bar').css('width', '0%');
+                                    $('#addFileModal').modal('show');
+                                }
 
                                 function onUploadFinished() {
                                     $('#progress').hide();
                                     $('#progress .progress-bar').css('width', '0%');
                                     $('#addFileModal').modal('hide');
-                                    resetPhotosList();
+                                    setTimeout('resetPhotosList()', 500);
                                 }
 
                                 function requestPhotosList(url, callback) {
