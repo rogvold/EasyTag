@@ -38,8 +38,29 @@ public class PreviewUtils {
         BufferedImage sbi = ImageIO.read(imgF);  
         int w = sbi.getWidth();
         int h = sbi.getHeight();
-        BufferedImage scImg = scale(sbi, sbi.getType(),
-                PREVIEW_WIDTH, PREVIEW_HEIGHT, (double)PREVIEW_WIDTH / w, (double)PREVIEW_HEIGHT/ h);
+        BufferedImage scImg;
+        double coef;
+        if (h >= w) {
+            coef = (double)PREVIEW_WIDTH / w;
+            scImg = scale(sbi, sbi.getType(),
+                PREVIEW_WIDTH, PREVIEW_HEIGHT, coef, coef);
+        } else {            
+            int width;
+            coef = (double)PREVIEW_HEIGHT/ h;
+            width = (int)Math.round(w * coef);
+            int offset = (width - PREVIEW_WIDTH) / 2;
+            if (offset > 0) {
+                scImg = scale(sbi, sbi.getType(),
+                    width, PREVIEW_HEIGHT, coef, coef);
+                System.out.println("Offset: " + offset);
+                scImg = scImg.getSubimage(offset, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT);
+            } else {
+                coef = (double)PREVIEW_WIDTH / w;
+                scImg = scale(sbi, sbi.getType(),
+                    PREVIEW_WIDTH, PREVIEW_HEIGHT, coef, coef);
+            }
+        }
+        
         File outputfile = new File(distFile);
         ImageIO.write(scImg, "jpg", outputfile);              
     }
