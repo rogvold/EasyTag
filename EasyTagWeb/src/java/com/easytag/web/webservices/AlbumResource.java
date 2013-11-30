@@ -1,7 +1,12 @@
 package com.easytag.web.webservices;
 
 import com.easytag.core.entity.jpa.Album;
+import com.easytag.core.entity.jpa.EasyTagFile;
+import com.easytag.core.entity.jpa.Photo;
 import com.easytag.core.managers.AlbumManagerLocal;
+import com.easytag.core.managers.FileManager;
+import com.easytag.core.managers.FileManagerLocal;
+import com.easytag.core.managers.PhotoManagerLocal;
 import com.easytag.exceptions.TagException;
 import com.easytag.json.utils.JsonResponse;
 import com.easytag.json.utils.ResponseConstants;
@@ -17,7 +22,16 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import com.easytag.json.utils.TagExceptionWrapper;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * REST Web Service
@@ -33,6 +47,10 @@ public class AlbumResource {
     private UriInfo context;
     @EJB
     AlbumManagerLocal alMan;
+    @EJB
+    PhotoManagerLocal phMan;
+    @EJB
+    FileManagerLocal fiMan;
 
     /**
      * Creates a new instance of AlbumResource
@@ -169,7 +187,7 @@ public class AlbumResource {
             return TagExceptionWrapper.wrapException(ex);
         }
     }
-    
+
     @POST
     @Path("/{albumId}/dislike")
     public String dislike(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
@@ -188,7 +206,7 @@ public class AlbumResource {
             return TagExceptionWrapper.wrapException(ex);
         }
     }
-    
+
     @POST
     @Path("/{albumId}/cancelLike")
     public String cancelLike(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
@@ -207,7 +225,7 @@ public class AlbumResource {
             return TagExceptionWrapper.wrapException(ex);
         }
     }
-    
+
     @POST
     @Path("/{albumId}/isVoted")
     public String isVoted(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
@@ -227,5 +245,78 @@ public class AlbumResource {
         } catch (TagException ex) {
             return TagExceptionWrapper.wrapException(ex);
         }
+    }
+
+    @GET
+    @Path("/{albumId}/download")
+    public Response download(@Context HttpServletRequest request, @PathParam("albumId") long albumId) {
+        try {
+            HttpSession session = SessionUtils.getSession(request, false);
+            Long userId = SessionUtils.getUserId(session);
+            if (userId == null) {
+                throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            List<Photo> photos = phMan.getPhotosInAlbum(albumId);
+            List<File> photoFiles = new ArrayList<File>(photos.size());
+            for (Photo photo : photos) {
+                EasyTagFile easyTagFile = fiMan.findFileById(photo.getFileId());
+                photoFiles.add(new File(easyTagFile.getCurrentPath()));
+            }
+            File zipFile = File.createTempFile("aloha", "omigo.zip");
+            zipFiles(zipFile, photoFiles);
+            EasyTagFile file = fiMan.addFile(userId, zipFile.getName(), zipFile.getAbsolutePath(), "application/zip");
+            return Response.ok(SimpleResponseWrapper.getJsonResponse(new JsonResponse(ResponseConstants.OK, null, file)))
+                    .build();
+        } catch (TagException ex) {
+            ex.printStackTrace();
+            return Response.serverError().build();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return Response.serverError().build();
+        }
+    }
+
+    public static final void zipFiles(File zip, List<File> files) throws IOException {
+        ZipOutputStream zos = null;
+        try {
+            zos = new ZipOutputStream(new FileOutputStream(zip));
+            for (File file : files) {
+                zipFile(zos, file);
+            }
+        } finally {
+            try {
+                if (zos != null) {
+                    zos.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private static final void zipFile(ZipOutputStream zos, File file) throws IOException {
+        String name = file.getName();
+        ZipEntry entry = new ZipEntry(name);
+        zos.putNextEntry(entry);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file);
+            byte[] byteBuffer = new byte[1024];
+            int bytesRead = -1;
+            while ((bytesRead = fis.read(byteBuffer)) != -1) {
+                zos.write(byteBuffer, 0, bytesRead);
+            }
+            zos.flush();
+        } finally {
+            try {
+                if (fis != null) {
+                    fis.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        zos.closeEntry();
+        zos.flush();
     }
 }

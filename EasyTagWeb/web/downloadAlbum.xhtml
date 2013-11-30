@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+        <f:viewAction action="#{userBean.redirectIfNotAuthorized}" />
+        <f:viewAction action="#{userBean.setUserId(null)}"/>
+        <f:viewParam name="albumId" required="true" value="#{albumBean.albumId}" requiredMessage="ALBUM_ID is required"/>
+    </f:metadata>
+    <h:body>
+        <ui:composition template="templates/main.xhtml">
+
+            <ui:param name="windowTitle" value="Albums - TagsCool"/>
+            <ui:param name="user" value="#{currentUserBean.user}"/>
+            <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
+            <ui:param name="userProfile" value="#{userBean.userProfile}"/>
+
+            <ui:define name="slider">
+            </ui:define>
+
+            <ui:define name="main_content">
+                <div class="row">
+                </div>
+            </ui:define>
+
+            <ui:define name="main_footer">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>Copyright © TagsCool 2013</p>
+                    </div>
+                </div>
+            </ui:define>
+
+            <ui:define name="dialogs">
+            </ui:define>
+
+            <ui:define name="scripts">
+                <script>
+                    $(function () {
+                        //add progress bar
+                        $.get('#{request.contextPath}/resources/album/#{albumBean.albumId}/download')
+                                .done(function (response) {
+                                    // remove progress bar
+                                    if (response.responseCode === 1) {
+                                        location.href = '#{request.contextPath}/resources/file/download?id=' + response.data.id;
+                                    }
+                                })
+                                .error(function (e) {
+                                    // remove progress bar
+                                   console.log(e); 
+                                });   
+                    });
+                   
+                </script>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>

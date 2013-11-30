@@ -37,8 +37,9 @@
                                 <li class="active">#{albumBean.album.name}</li>
                             </ol>
                         </div>
-
-
+                        <div>
+                            <a href="#{request.contextPath}/downloadAlbum.xhtml?albumId=#{albumBean.albumId}">Download this album</a>
+                        </div>
                         <div class="col-lg-2" style="margin-bottom: 20px;">
                             <form style="display: inline;" action="#{request.contextPath}/resources/file/upload" method="POST" enctype="multipart/form-data">
                                 <span class="btn btn-primary fileinput-button #{userBean.getDisabledClass(userBean.current)}" title="Добавить фотографии...">
