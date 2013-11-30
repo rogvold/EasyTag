@@ -30,18 +30,18 @@
                                 My profile
 
                             </h1>
-                            <div class="col-lg-12" style="padding-left: 0px;">
+                            <div class="col-lg-10" style="padding-left: 0px;">
                                 <ol class="breadcrumb">
                                     <li><a href="users.xhtml">All users</a></li>
                                     <li>
-                                        <h:link value="#{userBean.userProfile.userFullName}" outcome="/userAlbums"/>
+                                        <h:link class="myFullName" value="#{userBean.userProfile.userFullName}" outcome="/userAlbums"/>
                                     </li>
                                     <li class="active">My Profile</li>
                                 </ol>
                             </div>
-                            <!--                            <div class="col-lg-2" style="margin-bottom: 20px;">                            
-                                                            <a id="btnEditProfile" href="#editProfile" class="btn btn-primary" onclick="editProfile(); return false;" title="Редактировать"><span class="glyphicon glyphicon-edit"></span> Редактировать</a>
-                                                        </div>-->
+                            <div class="col-lg-2" style="margin-bottom: 20px;">                            
+                                <a id="btnEditProfile" href="#editProfile" class="btn btn-primary" onclick="editProfile(); return false;" title="Редактировать"><span class="glyphicon glyphicon-edit"></span> Редактировать</a>
+                            </div>
                         </c:if>
                         <c:if test="#{!userBean.current}">
                             <h1>
@@ -64,17 +64,16 @@
 
                 </div><!-- /.row -->
                 <div class="row" style="padding-left: 20px;">
-                    <!--                    <div id="profileView">
-                                            Profile View
-                                        </div>-->
+                    <div id="profileView">
+                        <dl class="dl-horizontal">
+                            <dt>Email:</dt> <dd id="emailView">#{userBean.user.email}</dd>
+                            <dt>First Name:</dt> <dd id="firstNameView">#{userBean.userProfile.firstName}</dd>
+                            <dt>Last Name:</dt> <dd id="lastNameView">#{userBean.userProfile.lastName}</dd>
+                            <dt>Info:</dt> <dd id="infoView">#{userBean.userProfile.description}</dd>
+                        </dl>
+                    </div>
                     <c:if test="#{userBean.current}">
-                        <div id="profileEdit" style="display: block;">
-                            <!--                            Profile Edit<br/>-->
-                            
-                            <h3>
-                                You can edit your profile here
-                            </h3>
-                            <br/>
+                        <div id="profileEdit" style="display: none;">
                             <form id="profileInfo">
                                 <input type="text" placeholder="Email" id="Email"  name="email" style="margin-bottom: 20px; display: none; width: 400px;"/>
                                 <input type="text" class="form-control" placeholder="FirstName" id="FirstName" name="firstName" style="margin-bottom: 20px; width: 400px;" value="#{userBean.userProfile.firstName}" />
@@ -82,8 +81,14 @@
                                 <input type="text" class="form-control" placeholder="Description" id="Description" name="description" style="margin-bottom: 20px; width: 400px;"  value="#{userBean.userProfile.description}"  />
                                 <!--<input type="text" placeholder="AvatarSrc" id="AvatarSrc" name="avatarSrc" style="margin-bottom: 20px; width: 400px;"/>-->
                             </form>
-                            <a id="btnSaveProfile" href="javascript:void();" class="btn btn-success" onclick="saveProfile(); return false;" title="Save"><span class="glyphicon glyphicon-ok"></span>Save</a>
-                            <a id="btnCancel" href="javascript:void();" class="btn btn-icon" onclick="cancelEdit(); return false;" title="Cancel"><span class="glyphicon glyphicon-remove"></span>Cancel</a>
+                            <a id="btnSaveProfile" href="javascript:void();" class="btn btn-success" onclick="saveProfile(); return false;" title="Save">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                Save
+                            </a>
+                            <a id="btnCancel" href="javascript:void();" class="btn btn-icon" onclick="cancelEdit(); return false;" title="Cancel">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                Cancel
+                            </a>
                         </div>
                     </c:if>
                 </div>
@@ -107,30 +112,46 @@
                     <script>
                         //<![CDATA[
                         function editProfile() {
+                            $('#btnEditProfile').addClass('disabled');
                             $('#profileView').hide();
                             $('#profileEdit').show();
-                            $('#btnEditProfile').addClass('disabled');
                         }
                     
                         function clearForm() {
-                        
+                                
                         }
                     
                         function cancelEdit() {
-                            window.location.reload();
-//                            clearForm();
-//                            $('#profileView').show();
-//                            $('#profileEdit').hide();
-//                            $('#btnEditProfile').removeClass('disabled');
+                            clearForm();
+                            $('#profileView').show();
+                            $('#profileEdit').hide();
+                            $('#btnEditProfile').removeClass('disabled');
                         }
                     
                         function saveProfile() {
                             var profileInfoObj = $('#profileInfo').serializeObject();
-                            $.post('#{request.contextPath}/resources/user/' + '#{userBean.currentUserId}' + '/update', {data: JSON.stringify(profileInfoObj)}).done(function(){
-                                window.location.reload();
-                            });
-                            //                        $.post('#{request.contextPath}/resources/user/' + '#{userBean.currentUserId}' + '/update', {data: profileInfoObj});
-//                            cancelEdit();
+                            $.post('#{request.contextPath}/resources/user/#{userBean.currentUserId}/update', {data: JSON.stringify(profileInfoObj)})
+                                    .done(function(data){
+                                        console.log(data);
+                                        if (data.responseCode === 1) {
+                                            refreshView(data.data);
+                                            cancelEdit();
+                                        }
+                                    });
+                        }
+                        
+                        function refreshView(profile) {
+                            $('#emailView').text(profile.email);
+                            $('#firstNameView').text(profile.firstName);
+                            $('#lastNameView').text(profile.lastName);
+                            $('#infoView').text(profile.description);
+                            
+                            $('.myFullName').text(profile.fullName);
+                            
+                            $('#profileEdit input#email').val(profile.email);
+                            $('#profileEdit input#firstName').val(profile.firstName);
+                            $('#profileEdit input#lastName').val(profile.lastName);
+                            $('#profileEdit input#description').val(profile.description);
                         }
                         //]]>
                     </script>
