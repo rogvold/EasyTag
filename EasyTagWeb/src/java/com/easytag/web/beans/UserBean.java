@@ -1,6 +1,7 @@
 package com.easytag.web.beans;
 
 import com.easytag.core.entity.jpa.User;
+import com.easytag.core.entity.jpa.UserProfile;
 import com.easytag.core.managers.UserManagerLocal;
 import com.easytag.web.utils.JSFHelper;
 import java.io.Serializable;
@@ -43,6 +44,10 @@ public class UserBean implements Serializable {
         return user;
     }
 
+    public UserProfile getUserProfile() {
+        return userMan.getUserProfile(user);
+    }
+    
     public void setUserId(String userId) {
         System.out.println("setUserId = " + userId);
         if (userId == null || userId.isEmpty()) {
