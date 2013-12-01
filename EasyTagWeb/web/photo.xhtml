@@ -54,13 +54,13 @@
                             <img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.photo.fileId}"/>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="info">
                             <h3>#{photoBean.photo.name}</h3>
                             <p>#{photoBean.photo.description}</p>
                             <h3>Tags</h3>
                             <ul id="tagList">
                             </ul>
-                            <a href="javascript:void(0);" onclick="toggleTags()" class="btn btn-default">Toggle tags</a>
+                            <a href="javascript:void(0);" onclick="toggleTags()" class="btn btn-default">Toggle tags</a>                            
                         </div>
 
                     </div>
@@ -185,7 +185,7 @@
                                         $('.' + id + ' .red-spot').removeClass('active')
                                         $('.' + id + ' .tt-wrap').css('display', 'none');
                                     });
-                             if (style === 'border-color: red') li.css('font-weight', 'bold') 
+                             if (style === 'border-color: red' && window.location.hash !== "") li.css('font-weight', 'bold') 
                         }
 
                         function appendTags(pId) {
@@ -222,8 +222,15 @@
                         function toggleTags() {
                             $('.hs-area .hs-wrap').toggle();
                         }
+                        
+                        function showAllTags() {
+                            $('.hs-area .hs-wrap .red-spot').css('display', 'block');                            
+                        }
 
                         $(function() {
+                            if (window.location.hash !== ""){
+                                $('#info').append('<a href="javascript:void(0);" onclick="showAllTags()" class="btn btn-default">Shaw all tags</a>');
+                            }
                             $('.hs-area img').attr('data-imgdim', ["#{photoBean.photo.width}", "#{photoBean.photo.height}"].join(','));
                             refreshTags();
                             $(window).resize(function() {
