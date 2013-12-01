@@ -364,7 +364,8 @@
                         $.ajax({type: "GET",
                                 url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/isVoted',
                                 success: function(response) {
-                                            if (response.responseCode === 1) {
+//                                            if (response.responseCode === 1) {
+                                                console.log("got response : " + response.voted);
                                                 if (response.voted === 'like') {
                                                     $('#likeButton').css('class', 'icon-thumbs-up highlited');// add highlited to like
                                                     $('#dislikeButton').css('class', 'icon-thumbs-down');
@@ -375,27 +376,31 @@
                                                     $('#likeButton').css('class', 'icon-thumbs-up clickable');
                                                     $('#dislikeButton').css('class', 'icon-thumbs-down clickable');// add clickable to like and dislike
                                                 }
-                                            }
+//                                            }
                                         },
                                 dataType: "json"
                         });
                         $.ajax({type:"GET",
                                 url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/getLikes',
                                 success: function(response) {
-                                    if (response.responseCode === 1) {
+//                                    if (response.responseCode === 1) {
+                                        console.log("got response : " + response.likes + " " + response.dislikes);
                                         setLikes(response.likes)
                                         setDislikes(response.dislikes)
-                                    }
+//                                    }
                                 },
                                 dataType: "json"
                         });
                     });
                     function like() {
+                    console.log("like");
                         $.ajax({type: "GET",
                             url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/isVoted',
                             success: function(response) {
-                                if (response.responseCode === 1) {
+//                                if (response.responseCode === 1) {
+                                    console.log("like succeed");
                                     if (response.voted === 'like') {
+                                        console.log("like 1");
                                         $.ajax({type: "GET",
                                                 url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/cancelLike',
                                                 success: function(response) {
@@ -409,9 +414,11 @@
                                         $('#likeButton').css('class', 'icon-thumbs-up clickable');
                                         $('#dislikeButton').css('class', 'icon-thumbs-down clickable');
                                     } else if (response.voted === 'dislike') {
+                                    console.log("like 2");
                                         $('#likeButton').css('class', 'icon-thumbs-up');
                                         $('#dislikeButton').css('class', 'icon-thumbs-down highlited');
                                     } else {
+                                    console.log("like 3");
                                         $.ajax({type: "GET",
                                                 url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/like',
                                                 success: function(response) {
@@ -425,16 +432,17 @@
                                         $('#likeButton').css('class', 'icon-thumbs-up highlited');
                                         $('#dislikeButton').css('class', 'icon-thumbs-down');
                                     }
-                                }
+//                                }
                             },
                             dataType: "json"
                         });    
                     };
                     function dislike() {
+                    console.log("dislike");
                     $.ajax({type: "GET",
                             url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/isVoted',
                             success: function(response) {
-                                if (response.responseCode === 1) {
+//                                if (response.responseCode === 1) {
                                     if (response.voted === 'like') {
                                         $('#likeButton').css('class', 'icon-thumbs-up clickable');
                                         $('#dislikeButton').css('class', 'icon-thumbs-down clickable');
@@ -442,10 +450,10 @@
                                         $.ajax({type: "GET",
                                                 url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/cancelLike',
                                                 success: function(response) {
-                                                            if (response.responseCode === 1) {
+//                                                            if (response.responseCode === 1) {
                                                                 setLikes(response.likes)
                                                                 setDislikes(response.sidlikes)
-                                                            }
+//                                                            }
                                                 },
                                                 dataType: "json"
                                         });
@@ -455,17 +463,17 @@
                                         $.ajax({type: "GET",
                                                 url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/dislike',
                                                 success: function(response) {
-                                                            if (response.responseCode === 1) {
+//                                                            if (response.responseCode === 1) {
                                                                 setLikes(response.likes)
                                                                 setDislikes(response.sidlikes)
-                                                            }
+//                                                            }
                                                 },
                                                 dataType: "json"
                                         });
                                         $('#likeButton').css('class', 'icon-thumbs-up');
                                         $('#dislikeButton').css('class', 'icon-thumbs-down highlited');
                                     }
-                                }
+//                                }
                             },
                             dataType: "json"
                         });  

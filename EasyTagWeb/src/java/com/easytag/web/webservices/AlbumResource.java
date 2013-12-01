@@ -179,7 +179,7 @@ public class AlbumResource {
             alMan.likeAlbum(userId, albumId);
             long likes = alMan.getTotalLikes(albumId);
             long dislikes = alMan.getTotalDislikes(albumId);
-            String result = "{\"likes\": " + likes + ", \"dislikes\": " + dislikes;
+            String result = "{\"likes\": \"" + likes + "\", \"dislikes\": \"" + dislikes +"\"}";
             return result;
         } catch (TagException ex) {
             return TagExceptionWrapper.wrapException(ex);
@@ -198,7 +198,7 @@ public class AlbumResource {
             alMan.dislikeAlbum(userId, albumId);
             long likes = alMan.getTotalLikes(albumId);
             long dislikes = alMan.getTotalDislikes(albumId);
-            String result = "{\"likes\": " + likes + ", \"dislikes\": " + dislikes;
+            String result = "{\"likes\": \"" + likes + "\", \"dislikes\": \"" + dislikes + "\"}";
             return result;
         } catch (TagException ex) {
             return TagExceptionWrapper.wrapException(ex);
@@ -217,7 +217,7 @@ public class AlbumResource {
             alMan.deleteVote(userId, albumId);
             long likes = alMan.getTotalLikes(albumId);
             long dislikes = alMan.getTotalDislikes(albumId);
-            String result = "{\"likes\": " + likes + ", \"dislikes\": " + dislikes;
+            String result = "{\"likes\": \"" + likes + "\", \"dislikes\": \"" + dislikes + "\"}";
             return result;
         } catch (TagException ex) {
             return TagExceptionWrapper.wrapException(ex);
@@ -235,11 +235,11 @@ public class AlbumResource {
             }
             if (alMan.isVoted(userId, albumId)) {
                 if (alMan.isLiked(userId, albumId)) {
-                    return "{\"voted\": like";
+                    return "{\"voted\": \"like\"}";
                 }
-                return "{\"voted\": dislike";
+                return "{\"voted\": \"dislike\"}";
             }
-            return "{\"voted\": none}";
+            return "{\"voted\": \"none\"}";
         } catch (TagException ex) {
             return TagExceptionWrapper.wrapException(ex);
         }
@@ -256,7 +256,7 @@ public class AlbumResource {
             }
             long likes = alMan.getTotalLikes(albumId);
             long dislikes = alMan.getTotalDislikes(albumId);
-            String result = "{\"likes\": " + likes + ", \"dislikes\": " + dislikes;
+            String result = "{\"likes\": \"" + likes + "\", \"dislikes\": \"" + dislikes + "\"}";
             return result;
         } catch (TagException ex) {
             return TagExceptionWrapper.wrapException(ex);
