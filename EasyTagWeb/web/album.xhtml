@@ -37,24 +37,22 @@
                                 <span id="dislikesNumber" style="">12</span>
                             </span>
                         </h2>
-                        <div class="col-lg-10" style="padding-left: 0px;">
+                        <div class="col-lg-9" style="padding-left: 0px;">
                             <ol class="breadcrumb">
                                 <li><a href="users.xhtml">All users</a></li>
                                 <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{albumBean.album.creatorId}">#{userBean.userProfile.userFullName}</a></li>
                                 <li class="active">#{albumBean.album.name}</li>
                             </ol>
                         </div>
-                        <div>
-                            <a href="#{request.contextPath}/downloadAlbum.xhtml?albumId=#{albumBean.albumId}">Download this album</a>
-                        </div>
-                        <div class="col-lg-2" style="margin-bottom: 20px;">
+                        <div class="col-lg-3" style="margin-bottom: 20px;">
                             <form style="display: inline;" action="#{request.contextPath}/resources/file/upload" method="POST" enctype="multipart/form-data">
                                 <span class="btn btn-primary fileinput-button #{userBean.getDisabledClass(userBean.current)}" title="Добавить фотографии...">
-                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <i class="glyphicon glyphicon-plus"></i> Добавить...
                                     <input type="file" id="fileupload" name="file" multiple="true"/>
                                 </span>    
                                 <input type="hidden" name="album_id" value="#{albumBean.albumId}" />
                             </form>
+                            <a class="btn btn-primary" href="#{request.contextPath}/downloadAlbum.xhtml?albumId=#{albumBean.albumId}" title="Download this album as zip-archive"><i class="glyphicon glyphicon-save"></i></a>
                             <a href="#editAlbumModal" data-toggle="modal" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}" title="Редактировать альбом...">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </a>
@@ -67,7 +65,7 @@
                 </div><!-- /.row -->
                 <div class="row" style="padding: 0px 15px;" >
                     <c:if test="#{!( empty albumBean.album.description) }">
-                        <h3>
+                        <h3 style="margin-top: 0px;">
                             Description
                         </h3>
                         <p>
