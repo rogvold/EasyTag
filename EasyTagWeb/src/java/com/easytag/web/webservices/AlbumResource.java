@@ -167,9 +167,9 @@ public class AlbumResource {
         return SimpleResponseWrapper.getJsonResponse(jr);
     }
 
-    @POST
+    @GET
     @Path("/{albumId}/like")
-    public String like(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+    public String like(@Context HttpServletRequest req, @PathParam("albumId") long albumId) {
         try {
             HttpSession session = SessionUtils.getSession(req, false);
             Long userId = SessionUtils.getUserId(session);
@@ -186,9 +186,9 @@ public class AlbumResource {
         }
     }
 
-    @POST
+    @GET
     @Path("/{albumId}/dislike")
-    public String dislike(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+    public String dislike(@Context HttpServletRequest req, @PathParam("albumId") long albumId) {
         try {
             HttpSession session = SessionUtils.getSession(req, false);
             Long userId = SessionUtils.getUserId(session);
@@ -205,9 +205,9 @@ public class AlbumResource {
         }
     }
 
-    @POST
+    @GET
     @Path("/{albumId}/cancelLike")
-    public String cancelLike(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+    public String cancelLike(@Context HttpServletRequest req, @PathParam("albumId") long albumId) {
         try {
             HttpSession session = SessionUtils.getSession(req, false);
             Long userId = SessionUtils.getUserId(session);
@@ -245,6 +245,24 @@ public class AlbumResource {
         }
     }
 
+    @GET
+    @Path("/{albumId}/getLikes")
+    public String getLikes(@Context HttpServletRequest req, @PathParam("albumId") long albumId) {
+        try {
+            HttpSession session = SessionUtils.getSession(req, false);
+            Long userId = SessionUtils.getUserId(session);
+            if (userId == null) {
+                throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            long likes = alMan.getTotalLikes(albumId);
+            long dislikes = alMan.getTotalDislikes(albumId);
+            String result = "{\"likes\": " + likes + ", \"dislikes\": " + dislikes;
+            return result;
+        } catch (TagException ex) {
+            return TagExceptionWrapper.wrapException(ex);
+        }
+    }
+    
     @GET
     @Path("/{albumId}/download")
     public Response download(@Context HttpServletRequest request, @PathParam("albumId") long albumId) {
