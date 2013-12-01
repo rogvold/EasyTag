@@ -87,8 +87,7 @@
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#{request.contextPath}/search.xhtml">Search</a></li>
+                    <ul class="nav navbar-nav navbar-right">                       
                         <li>&nbsp;&nbsp;</li>
                         <c:if test="#{!loggedIn}">
                             <li><a data-toggle="modal" href="#myModal" class=""  >Sign In</a></li>
@@ -106,6 +105,13 @@
                                                                 <li><a href="javascript:void();" id="logoutButton" >Log out</a></li> 
                                                             </ul>
                                                         </li>-->
+                             <li>
+                                <form class="navbar-form navbar-left" role="search" action="#{request.contextPath}/search.xhtml" method="get">
+                                    <div class="form-group">
+                                        <input title="Search photos by tag" type="text" name="q" class="form-control" placeholder="Search"/>
+                                    </div>                                
+                                </form>
+                            </li>
                         </c:if>
                     </ul>
                 </div><!-- /.navbar-collapse -->
