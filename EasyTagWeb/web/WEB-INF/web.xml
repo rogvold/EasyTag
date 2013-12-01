@@ -21,9 +21,17 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>LoginzaServlet</servlet-name>
+        <servlet-class>com.easytag.web.servlets.LoginzaServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginzaServlet</servlet-name>
+        <url-pattern>/loginza</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

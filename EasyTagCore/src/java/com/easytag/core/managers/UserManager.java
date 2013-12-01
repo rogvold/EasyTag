@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -56,7 +57,7 @@ public class UserManager implements UserManagerLocal {
         Long userId = user.getId();
         return em.find(UserProfile.class, userId);
     }
-    
+
     @Override
     public User login(String email, String password) throws TagException {
         checkAuthorisationData(email, password);
@@ -80,7 +81,7 @@ public class UserManager implements UserManagerLocal {
         profile.recalculateFullName();
         return em.merge(profile);
     }
-    
+
     private void setEmailToProfile(UserProfile profile, User user, String email) {
         System.out.println("0");
         profile.setEmail(email);
@@ -94,7 +95,7 @@ public class UserManager implements UserManagerLocal {
         em.merge(user);
         System.out.println("4");
     }
-    
+
     @Override
     public UserProfile updateUserProfile(UserProfile profile) {
         return this.updateUserProfile(profile.getId(), profile.getFirstName(), profile.getLastName(), profile.getAvatarSrc(), profile.getEmail(), profile.getDescription());
@@ -176,5 +177,28 @@ public class UserManager implements UserManagerLocal {
             return Collections.emptyList();
         }
         return profiles;
+    }
+
+    @Override
+    public User openIdAuthorization(String openIdKey) throws TagException {
+        if (openIdKey == null) {
+            throw new TagException("openId key is not specified");
+        }
+        Query q = em.createQuery("select u from User u where u.openId = :openId").setParameter("openId", openIdKey);
+        List<User> users = q.getResultList();
+        if (users == null || users.size() == 0) {
+            User u = new User();
+            u.setOpenId(openIdKey);
+
+            User createdUser = em.merge(u);
+            UserProfile profile = new UserProfile(createdUser);
+            em.merge(profile);
+
+            return createdUser;
+        }
+
+        User u = users.get(0);
+        return u;
+
     }
 }

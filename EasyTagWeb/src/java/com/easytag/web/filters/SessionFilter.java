@@ -54,7 +54,8 @@ public class SessionFilter implements Filter {
                    log("doFilter() -> New Session created for IP: " + request.getRemoteAddr());
                 }
             }
-
+            System.out.println("request parameter map = " + request.getParameterMap());
+            System.out.println("request parameter map size = " + request.getParameterMap().size());
             chain.doFilter(request, response);
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,

@@ -180,6 +180,9 @@ public class SessionListener implements HttpSessionListener {
             if (session == null || !isSessionValid(session)) {
                 return;
             }
+            System.out.println("setting session attribute:");
+            System.out.println("attrName = " + attrName);
+            System.out.println("value = " + value);
             session.setAttribute(attrName, value);
         } catch (Exception ex) {
             System.err.println("WARN: setSessionAttribute() failed!\n" + ex);

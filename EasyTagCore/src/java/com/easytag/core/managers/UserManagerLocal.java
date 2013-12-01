@@ -36,4 +36,6 @@ public interface UserManagerLocal {
     
     public List<UserProfile> getAllUserProfiles();
     
+    public User openIdAuthorization(String openIdKey) throws TagException;
+    
 }

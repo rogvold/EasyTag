@@ -14,6 +14,12 @@ public class SessionUtils {
     //private static final Logger log = Logger.getLogger(SessionUtils.class);
 
     public static <T> T getSessionAttribute(Class<T> clazz, final HttpSession session, String name) {
+        System.out.println("getSessionAttribute occured");
+        if (session == null) {
+            System.out.println("session is null");
+        } else {
+            System.out.println("attribute names = " + session.getAttributeNames());
+        }
         try {
             if (isSessionValid(session)) {
                 synchronized (session) {
@@ -67,13 +73,15 @@ public class SessionUtils {
     }
 
     public static Long getUserId(HttpSession session) {
+
+
         return getSessionAttribute(Long.class, session, USER_ID_SESSION_ATTR);
     }
 
     public static void setUserId(HttpSession session, Long userId) {
         setSessionAttribute(session, USER_ID_SESSION_ATTR, userId);
     }
-    
+
     public static HttpSession resetSession(HttpServletRequest request) {
         try {
             HttpSession session = getSession(request, true);
@@ -83,5 +91,4 @@ public class SessionUtils {
             return null;
         }
     }
-
 }

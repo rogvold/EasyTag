@@ -9,7 +9,7 @@ import javax.persistence.*;
  * @author Shaykhlislamov Sabir (email: sha-sabir@yandex.ru)
  */
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -18,6 +18,7 @@ public class User implements Serializable {
     private Long id;
     private String email;
     private String password;
+    private String openId;
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
@@ -44,6 +45,13 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
 
     public String getEmail() {
         return email;
