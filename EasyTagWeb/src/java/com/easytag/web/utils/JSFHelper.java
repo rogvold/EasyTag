@@ -95,8 +95,8 @@ public class JSFHelper {
     }
     
     public Long getCurrentUserId() {
-//        return SessionUtils.getUserId(getSession(true));//WTF????
-        return SessionUtils.getUserId(getSession(false));
+        return SessionUtils.getUserId(getSession(true));//WTF????
+//        return SessionUtils.getUserId(getSession(false));
         
     }
  

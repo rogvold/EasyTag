@@ -159,6 +159,8 @@ public class LoginzaServlet extends HttpServlet {
             if (!SessionUtils.isLoggedIn(request)) {
                 out.println("is not signed in. trying to make authorisation; json = " + json);
                 try {
+                    SessionUtils.resetSession(request);
+
                     openIdAuthorisation(json);
                     System.out.println("isSignedIn = " + SessionUtils.isLoggedIn(request));
                 } catch (TagException ex) {
@@ -191,6 +193,8 @@ public class LoginzaServlet extends HttpServlet {
         System.out.println("openId auth: user = " + user);
         System.out.println("openIdAuthorisation: session = " + session);
 //       session = (HttpSession) facesContext.getExternalContext().getSession(false);
+
+
         SessionListener.setSessionAttribute(session, SessionUtils.USER_ID_SESSION_ATTR, user.getId()); // working with session in servlet...
 //        sm.addSession(session.getId(), (user == null) ? null : user.getId());
     }
