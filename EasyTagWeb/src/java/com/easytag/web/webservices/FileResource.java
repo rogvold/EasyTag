@@ -126,6 +126,7 @@ public class FileResource {
             
             User u = um.getUserById(userId);
             if (u == null) {
+                
                 return Response.status(Status.FORBIDDEN).build();
             }
             

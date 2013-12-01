@@ -195,8 +195,9 @@ public class LoginzaServlet extends HttpServlet {
 //       session = (HttpSession) facesContext.getExternalContext().getSession(false);
 
 
-        SessionListener.setSessionAttribute(session, SessionUtils.USER_ID_SESSION_ATTR, user.getId()); // working with session in servlet...
-//        sm.addSession(session.getId(), (user == null) ? null : user.getId());
+//        SessionListener.setSessionAttribute(session, SessionUtils.USER_ID_SESSION_ATTR, user.getId()); // working with session in servlet...
+        SessionUtils.setUserId(session, user.getId());
+        //        sm.addSession(session.getId(), (user == null) ? null : user.getId());
     }
 
     public String getMD5(String s) {
