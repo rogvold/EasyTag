@@ -88,23 +88,15 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">                       
-                        <li>&nbsp;&nbsp;</li>
+                        <li>&nbsp;</li>
                         <c:if test="#{!loggedIn}">
                             <li><a data-toggle="modal" href="#myModal" class=""  >Sign In</a></li>
                         </c:if>
                         <c:if test="#{loggedIn}">
-                            <li><a href="javascript:void(0);"><b>Welcome, #{userProfile.userFullName}</b></a></li>
+                            <li><a href="javascript:void(0);"><b>Welcome, #{userProfile.firstName}</b></a></li>
                             <li><a href="#{request.contextPath}/profile.xhtml" id="myAlbumsButton" >My profile</a></li>
                             <li><a href="#{request.contextPath}/userAlbums.xhtml" id="myAlbumsButton" >My albums</a></li>
                             <li><a href="javascript:void();" id="logoutButton" >Log out</a></li> 
-                            <!--                            <li class="dropdown">
-                                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Navigation <b class="caret"></b></a>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a href="#{request.contextPath}/profile.xhtml" id="myAlbumsButton" >My profile</a></li>
-                                                                <li><a href="#{request.contextPath}/userAlbums.xhtml" id="myAlbumsButton" >My albums</a></li>
-                                                                <li><a href="javascript:void();" id="logoutButton" >Log out</a></li> 
-                                                            </ul>
-                                                        </li>-->
                              <li>
                                 <form class="navbar-form navbar-left" role="search" action="#{request.contextPath}/search.xhtml" method="get">
                                     <div class="form-group">

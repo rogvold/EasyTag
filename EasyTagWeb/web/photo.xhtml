@@ -55,12 +55,17 @@
                         </div>
 
                         <div class="col-md-3">
-                            <h3>#{photoBean.photo.name}</h3>
-                            <p>#{photoBean.photo.description}</p>
-                            <h3>Tags</h3>
-                            <ul id="tagList">
-                            </ul>
-                            <a href="javascript:void(0);" onclick="toggleTags()" class="btn btn-default">Toggle tags</a>
+                            <div id="photoInfoBlock">
+                                <h4 id="photoNameLabel">#{photoBean.photo.name}</h4>
+                                <p>#{photoBean.photo.description}</p>
+                            </div>
+                            <div id="tagsBlock">
+                                <h4>Tags</h4>
+                                <ul id="tagList">
+                                </ul>
+                            </div>
+                            <br/>
+                            <a href="javascript:void(0);" onclick="toggleTags()" class="btn btn-default">Toggle tags</a>  
                         </div>
 
                     </div>
@@ -262,6 +267,13 @@
                         //]]>
                     </script>
                 </c:if>
+                <style type="text/css">
+                    #photoNameLabel {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                </style>
             </ui:define>
 
         </ui:composition>
