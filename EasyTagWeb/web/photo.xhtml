@@ -161,10 +161,11 @@
                         function appendTag(x, y, w, h, name, id, url) {
                             var query = window.location.hash.substr(1).toLowerCase();
                             var hasTag = (name.toLowerCase().indexOf(query) >= 0);
-                            var color = (hasTag && window.location.hash !== "") ? 'yellow': 'red';
-                            console.log("color: " + color);
+                            var style = (hasTag && window.location.hash !== "")||
+                                    (window.location.hash === "") ? 'border-color: red': 'display: none';
+                            console.log("style: " + style);
                             $('.hs-area').append('<div class="hs-wrap ' + id + '">\n\
-                                <div class="red-spot" style="border-color:' + color +
+                                <div class="red-spot" style="' + style +
                                     '" data-coord="' + x + ',' + y + '" \n\
                                 data-dim="' + w + ',' + h + ',0" data-activeon="hover">\n\
                                 </div><div class="tt-wrap"><div class="tip-tooltip" data-anim="goin" \n\
@@ -184,7 +185,7 @@
                                         $('.' + id + ' .red-spot').removeClass('active')
                                         $('.' + id + ' .tt-wrap').css('display', 'none');
                                     });
-                             if (color === 'yellow') li.css('font-weight', 'bold') 
+                             if (style === 'border-color: red') li.css('font-weight', 'bold') 
                         }
 
                         function appendTags(pId) {
