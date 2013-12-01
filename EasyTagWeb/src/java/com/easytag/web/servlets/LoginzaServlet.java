@@ -159,7 +159,7 @@ public class LoginzaServlet extends HttpServlet {
             if (!SessionUtils.isLoggedIn(request)) {
                 out.println("is not signed in. trying to make authorisation; json = " + json);
                 try {
-                    SessionUtils.resetSession(request);
+                    session = SessionUtils.resetSession(request);
 
                     openIdAuthorisation(json);
                     System.out.println("isSignedIn = " + SessionUtils.isLoggedIn(request));
