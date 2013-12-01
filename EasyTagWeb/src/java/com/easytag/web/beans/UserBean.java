@@ -49,21 +49,29 @@ public class UserBean implements Serializable {
         return userProfile;
     }
     
+    public void hideEmail(User user){
+        if (user != null && !(this.isCurrent())){
+                user.setEmail("hidden");
+            }
+    }
+    
     public void setUserId(String userId) {
         System.out.println("setUserId = " + userId);
         if (userId == null || userId.isEmpty()) {
             this.userId = currentUserBean.getUserId();
-            user = currentUserBean.getUser();
+            user = currentUserBean.getUser();            
             System.out.println("... resolved to " + this.userId);
             if (user != null) { // if user logged in
                 userProfile = userMan.getUserProfile(user);
+                hideEmail(user);
             }
             return;
         }
         try {
             this.userId = Long.parseLong(userId);
-            user = userMan.getUserById(this.userId);
-            userProfile = userMan.getUserProfile(user);
+            user = userMan.getUserById(this.userId);             
+            hideEmail(user);
+            userProfile = userMan.getUserProfile(user);            
         } catch (Exception ex) {
             this.userId = null;
         }

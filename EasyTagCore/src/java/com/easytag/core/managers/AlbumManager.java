@@ -122,14 +122,14 @@ public class AlbumManager implements AlbumManagerLocal {
 
     @Override
     public void deleteVote(Long userId, Long albumId) {
-        Query q = em.createQuery("delete from Votes v where v.userId = :userId and v.albumId = :albumId")
+        Query q = em.createQuery("delete from Vote v where v.userId = :userId and v.albumId = :albumId")
                 .setParameter("userId", userId).setParameter("albumId", albumId);
         q.executeUpdate();
     }
 
     @Override
     public boolean isVoted(Long userId, Long albumId) {
-        Query q = em.createQuery("select v from Votes v where v.userId = :userId and v.albumId = :albumId")
+        Query q = em.createQuery("select v from Vote v where v.userId = :userId and v.albumId = :albumId")
                 .setParameter("userId", userId).setParameter("albumId", albumId);
         List<Vote> votes = q.getResultList();
         return !(votes == null || votes.isEmpty());
@@ -137,21 +137,21 @@ public class AlbumManager implements AlbumManagerLocal {
 
     @Override
     public long getTotalLikes(Long albumId) {
-        Query q = em.createQuery("select count(v) from Votes v where v.albumId = :albumId and v.voteType = :voteType")
+        Query q = em.createQuery("select count(v) from Vote v where v.albumId = :albumId and v.voteType = :voteType")
                 .setParameter("albumId", albumId).setParameter("voteType", VoteType.LIKE);
         return (Long) q.getSingleResult();
     }
 
     @Override
     public long getTotalDislikes(Long albumId) {
-        Query q = em.createQuery("select count(v) from Votes v where v.albumId = :albumId and v.voteType = :voteType")
+        Query q = em.createQuery("select count(v) from Vote v where v.albumId = :albumId and v.voteType = :voteType")
                 .setParameter("albumId", albumId).setParameter("voteType", VoteType.DISLIKE);
         return (Long) q.getSingleResult();
     }
 
     @Override
     public boolean isLiked(Long userId, Long albumId) {
-        Query q = em.createQuery("select v from Votes v where v.userId = :userId and v.albumId = :albumId and v.voteType = :voteType")
+        Query q = em.createQuery("select v from Vote v where v.userId = :userId and v.albumId = :albumId and v.voteType = :voteType")
                 .setParameter("userId", userId).setParameter("albumId", albumId).setParameter("voteType", VoteType.LIKE);
         List<Vote> votes = q.getResultList();
         return !(votes == null || votes.isEmpty());

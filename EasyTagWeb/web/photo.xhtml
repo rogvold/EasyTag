@@ -40,7 +40,7 @@
                                 <a href="#editPhotoModal" data-toggle="modal" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}" title="Edit info...">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                 </a>
-                                <a href="#{request.contextPath}/tagEditor/Editor.html?id=#{photoBean.photoId}" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}" title="Edit tags...">
+                                <a href="#{request.contextPath}/tagEditor/Editor.xhtml?id=#{photoBean.photoId}" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}" title="Edit tags...">
                                     <i class="glyphicon glyphicon-tags"></i>
                                 </a>
                             </div>
@@ -54,13 +54,20 @@
                             <img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.photo.fileId}"/>
                         </div>
 
-                        <div class="col-md-3">
-                            <h3>#{photoBean.photo.name}</h3>
-                            <p>#{photoBean.photo.description}</p>
-                            <h3>Tags</h3>
-                            <ul id="tagList">
-                            </ul>
-                            <a href="javascript:void(0);" onclick="toggleTags()" class="btn btn-default">Toggle tags</a>
+                        <div class="col-md-3" id="info">
+                            <div id="photoInfoBlock">
+                                <h4 id="photoNameLabel" title="Name: #{photoBean.photo.name}">#{photoBean.photo.name}</h4>
+                                <p id="photoDescriptionLabel" title="Description">#{photoBean.photo.description}</p>
+                                <p id="photoTagsLabel" title="Key words"><b>Key words:</b> #{photoBean.photo.tags}</p>
+                                <br/>
+                            </div>
+                            <div id="tagsBlock">
+                                <h4>Tags</h4>
+                                <ul id="tagList">
+                                </ul>
+                            </div>
+                            <br/>
+                            <a href="javascript:void(0);" onclick="toggleTags()" class="btn btn-default">Toggle tags</a>  
                         </div>
 
                     </div>
@@ -185,7 +192,7 @@
                                         $('.' + id + ' .red-spot').removeClass('active')
                                         $('.' + id + ' .tt-wrap').css('display', 'none');
                                     });
-                             if (style === 'border-color: red') li.css('font-weight', 'bold') 
+                             if (style === 'border-color: red' && window.location.hash !== "") li.css('font-weight', 'bold') 
                         }
 
                         function appendTags(pId) {
@@ -222,8 +229,15 @@
                         function toggleTags() {
                             $('.hs-area .hs-wrap').toggle();
                         }
+                        
+                        function showAllTags() {
+                            $('.hs-area .hs-wrap .red-spot').css('display', 'block');                            
+                        }
 
                         $(function() {
+                            if (window.location.hash !== ""){
+                                $('#info').append('<a href="javascript:void(0);" onclick="showAllTags(); $(this).hide()" class="btn btn-default">Shaw all tags</a>');
+                            }
                             $('.hs-area img').attr('data-imgdim', ["#{photoBean.photo.width}", "#{photoBean.photo.height}"].join(','));
                             refreshTags();
                             $(window).resize(function() {
@@ -263,6 +277,13 @@
                         //]]>
                     </script>
                 </c:if>
+                <style type="text/css">
+                    #photoNameLabel {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                </style>
             </ui:define>
 
         </ui:composition>

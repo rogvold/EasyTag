@@ -4,7 +4,6 @@ import com.easytag.core.entity.jpa.Album;
 import com.easytag.core.entity.jpa.EasyTagFile;
 import com.easytag.core.entity.jpa.Photo;
 import com.easytag.core.managers.AlbumManagerLocal;
-import com.easytag.core.managers.FileManager;
 import com.easytag.core.managers.FileManagerLocal;
 import com.easytag.core.managers.PhotoManagerLocal;
 import com.easytag.exceptions.TagException;
@@ -29,7 +28,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -169,9 +167,9 @@ public class AlbumResource {
         return SimpleResponseWrapper.getJsonResponse(jr);
     }
 
-    @POST
+    @GET
     @Path("/{albumId}/like")
-    public String like(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+    public String like(@Context HttpServletRequest req, @PathParam("albumId") long albumId) {
         try {
             HttpSession session = SessionUtils.getSession(req, false);
             Long userId = SessionUtils.getUserId(session);
@@ -181,16 +179,16 @@ public class AlbumResource {
             alMan.likeAlbum(userId, albumId);
             long likes = alMan.getTotalLikes(albumId);
             long dislikes = alMan.getTotalDislikes(albumId);
-            String result = "{\"likes\": " + likes + ", \"dislikes\": " + dislikes;
+            String result = "{\"likes\": \"" + likes + "\", \"dislikes\": \"" + dislikes +"\"}";
             return result;
         } catch (TagException ex) {
             return TagExceptionWrapper.wrapException(ex);
         }
     }
 
-    @POST
+    @GET
     @Path("/{albumId}/dislike")
-    public String dislike(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+    public String dislike(@Context HttpServletRequest req, @PathParam("albumId") long albumId) {
         try {
             HttpSession session = SessionUtils.getSession(req, false);
             Long userId = SessionUtils.getUserId(session);
@@ -200,16 +198,16 @@ public class AlbumResource {
             alMan.dislikeAlbum(userId, albumId);
             long likes = alMan.getTotalLikes(albumId);
             long dislikes = alMan.getTotalDislikes(albumId);
-            String result = "{\"likes\": " + likes + ", \"dislikes\": " + dislikes;
+            String result = "{\"likes\": \"" + likes + "\", \"dislikes\": \"" + dislikes + "\"}";
             return result;
         } catch (TagException ex) {
             return TagExceptionWrapper.wrapException(ex);
         }
     }
 
-    @POST
+    @GET
     @Path("/{albumId}/cancelLike")
-    public String cancelLike(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+    public String cancelLike(@Context HttpServletRequest req, @PathParam("albumId") long albumId) {
         try {
             HttpSession session = SessionUtils.getSession(req, false);
             Long userId = SessionUtils.getUserId(session);
@@ -219,7 +217,7 @@ public class AlbumResource {
             alMan.deleteVote(userId, albumId);
             long likes = alMan.getTotalLikes(albumId);
             long dislikes = alMan.getTotalDislikes(albumId);
-            String result = "{\"likes\": " + likes + ", \"dislikes\": " + dislikes;
+            String result = "{\"likes\": \"" + likes + "\", \"dislikes\": \"" + dislikes + "\"}";
             return result;
         } catch (TagException ex) {
             return TagExceptionWrapper.wrapException(ex);
@@ -237,16 +235,34 @@ public class AlbumResource {
             }
             if (alMan.isVoted(userId, albumId)) {
                 if (alMan.isLiked(userId, albumId)) {
-                    return "{\"voted\": like";
+                    return "{\"voted\": \"like\"}";
                 }
-                return "{\"voted\": dislike";
+                return "{\"voted\": \"dislike\"}";
             }
-            return "{\"voted\": none}";
+            return "{\"voted\": \"none\"}";
         } catch (TagException ex) {
             return TagExceptionWrapper.wrapException(ex);
         }
     }
 
+    @GET
+    @Path("/{albumId}/getLikes")
+    public String getLikes(@Context HttpServletRequest req, @PathParam("albumId") long albumId) {
+        try {
+            HttpSession session = SessionUtils.getSession(req, false);
+            Long userId = SessionUtils.getUserId(session);
+            if (userId == null) {
+                throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            long likes = alMan.getTotalLikes(albumId);
+            long dislikes = alMan.getTotalDislikes(albumId);
+            String result = "{\"likes\": \"" + likes + "\", \"dislikes\": \"" + dislikes + "\"}";
+            return result;
+        } catch (TagException ex) {
+            return TagExceptionWrapper.wrapException(ex);
+        }
+    }
+    
     @GET
     @Path("/{albumId}/download")
     public Response download(@Context HttpServletRequest request, @PathParam("albumId") long albumId) {
@@ -256,15 +272,17 @@ public class AlbumResource {
             if (userId == null) {
                 throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
             }
+            Album album = alMan.getAlbumById(albumId);
             List<Photo> photos = phMan.getPhotosInAlbum(albumId);
-            List<File> photoFiles = new ArrayList<File>(photos.size());
+            List<EasyTagFile> photoFiles = new ArrayList<EasyTagFile>(photos.size());
             for (Photo photo : photos) {
                 EasyTagFile easyTagFile = fiMan.findFileById(photo.getFileId());
-                photoFiles.add(new File(easyTagFile.getCurrentPath()));
+                photoFiles.add(easyTagFile);
             }
-            File zipFile = File.createTempFile("aloha", "omigo.zip");
+            File zipFile = File.createTempFile("aloha", "amigo.zip");
             zipFiles(zipFile, photoFiles);
-            EasyTagFile file = fiMan.addFile(userId, zipFile.getName(), zipFile.getAbsolutePath(), "application/zip");
+            String zipFileName = (album.getName()==null ? "album-"+albumId : "album-"+album.getName()) + ".zip";
+            EasyTagFile file = fiMan.addFile(userId, zipFileName, zipFile.getAbsolutePath(), "application/zip");
             return Response.ok(SimpleResponseWrapper.getJsonResponse(new JsonResponse(ResponseConstants.OK, null, file)))
                     .build();
         } catch (TagException ex) {
@@ -276,11 +294,11 @@ public class AlbumResource {
         }
     }
 
-    public static final void zipFiles(File zip, List<File> files) throws IOException {
+    public static final void zipFiles(File zip, List<EasyTagFile> files) throws IOException {
         ZipOutputStream zos = null;
         try {
             zos = new ZipOutputStream(new FileOutputStream(zip));
-            for (File file : files) {
+            for (EasyTagFile file : files) {
                 zipFile(zos, file);
             }
         } finally {
@@ -294,13 +312,13 @@ public class AlbumResource {
         }
     }
 
-    private static final void zipFile(ZipOutputStream zos, File file) throws IOException {
-        String name = file.getName();
+    private static final void zipFile(ZipOutputStream zos, EasyTagFile file) throws IOException {
+        String name = file.getOriginalName();
         ZipEntry entry = new ZipEntry(name);
         zos.putNextEntry(entry);
         FileInputStream fis = null;
         try {
-            fis = new FileInputStream(file);
+            fis = new FileInputStream(new File(file.getCurrentPath()));
             byte[] byteBuffer = new byte[1024];
             int bytesRead = -1;
             while ((bytesRead = fis.read(byteBuffer)) != -1) {
