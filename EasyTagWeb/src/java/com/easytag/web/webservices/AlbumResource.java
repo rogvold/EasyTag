@@ -226,9 +226,9 @@ public class AlbumResource {
         }
     }
 
-    @POST
+    @GET
     @Path("/{albumId}/isVoted")
-    public String isVoted(@Context HttpServletRequest req, @PathParam("albumId") long albumId, @FormParam("data") String data) {
+    public String isVoted(@Context HttpServletRequest req, @PathParam("albumId") long albumId) {
         try {
             HttpSession session = SessionUtils.getSession(req, false);
             Long userId = SessionUtils.getUserId(session);
