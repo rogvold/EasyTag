@@ -140,15 +140,16 @@
                                     });
                         }
                         
-                        function refreshView(profile) {
-                            $('#emailView').text(profile.email);
+                        function refreshView(profile) {                            
+                            var email = #{userBean.current} ? profile.email: 'hidden';
+                            $('#emailView').text(email);
                             $('#firstNameView').text(profile.firstName);
                             $('#lastNameView').text(profile.lastName);
                             $('#infoView').text(profile.description);
                             
                             $('.myFullName').text(profile.fullName);
                             
-                            $('#profileEdit input#email').val(profile.email);
+                            $('#profileEdit input#email').val(email);
                             $('#profileEdit input#firstName').val(profile.firstName);
                             $('#profileEdit input#lastName').val(profile.lastName);
                             $('#profileEdit input#description').val(profile.description);

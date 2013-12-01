@@ -1,453 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"> 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>My Editor</title>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+        <f:viewAction action="#{userBean.redirectIfNotAuthorized}" />
+        <f:viewParam name="id" required="true" value="#{photoBean.photoId}" requiredMessage="PHOTO_ID is required"/>
+        <f:viewAction action="#{albumBean.setAlbumId(photoBean.photo.albumId)}" if="#{!empty param['id']}"/>
+        <f:viewAction action="#{userBean.setUserId(albumBean.album.creatorId)}" if="#{!empty param['id']}"/>
+    </f:metadata>
+    <h:body>
+        <ui:composition template="../templates/main.xhtml">
 
-        <link rel="shortcut icon" href="images/favicon.ico"/>
+            <ui:param name="windowTitle" value="Editor - TagsCool"/>
+            <ui:param name="user" value="#{currentUserBean.user}"/>
+            <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
+            <ui:param name="userProfile" value="#{userBean.userProfile}"/>
 
-        <link rel="stylesheet" type="text/css" href="css/minified/jquery-hotspotter-1.7.9.min.css" />
-        <link rel="stylesheet" type="text/css" href="css/ui-darkness/jquery-ui-1.9.2.custom.min.css" />
-        <link rel="stylesheet" type="text/css" href="css/editor-1.3.2.min.css" />
+            <ui:define name="slider">
 
-        <link href='http://fonts.googleapis.com/css?family=Redressed' rel='stylesheet' type='text/css'/>
+            </ui:define>
 
-<!--        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="js/beautify-html.min.js"></script>
-<!--        <script type="text/javascript" src="css/minified/jquery-hotspotter-1.7.9.min.js"></script>-->
-        <script type="text/javascript" src="js/editor-1.3.2.js"></script>
-        <script src="http://malsup.github.com/jquery.form.js"></script>
+            <ui:define name="main_content">
+                <c:if test="#{photoBean.photo ne null}">
+                    <div class="row" style="padding-top: 20px;">
+                        <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding-left: 0px;">
+                                <ol class="breadcrumb">
+                                    <li><a href="../users.xhtml">All users</a></li>
+                                    <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{userBean.userId}">user #{userBean.userId}</a></li>
+                                    <li><a href="#{request.contextPath}/album.xhtml?id=#{albumBean.albumId}">#{albumBean.album.name}</a></li>
+                                    <li class="active">
+                                        <a href="#{request.contextPath}/photo.xhtml?id=#{photoBean.photo.id}">
+                                            #{photoBean.photo.name}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        Editor
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
 
-        <script type="text/javascript">
-            /*<![CDATA[*/
-            var currentPhotoId;        
-            
-            function getURLParameter(name) {
-                return decodeURI(
-                (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
-            );
-            }
-            
-            editPhoto = function(fileId) { // TODO проверка на существование файла
-                //currentPhotoId = fileId;
-                imgURL = '../resources/file/download?id=' + fileId + '&inline=1';
-                Editor.initNewImage(imgURL);
-                Editor.isLocalFile= false;
-            };
-            
-            showPhoto = function() {                
-                Editor.togglePreview();
-            };
-            
-            setContent = function(i, content, url){
-                Editor.spotPool[i].ttContent = content;
-                Editor.spotPool[i].spLink = url;
-            };
-            
-            addNewSpot = function(x, y, w, h, content, url){
-                Editor.newSpot(new Spot("red-spot",x,y));
-                var i = Editor.spotPool.length - 1;
-                
-                Editor.curSpot.$edSpot.css('width', w);
-                Editor.curSpot.$edSpot.css('height', h);
-                Editor.updateSpotDim();
-                setContent(i, content, url);      
-            } 
-            
-            uploadFile = function(){
-                var options = {
-                    //target: "#testP", 
-                    dataType: 'json',         
-                    //url: "form.php",
-                    success: function(responseText, statusText)  {
-                        if (statusText === 'success'){
-                            //alert(JSON.stringify(responseText) + ' ' + statusText);
-                            // alert(responseText);
-                            currentPhotoId = responseText.data.id;
-                            editPhoto(responseText.data.fileId);
-                        }
-                    }
-                };
-                $("#myForm").ajaxSubmit(options);
-            }
-            
-            saveTags = function(pId){
-                $.ajax({
-                    type: "GET",
-                    url: "../resources/Tag/removeEasyTags?photoId=" + pId,                   
-                    success: function(responseText, statusText)  {
-                        if (statusText === 'success'){                            
-                            console.log(JSON.stringify(responseText));
-                            addTagsToDB(pId);                            
-                        }
-                    },
-                    dataType: "json"
-                });
-            }
-            
-            addTagsToDB = function(pId){
-                
-                
-                var spots = Editor.spotPool;
-                var syn = spots.length;
-                for(var i = 0; i < spots.length; i++){
-                    var tag = {
-                        photoId: pId,
-                        name: spots[i].ttContent,
-                        description: "tag" + i,
-                        x: spots[i].coord[0],
-                        y: spots[i].coord[1],
-                        width: spots[i].dim[0], 
-                        height: spots[i].dim[1], 
-                        externalUrl: spots[i].spLink
-                    }; 
-                    
-                    $.post(
-                    "../resources/Tag/create",
-                    {data: JSON.stringify(tag)},
-                    function(responseText, statusText)  {
-                        if (statusText === 'success'){
-                            //alert(JSON.stringify(responseText) + ' ' + statusText);
-                            // alert(responseText);
-                            console.log(JSON.stringify(responseText));
-                            syn--;                                
-                            if (syn == 0){
-                                document.location.href = '../photo.xhtml?id=' + pId;    
-                            }
-                        }
-                    },
-                    'json'
-                );
-                    //alert(JSON.stringify(tag1));
-                }                  
-            };
-            
-            loadTags = function(pId){
-            
-                $.ajax({
-                    type: "GET",
-                    url: "../resources/Tag/getEasyTags?photoId=" + pId,                   
-                    success: function(responseText, statusText)  {
-                        if (statusText === 'success'){                            
-                            console.log(JSON.stringify(responseText));
-                            spots = responseText.data;
-                            for(var i = 0; i < spots.length; i++){
-                                addNewSpot(spots[i].x, 
-                                spots[i].y, 
-                                spots[i].width, 
-                                spots[i].height,
-                                spots[i].name,
-                                spots[i].externalUrl);
-                            }  
-                            $('#spotContent').attr('value', Editor.curSpot.ttContent);
-                            $('#spotUrl').attr('value', Editor.curSpot.spLink);
-                        }
-                    },
-                    dataType: "json"
-                });
-            
-            }
-            
-            
-            getIm = function(){
-                Editor.getCode();
-                console.log($("#gcode-txt").val());
-                $('#gcode-dialog').dialog('close');
-            }
-            
-            viewPh = function(){
-                Editor.getCode();
-                var code = $("#gcode-txt").val();
-                $('body').empty().append(code);
-                $('.hs-area').hotspotter();
-            }
-            
-            $(function() {		  
-                $('#spotContent').bind('keyup click blur focus change paste', function() {
-                    Editor.curSpot.ttContent = $(this).val();
-                });
-                
-                $('#spotUrl').bind('keyup click blur focus change paste', function() {
-                    Editor.curSpot.spLink = $(this).val();
-                });
-                
-                currentPhotoId = getURLParameter('id');
-                $.ajax({
-                    type: "GET",
-                    url: "../resources/Photo/getPhoto?photoId=" + currentPhotoId,                   
-                    success: function(responseText, statusText)  {
-                        if (statusText === 'success'){                            
-                            editPhoto(responseText.data.fileId);
-                            loadTags(currentPhotoId);
-                        }
-                    },
-                    dataType: "json"
-                });
-            });
-            /*]]>*/
-        </script>
+                    </div>
 
-    </head>
-    <body>
-        <div class="ed-top">
-            <button id="nimg-btn" title="New Image"><span class="btn-icon"><img src="images/new-img.png" /></span>New Image</button>
-            <button id="prev-btn" title="Start Preview  (ctrl + alt)"><span class="btn-icon"><img src="images/start-prev.png" /></span>Preview</button>
-            <button id="gcode-btn" title="Get Code"><span class="btn-icon"><img src="images/get-code.png" /></span>Get Code</button>
-            <button id="load-code-btn" title="Load Code"><span class="btn-icon"><img src="images/load-code.png" /></span>Load Code</button>
-            <br /><br /><br />
-            <span class="spot-options">
-                <button id="clone-btn" title="Clone (ctrl + c)"><span class="btn-icon"><img src="images/clone.png" /></span></button>
-                <button id="del-btn" title="Delete (DELETE)"><span class="btn-icon"><img src="images/del.png" /></span></button>
-                <button id="link-btn" title="Add Link"><span class="btn-icon"><img src="images/add-link.png" /></span></button>
-            </span>
-        </div>
+                    <div class="row">
 
-        <div class="ed-left">
-            <div class="spot-bar">
-                <button id="red-spot-btn" title="Red Spot"><img src="images/red-spot.png" /></button>
-                <button id="glass-spot-btn" title="Glass Spot"><img src="images/glass-spot.png" /></button>
-                <button id="shadow-spot-btn" title="Shadow Spot"><img src="images/shadow-spot.png" /></button>
-                <button id="sniper-spot-btn" title="Sniper Spot"><img src="images/sniper-spot.png" /></button>
-                <button id="invisible-spot-btn" title="Invisible Spot"> </button>
-                <button id="onhover-spot-btn" title="On Hover Spot"><img src="images/onhover-spot.png" /></button>
-                <button id="img-spot-btn" title="Image Spot"><img src="images/img-spot.png" /></button>
-            </div>
-        </div>
+                        <!-- editor is here-->
 
-        <div class="ed-center">
-            <div class="edit-area" tabindex="-1">
-                <img id= "ed-img" />
-            </div>
-        </div>
 
-        <div class="ed-right" hidden="true">  
-            <div class="option-bar">
-                <div class="img-resp-container">
-                    <p class="opt-title">Image</p>
-                    <input type="checkbox" id="img-responsive"/> Responsive / Fluid <img title="Choose if you are going to serve the same image with different resolutions or use as a fluid image to allow scaling &amp; repositioning of your spots" src="images/help.png" />
-                </div>
+                        <div class="ed-top">
+                            <button id="nimg-btn" title="New Image"><span class="btn-icon"><img src="images/new-img.png" /></span>New Image</button>
+                            <button id="prev-btn" title="Start Preview  (ctrl + alt)"><span class="btn-icon"><img src="images/start-prev.png" /></span>Preview</button>
+                            <button id="gcode-btn" title="Get Code"><span class="btn-icon"><img src="images/get-code.png" /></span>Get Code</button>
+                            <button id="load-code-btn" title="Load Code"><span class="btn-icon"><img src="images/load-code.png" /></span>Load Code</button>
+                            <br /><br /><br />
+                            <span class="spot-options">
+                                <button id="clone-btn" title="Clone (ctrl + c)"><span class="btn-icon"><img src="images/clone.png" /></span></button>
+                                <button id="del-btn" title="Delete (DELETE)"><span class="btn-icon"><img src="images/del.png" /></span></button>
+                                <button id="link-btn" title="Add Link"><span class="btn-icon"><img src="images/add-link.png" /></span></button>
+                            </span>
+                        </div>
 
-                <form class="spot-options" id="option-frm">
-                    <p class="opt-title">Spot</p>
-                    <table>
-                        <tr>
-                            <td>Type:</td>
-                            <td><select id="sp-type">
-                                    <option>General</option>
-                                    <option>Aim</option>
-                                </select></td>
-                            <td><img title="With 'general' you can use tip &amp; bubble tooltips , 'Aim' to use aiming effect &amp; show tooltip outside image" src="images/help.png" /></td>
-                        </tr>
+                        <div class="ed-left">
+                            <div class="spot-bar">
+                                <button id="red-spot-btn" title="Red Spot"><img src="images/red-spot.png" /></button>
+                                <button id="glass-spot-btn" title="Glass Spot"><img src="images/glass-spot.png" /></button>
+                                <button id="shadow-spot-btn" title="Shadow Spot"><img src="images/shadow-spot.png" /></button>
+                                <button id="sniper-spot-btn" title="Sniper Spot"><img src="images/sniper-spot.png" /></button>
+                                <button id="invisible-spot-btn" title="Invisible Spot"> </button>
+                                <button id="onhover-spot-btn" title="On Hover Spot"><img src="images/onhover-spot.png" /></button>
+                                <button id="img-spot-btn" title="Image Spot"><img src="images/img-spot.png" /></button>
+                            </div>
+                        </div>
 
-                        <tr>
-                            <td>Animation:</td>
-                            <td><input type="checkbox" id="sp-anim" checked="" /></td>
-                            <td><img title="if unchecked the tooltip will be shown without the aiming animation" src="images/help.png" /></td>
-                        </tr>
+                        <div class="ed-center">
+                            <div class="edit-area" tabindex="-1">
+                                <img id= "ed-img" class="img-responsive" data-imgdim="#{photoBean.photo.width},#{photoBean.photo.height}" src="#{request.contextPath}/resources/file/download?id=#{photoBean.photo.fileId}" />
+                            </div>
+                        </div>
 
-                        <tr>
-                            <td>Active on:</td>
-                            <td><select id="sp-activeon">
-                                    <option>hover</option>
-                                    <option>click</option>
-                                    <option>always</option>
-                                </select></td>
-                        </tr>
+                        <div class="ed-right" hidden="true">  
+                            <div class="option-bar">
+                                <div class="img-resp-container">
+                                    <p class="opt-title">Image</p>
+                                    <input type="checkbox" id="img-responsive"/> Responsive / Fluid <img title="Choose if you are going to serve the same image with different resolutions or use as a fluid image to allow scaling &amp; repositioning of your spots" src="images/help.png" />
+                                </div>
 
-                        <tr>
-                            <td>b-radius:</td>
-                            <td><input type="text" id="sp-bradius"/></td>
-                            <td><img title="Specifiy border-radius style. Type number or use spin buttons beside to see effect" src="images/help.png" /></td>
-                        </tr>
+                                <form class="spot-options" id="option-frm">
+                                    <p class="opt-title">Spot</p>
+                                    <table>
+                                        <tr>
+                                            <td>Type:</td>
+                                            <td><select id="sp-type">
+                                                    <option>General</option>
+                                                    <option>Aim</option>
+                                                </select></td>
+                                            <td><img title="With 'general' you can use tip &amp; bubble tooltips , 'Aim' to use aiming effect &amp; show tooltip outside image" src="images/help.png" /></td>
+                                        </tr>
 
-                        <tr>
-                            <td>Spot name:</td>
-                            <td><input type="text" id="sp-name" /></td>
-                            <td><img title="Have a link to your spot like 'www.yoursite.com/aa.html#spotname' when navigating to this link the plugin will scroll to where image is located &amp; trigger your spot!" src="images/help.png" /></td>
-                        </tr>
-                    </table>
+                                        <tr>
+                                            <td>Animation:</td>
+                                            <td><input type="checkbox" id="sp-anim" checked="" /></td>
+                                            <td><img title="if unchecked the tooltip will be shown without the aiming animation" src="images/help.png" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Active on:</td>
+                                            <td><select id="sp-activeon">
+                                                    <option>hover</option>
+                                                    <option>click</option>
+                                                    <option>always</option>
+                                                </select></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>b-radius:</td>
+                                            <td><input type="text" id="sp-bradius"/></td>
+                                            <td><img title="Specifiy border-radius style. Type number or use spin buttons beside to see effect" src="images/help.png" /></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Spot name:</td>
+                                            <td><input type="text" id="sp-name" /></td>
+                                            <td><img title="Have a link to your spot like 'www.yoursite.com/aa.html#spotname' when navigating to this link the plugin will scroll to where image is located &amp; trigger your spot!" src="images/help.png" /></td>
+                                        </tr>
+                                    </table>
 
 
 
 
-                    <p class="opt-title">Tooltip</p>
-                    <button id="tt-content-btn">
-                        <span class="btn-icon"><img src="images/edit-tooltip.png" /></span>Edit Content</button> <br/>
-                        <table id="tooltip-option">
-                            <tr>
-                                <td>Type:</td>
-                                <td><select id="tt-type">
-                                        <option>tip</option>
-                                        <option>bubble</option>
-                                    </select></td>
-                            </tr>
+                                    <p class="opt-title">Tooltip</p>
+                                    <button id="tt-content-btn">
+                                        <span class="btn-icon"><img src="images/edit-tooltip.png" /></span>Edit Content</button> <br/>
+                                    <table id="tooltip-option">
+                                        <tr>
+                                            <td>Type:</td>
+                                            <td><select id="tt-type">
+                                                    <option>tip</option>
+                                                    <option>bubble</option>
+                                                </select></td>
+                                        </tr>
 
-                            <tr>
-                                <td>Animation:</td>
-                                <td><select id="tt-anim">
-                                        <option>goin</option>
-                                        <option>fade</option>
-                                        <option>none</option>
-                                    </select></td>
-                            </tr>
+                                        <tr>
+                                            <td>Animation:</td>
+                                            <td><select id="tt-anim">
+                                                    <option>goin</option>
+                                                    <option>fade</option>
+                                                    <option>none</option>
+                                                </select></td>
+                                        </tr>
 
-                            <tr>
-                                <td>Direction:</td>
-                                <td><select id="tt-dir">
-                                        <option>top</option>
-                                        <option>bottom</option>
-                                        <option>right</option>
-                                        <option>left</option>
-                                    </select></td>
-                            </tr>
+                                        <tr>
+                                            <td>Direction:</td>
+                                            <td><select id="tt-dir">
+                                                    <option>top</option>
+                                                    <option>bottom</option>
+                                                    <option>right</option>
+                                                    <option>left</option>
+                                                </select></td>
+                                        </tr>
 
-                            <tr>
-                                <td>Width:</td>
-                                <td><input type="text" id="tt-width"/></td>
-                                <td><img title="Set custom width for tooltip in px , or leave it blank to auto resize with your content" src="images/help.png" /></td>
-                            </tr>
+                                        <tr>
+                                            <td>Width:</td>
+                                            <td><input type="text" id="tt-width"/></td>
+                                            <td><img title="Set custom width for tooltip in px , or leave it blank to auto resize with your content" src="images/help.png" /></td>
+                                        </tr>
 
-                            <tr>
-                                <td>Position:</td>
-                                <td><input type="text" id="tt-pos"/></td>
-                                <td><img title="Tooltip position relative to element , setting positive value will move tooltip to right for top &amp; bottom directions or down for right &amp; left directions , reverse with negative" src="images/help.png" /></td>
-                            </tr>
+                                        <tr>
+                                            <td>Position:</td>
+                                            <td><input type="text" id="tt-pos"/></td>
+                                            <td><img title="Tooltip position relative to element , setting positive value will move tooltip to right for top &amp; bottom directions or down for right &amp; left directions , reverse with negative" src="images/help.png" /></td>
+                                        </tr>
 
-                            <tr>
-                                <td>Color</td>
-                                <td><select id="tt-color">
-                                        <option>white</option>
-                                        <option>black</option>
-                                    </select></td>
-                            </tr>
-                        </table>
-                </form>
-            </div>
-        </div>
+                                        <tr>
+                                            <td>Color</td>
+                                            <td><select id="tt-color">
+                                                    <option>white</option>
+                                                    <option>black</option>
+                                                </select></td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
 
-        <div class="ed-right">
-            <div class="option-bar">
-                <form class="spot-options" id="option-frm" style="display: block;">
-                    <p class="opt-title">Params</p>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>left:</td>
-                                <td> <input id="spotLeft" value="0"/> </td>
-                            </tr>
-                            <tr>
-                                <td>top:</td>
-                                <td> <input id="spotTop" value="0"/> </td>
-                            </tr>
-                            <tr>
-                                <td>width:</td>
-                                <td> <input id="spotWidth" value="0"/> </td>
-                            </tr>
-                            <tr>
-                                <td>height:</td>
-                                <td> <input id="spotHeight" value="0"/> </td>
-                            </tr>
-                            <tr>
-                                <td>content:</td>
-                                <td> <input id="spotContent" value=""/> </td>
-                            </tr>
-                            <tr>
-                                <td>url:</td>
-                                <td> <input id="spotUrl" value=""/> </td>
-                            </tr>
-                        </tbody>
-                    </table>                        
-                </form>
-                <form id="myForm" style="display:none" action="../resources/file/upload" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="file" value="Choose image..." />
-                    <input type="text" name="album_id" value="" />                   
-                </form>
-                <!--<p id="testP">  </p>-->                
-                <button onclick="uploadFile();" style="display:none"> upload</button>
-                <button onclick="saveTags(currentPhotoId);"> save</button>
-            </div>			
-        </div>
+                        <div class="ed-right" style="position: fixed; right: 50px; width: 250px;">
+                            <div class="option-bar" style="max-width: 400px; color: black;" >
+                                <form class="spot-options" id="option-frm" style="display: block;">
+                                    <!--                                    <p class="opt-title">Params</p>-->
+                                    <table>
+                                        <tbody>
+                                            <tr  style="display: none;" >
+                                                <td>left:</td>
+                                                <td> <input id="spotLeft" class="form-control" value="0"/> </td>
+                                            </tr>
+                                            <tr style="display: none;">
+                                                <td>top:</td>
+                                                <td> <input id="spotTop"  class="form-control"  value="0"/> </td>
+                                            </tr>
+                                            <tr style="display: none;">
+                                                <td>width:</td>
+                                                <td> <input id="spotWidth"  class="form-control"  value="0"/> </td>
+                                            </tr>
+                                            <tr style="display: none;">
+                                                <td>height:</td>
+                                                <td> <input id="spotHeight"  class="form-control"  value="0"/> </td>
+                                            </tr>
+                                            <tr>
+                                                <td>content:</td>
+                                                <td> <input id="spotContent"  class="form-control"  value=""/> </td>
+                                            </tr>
+                                            <tr>
+                                                <td>url:</td>
+                                                <td> <input id="spotUrl"  class="form-control"  value=""/> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <span class="btn btn-primary" style="right: 0; display: block; width: 250px;" onclick="saveTags(currentPhotoId);">
+                                        <i class="glyphicon glyphicon-ok"></i>
+                                        Save
+                                    </span>
+                                </form>
+                                <form id="myForm" style="display:none" action="../resources/file/upload" method="POST" enctype="multipart/form-data">
+                                    <input type="file" name="file" value="Choose image..." />
+                                    <input type="text" name="album_id" value="" />                   
+                                </form>
+                                <!--<p id="testP">  </p>-->                                                                                
+                            </div>
+                        </div>
 
-        <!-- Dialogs -->
-        <div id="new-img-dialog">
-            <div id="new-i-d-tabs">
-                <ul>
-                    <li><a href="#img-url">URL</a></li>
-                    <li class="html5-local-file"><a href="#img-local">Local Image</a></li>
-                </ul>
 
-                <div id="img-url">
-                    <p>Image URL:</p>
-                    <input type="text" id="img-url-txt" />
-                </div>
+                    </div>
 
-                <div class="html5-local-file" id="img-local">
-                    <p>Get Local File:</p>
-                    <input id="img-file-txt" type="file" accept="image/*" />
-                </div>
-            </div>
-        </div>
+                </c:if>
+            </ui:define>
 
-        <div id="gcode-dialog">
-            HTML:
-            <textarea id="gcode-txt"></textarea>
-
-            <br /><br />
-            <input type="checkbox" id="remove-formatting"/>
-                <label for="remove-formatting">Remove Formatting "for use with wordpress"</label>
-
-                <div class="ui-widget" id="local-file-notice">
-                    <div class="ui-state-error ui-corner-all">
-                        <p><span class="ui-icon ui-icon-info"></span>
-                            <strong>Note:</strong> The image you have used is local , after you upload it put image URL in the first img tag in
-                            the markup above you will find <strong>&lt;img src= 'your image URL' /&gt; </strong> in line 2 , replace 'your image URL' with image URL</p>
+            <ui:define name="main_footer">
+                <div class="row">
+                    <div class="col-lg-12" onclick="alert(#{photoBean.prevId} + ' ' + #{photoBean.nextId})">
+                        <p>Copyright © TagsCool 2013</p>
                     </div>
                 </div>
-        </div>
+            </ui:define>
 
-        <div id="load-code-dialog">
-            HTML:
-            <textarea id="load-code-txt"></textarea>
-            <p>Remember that hotspotter generated HTML always start with '&lt;div class="hs-area"&gt;'</p>
-        </div>
+            <ui:define name="dialogs">
 
-        <div id="img-spot-dialog">
-            <p>Main Image URL:
-                <input type="text" id="imgspot-1"/>
-            </p> 
-            <p>Image shown on hover / click:
-                <input type="text" id="imgspot-2"/>
-            </p>
-        </div>
 
-        <div id="sp-link-dialog">
-            URL:
-            <input type="text" id="sp-link"/>
-            <p>
-                <input id="sp-link-n-win" type="checkbox" />
-                <label for="sp-link-n-win">Open in new Window</label>
-            </p>
-        </div>
+                <div id="new-img-dialog">
+                    <div id="new-i-d-tabs">
+                        <ul>
+                            <li><a href="#img-url">URL</a></li>
+                            <li class="html5-local-file"><a href="#img-local">Local Image</a></li>
+                        </ul>
 
-        <div id="tt-content-dialog">
-            Tooltip HTML/text Content:
-            <textarea id="tt-content"></textarea>
-        </div>
+                        <div id="img-url">
+                            <p>Image URL:</p>
+                            <input type="text" id="img-url-txt" />
+                        </div>
 
-        <div id="error-dialog">
-            <p><span class="ui-icon ui-icon-alert"></span>
-                <span id="error-txt"></span></p>
-        </div>
-        <!-- Preview & button & it's Overlay-->
-        <div id="prev-overlay"></div>
-        <button id="end-prev-btn" title="Edit (ctrl + alt)"><span class="btn-icon"><img src="images/end-prev.png" /></span>Edit</button>    
+                        <div class="html5-local-file" id="img-local">
+                            <p>Get Local File:</p>
+                            <input id="img-file-txt" type="file" accept="image/*" />
+                        </div>
+                    </div>
+                </div>
 
-        <div class="preview-area">
-            <div class="hs-area">
-                <img id= "prev-img" />
-            </div>
-        </div>
-    </body>
+                <div id="gcode-dialog">
+                    HTML:
+                    <textarea id="gcode-txt"></textarea>
+
+                    <br /><br />
+                    <input type="checkbox" id="remove-formatting"/>
+                    <label for="remove-formatting">Remove Formatting "for use with wordpress"</label>
+
+                    <div class="ui-widget" id="local-file-notice">
+                        <div class="ui-state-error ui-corner-all">
+                            <p><span class="ui-icon ui-icon-info"></span>
+                                <strong>Note:</strong> The image you have used is local , after you upload it put image URL in the first img tag in
+                                the markup above you will find <strong>&lt;img src= 'your image URL' /&gt; </strong> in line 2 , replace 'your image URL' with image URL</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="load-code-dialog">
+                    HTML:
+                    <textarea id="load-code-txt"></textarea>
+                    <p>Remember that hotspotter generated HTML always start with '&lt;div class="hs-area"&gt;'</p>
+                </div>
+
+                <div id="img-spot-dialog">
+                    <p>Main Image URL:
+                        <input type="text" id="imgspot-1"/>
+                    </p> 
+                    <p>Image shown on hover / click:
+                        <input type="text" id="imgspot-2"/>
+                    </p>
+                </div>
+
+                <div id="sp-link-dialog">
+                    URL:
+                    <input type="text" id="sp-link"/>
+                    <p>
+                        <input id="sp-link-n-win" type="checkbox" />
+                        <label for="sp-link-n-win">Open in new Window</label>
+                    </p>
+                </div>
+
+                <div id="tt-content-dialog">
+                    Tooltip HTML/text Content:
+                    <textarea id="tt-content"></textarea>
+                </div>
+
+                <div id="error-dialog">
+                    <p><span class="ui-icon ui-icon-alert"></span>
+                        <span id="error-txt"></span></p>
+                </div>
+
+                <!-- Preview & button & it's Overlay-->
+                <div id="prev-overlay"></div>
+                <button id="end-prev-btn" title="Edit (ctrl + alt)"><span class="btn-icon"><img src="images/end-prev.png" /></span>Edit</button>    
+
+                <div class="preview-area">
+                    <div class="hs-area">
+                        <img id= "prev-img" />
+                    </div>
+                </div>
+
+
+            </ui:define>
+
+            <ui:define name="scripts">
+                <c:if test="#{photoBean.photo ne null}">
+
+                    <link rel="stylesheet" type="text/css" href="css/minified/jquery-hotspotter-1.7.9.min.css" />
+                    <link rel="stylesheet" type="text/css" href="css/ui-darkness/jquery-ui-1.9.2.custom.min.css" />
+                    <link rel="stylesheet" type="text/css" href="css/editor-1.3.2.min.css" />
+
+                    <link href='http://fonts.googleapis.com/css?family=Redressed' rel='stylesheet' type='text/css'/>
+
+                    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+                    <script type="text/javascript" src="js/beautify-html.min.js"></script>
+                    <script type="text/javascript" src="css/minified/jquery-hotspotter-1.7.9.min.js"></script>
+                    <script type="text/javascript" src="js/editor-1.3.2.js"></script>
+                    <script src="http://malsup.github.com/jquery.form.js"></script>
+
+                    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/hotspotter/jquery-hotspotter-1.7.9.min.css" />	
+<!--                    <script src="#{request.contextPath}/css/hotspotter/jquery-hotspotter-1.7.9.min.js"></script>-->
+
+
+                    <script type="text/javascript">
+                                        /*<![CDATA[*/
+                                        var currentPhotoId;
+
+                                        function getURLParameter(name) {
+                                            return decodeURI(
+                                                    (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search) || [, null])[1]
+                                                    );
+                                        }
+
+                                        editPhoto = function(fileId) { // TODO проверка на существование файла
+                                            //currentPhotoId = fileId;
+                                            imgURL = '../resources/file/download?id=' + fileId + '&inline=1';
+                                            Editor.initNewImage(imgURL);
+                                            Editor.isLocalFile = false;
+                                        };
+
+                                        showPhoto = function() {
+                                            Editor.togglePreview();
+                                        };
+
+                                        setContent = function(i, content, url) {
+                                            Editor.spotPool[i].ttContent = content;
+                                            Editor.spotPool[i].spLink = url;
+                                        };
+
+                                        addNewSpot = function(x, y, w, h, content, url) {
+                                            Editor.newSpot(new Spot("red-spot", x, y));
+                                            var i = Editor.spotPool.length - 1;
+
+                                            Editor.curSpot.$edSpot.css('width', w);
+                                            Editor.curSpot.$edSpot.css('height', h);
+                                            Editor.updateSpotDim();
+                                            setContent(i, content, url);
+                                        }
+
+                                        uploadFile = function() {
+                                            var options = {
+                                                //target: "#testP", 
+                                                dataType: 'json',
+                                                //url: "form.php",
+                                                success: function(responseText, statusText) {
+                                                    if (statusText === 'success') {
+                                                        //alert(JSON.stringify(responseText) + ' ' + statusText);
+                                                        // alert(responseText);
+                                                        currentPhotoId = responseText.data.id;
+                                                        editPhoto(responseText.data.fileId);
+                                                    }
+                                                }
+                                            };
+                                            $("#myForm").ajaxSubmit(options);
+                                        }
+
+                                        saveTags = function(pId) {
+                                            ratio = $('#ed-img').width() / #{photoBean.photo.width}; 
+                                            $.ajax({
+                                               type: "GET",
+                                               url: "../resources/Tag/removeEasyTags?photoId=" + pId,
+                                               success: function(responseText, statusText) {
+                                                   if (statusText === 'success') {
+                                                       console.log(JSON.stringify(responseText));
+                                                       addTagsToDB(pId);
+                                                   }
+                                               },
+                                               dataType: "json"
+                                           });
+                                        }
+
+                                        addTagsToDB = function(pId) {
+
+
+                                            var spots = Editor.spotPool;
+                                            var syn = spots.length;
+                                            for (var i = 0; i < spots.length; i++) {
+                                                var tag = {
+                                                    photoId: pId,
+                                                    name: spots[i].ttContent,
+                                                    description: "tag" + i,
+                                                    x: Math.round(spots[i].coord[0]/ratio),
+                                                    y: Math.round(spots[i].coord[1]/ratio),
+                                                    width: Math.round(spots[i].dim[0]/ratio),
+                                                    height: Math.round(spots[i].dim[1]/ratio),
+                                                    externalUrl: spots[i].spLink
+                                                };
+
+                                                $.post(
+                                                        "../resources/Tag/create",
+                                                        {data: JSON.stringify(tag)},
+                                                function(responseText, statusText) {
+                                                    if (statusText === 'success') {
+                                                        //alert(JSON.stringify(responseText) + ' ' + statusText);
+                                                        // alert(responseText);
+                                                        console.log(JSON.stringify(responseText));
+                                                        syn--;
+                                                        if (syn == 0) {
+                                                            document.location.href = '../photo.xhtml?id=' + pId;
+                                                        }
+                                                    }
+                                                },
+                                                        'json'
+                                                        );
+                                                //alert(JSON.stringify(tag1));
+                                            }
+                                        };
+
+                                        loadTags = function(pId) {
+                                            console.log($('#ed-img').width());
+                                            console.log(#{photoBean.photo.width});
+                                            ratio = $('#ed-img').width() / #{photoBean.photo.width}; 
+                                            $.ajax({
+                                                type: "GET",
+                                                url: "../resources/Tag/getEasyTags?photoId=" + pId,
+                                                success: function(responseText, statusText) {
+                                                    if (statusText === 'success') {
+                                                        console.log(JSON.stringify(responseText));
+                                                        spots = responseText.data;
+                                                        for (var i = 0; i < spots.length; i++) {
+                                                            addNewSpot( Math.round(spots[i].x * ratio),
+                                                                    Math.round(spots[i].y * ratio),
+                                                                    Math.round(spots[i].width * ratio),
+                                                                    Math.round(spots[i].height * ratio),
+                                                                    spots[i].name,
+                                                                    spots[i].externalUrl);
+                                                        }
+                                                        $('#spotContent').attr('value', Editor.curSpot.ttContent);
+                                                        $('#spotUrl').attr('value', Editor.curSpot.spLink);
+                                                    }
+                                                },
+                                                dataType: "json"
+                                            });
+
+                                        }
+
+
+                                        getIm = function() {
+                                            Editor.getCode();
+                                            console.log($("#gcode-txt").val());
+                                            $('#gcode-dialog').dialog('close');
+                                        }
+
+                                        viewPh = function() {
+                                            Editor.getCode();
+                                            var code = $("#gcode-txt").val();
+                                            $('body').empty().append(code);
+                                            $('.hs-area').hotspotter();
+                                        }
+
+                                        $(function() {
+                                            $('#spotContent').bind('keyup click blur focus change paste', function() {
+                                                Editor.curSpot.ttContent = $(this).val();
+                                            });
+
+                                            $('#spotUrl').bind('keyup click blur focus change paste', function() {
+                                                Editor.curSpot.spLink = $(this).val();
+                                            });
+
+                                            currentPhotoId = getURLParameter('id');
+                                            editPhoto('#{photoBean.photo.fileId}');
+//                                            $.ajax({
+//                                                type: "GET",
+//                                                url: "../resources/Photo/getPhoto?photoId=" + currentPhotoId,
+//                                                success: function(responseText, statusText) {
+//                                                    if (statusText === 'success') {
+//                                                        editPhoto(responseText.data.fileId);
+//                                                        //loadTags(currentPhotoId);
+//                                                    }
+//                                                },
+//                                                dataType: "json"
+//                                            });
+                                        });
+                                        
+                                        $(document).ready(function() {
+                                            console.log("ed-img ready");
+                                            setTimeout('loadTags(currentPhotoId)', 0);
+                                        });
+                                        /*]]>*/
+                    </script>
+
+                </c:if>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+
 </html>

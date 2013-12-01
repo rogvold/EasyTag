@@ -826,23 +826,23 @@ var Editor= {
             Editor.spotPool= [];
         }
         
-        this.$edImg.removeAttr('src');
+        //this.$edImg.removeAttr('src');
         
         //set image src
-        if (typeof img == 'string') {
-            this.$edImg.attr('src', img);
-            this.$prevImg.attr('src', img);
-        }else{ 
-            //local file
-            var fread= new FileReader();
-                
-            fread.onload= function(e) {
-                Editor.$edImg.attr('src', e.target.result);
-                Editor.$prevImg.attr('src', e.target.result);
-            }
-                
-            fread.readAsDataURL(img);
-        }
+//        if (typeof img == 'string') {
+//            this.$edImg.attr('src', img);
+//            this.$prevImg.attr('src', img);
+//        }else{ 
+//            //local file
+//            var fread= new FileReader();
+//                
+//            fread.onload= function(e) {
+//                Editor.$edImg.attr('src', e.target.result);
+//                Editor.$prevImg.attr('src', e.target.result);
+//            }
+//                
+//            fread.readAsDataURL(img);
+//        }
         
         //start drawing when image loaded
         Draw.init(Editor.$edImg);
