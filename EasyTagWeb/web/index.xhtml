@@ -106,7 +106,7 @@
                                             Sign in 
                                         </span>
                                         <span style="float: right;" class="myTitle" >
-                                            <span style="opacity: 0.3;">or</span> <a href="javascript: void();" style="" onclick="$('#loginForm').hide(); $('#registrationForm').show();$('#regHeader').show(); $('#signInHeader').hide(); "  >Create an Account</a>
+                                            <a href="javascript: void();" style="" onclick="$('#loginForm').hide(); $('#registrationForm').show();$('#regHeader').show(); $('#signInHeader').hide(); "  >Create an Account</a>
                                         </span>
                                     </span>
 
@@ -115,17 +115,14 @@
                                             Create an Account
                                         </span>
                                         <span style="float: right;" class="myTitle" >
-                                            <span style="opacity: 0.3;">or</span>  <a href="javascript: void();"  id="orName" onclick="$('#loginForm').show(); $('#registrationForm').hide(); $('#regHeader').hide(); $('#signInHeader').show();  "  >Sign In</a>
+                                            <a href="javascript: void();"  id="orName" onclick="$('#loginForm').show(); $('#registrationForm').hide(); $('#regHeader').hide(); $('#signInHeader').show();  "  >Sign In</a>
                                         </span>
                                     </span>
                                 </div>
                                 <div class="modal-body">
                                     <div id="authForm">
-
-
-
                                         <div id="loginForm">
-                                            <div style="display: block; width: 400px; margin: 0 auto;  ">
+                                            <div style="display: block; margin: 0 auto;  ">
                                                 <form id="login_form" action="#{request.contextPath}/resources/auth/login">
                                                     <span style="color: #747474; text-align: left; ">
                                                         Email address
@@ -136,17 +133,24 @@
                                                     </span>
                                                     <input type="password" placeholder="Password" class="form-control"  id="loginPassword" name="password" style="margin-bottom: 20px; width: 280px;" />
                                                     <br/>
-                                                    <button onclick="" class="btn btn-primary" id="loginButton" style="cursor: pointer;">
-                                                        Sign in
-                                                    </button>
+                                                    <div style="text-align: center;">
+                                                        <button onclick="" class="btn btn-primary" id="loginButton" style="cursor: pointer;">
+                                                            Sign in
+                                                        </button>
+                                                        <span style="padding: 0 20px; color: gray;">or via</span>
+
+                                                        <a class="openIdLink" href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fwww.tagscool.com%2FEasyTagWeb%2Floginza&amp;provider=vkontakte&amp;lang=en" >
+                                                            <img src="img/vk.png" alt="Вконтакте" title="Вконтакте" style="width: 40px; height: 40px;" />
+                                                        </a>
+                                                        <a class="openIdLink"  href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fwww.tagscool.com%2FEasyTagWeb%2Floginza&amp;provider=facebook&amp;lang=en" >
+                                                            <img src="img/fb.png" alt="Facebook" title="Facebook" style="width: 40px; height: 40px;" />
+                                                        </a>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>
                                         <div id="registrationForm" style="display: none;">
-                                            <!--                                <h3 style="text-align: center;">
-                                                                                Создать аккаунт
-                                                                            </h3>-->
-                                            <div style="display: block; width: 400px; margin: 0 auto; ">
+                                            <div style="display: block; margin: 0 auto; ">
                                                 <form id="registration_form" method="post" action="#{request.contextPath}/resources/auth/register">
                                                     <input type="text" placeholder="Login"   class="form-control"  id="registrationEmail" name="email" style="margin-bottom: 20px;  width: 280px;" />
 
@@ -155,35 +159,26 @@
                                                     <input type="password" placeholder="Confirm password"  class="form-control"  id="registrationConfirmPassword" name="passwordConfirmation" style="margin-bottom: 20px; width: 280px;" />
 
                                                     <br/>
-                                                    <button  class="btn btn-primary" id="registerButton" style=" margin-bottom: 20px;  cursor: pointer;">
-                                                        Register
-                                                    </button>
+                                                    <div style="text-align: center;">
+                                                        <button  class="btn btn-primary" id="registerButton" style="cursor: pointer;">
+                                                            Register
+                                                        </button>
+                                                            
+                                                        <span style="padding: 0 20px; color: gray;">or via</span>
+
+                                                        <a class="openIdLink" href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fwww.tagscool.com%2FEasyTagWeb%2Floginza&amp;provider=vkontakte&amp;lang=en" >
+                                                            <img src="img/vk.png" alt="Вконтакте" title="Вконтакте" style="width: 40px; height: 40px;" />
+                                                        </a>
+                                                        <a class="openIdLink"  href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fwww.tagscool.com%2FEasyTagWeb%2Floginza&amp;provider=facebook&amp;lang=en" >
+                                                            <img src="img/fb.png" alt="Facebook" title="Facebook" style="width: 40px; height: 40px;" />
+                                                        </a>
+                                                    </div>
 
                                                 </form>
                                             </div>
                                         </div>
 
-                                        <div style="text-align: center;">
-                                            or
-                                        </div>
-                                        <div style="text-align: center;" >
-
-                                            <a class="openIdLink" href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fwww.tagscool.com%2FEasyTagWeb%2Floginza&amp;provider=vkontakte&amp;lang=en" >
-                                                <img src="img/vk.png" alt="Вконтакте" title="Вконтакте" style="width: 40px; height: 40px;" />
-                                            </a>
-                                            <a class="openIdLink"  href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fwww.tagscool.com%2FEasyTagWeb%2Floginza&amp;provider=facebook&amp;lang=en" >
-                                                <img src="img/fb.png" alt="Facebook" title="Facebook" style="width: 40px; height: 40px;" />
-                                            </a>
-
-<!--                                            <a href="javascript:void(0);" id="openIdButtons" onclick=" $('#myModal').modal('hide'); setTimeout(function(){$('#loginzaLink').click();}, 100); " style="text-align: center;" >
-                                                                                            Sign In With openId
-                                                <img src="http://loginza.ru/img/providers/vkontakte.png" alt="Вконтакте" title="Вконтакте"/>
-                                                <img src="http://loginza.ru/img/providers/facebook.png" alt="Facebook" title="Facebook"/>
-                                            </a>-->
-                                        </div>
-
-<!--                                        <a href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Ftagscool.com/EasyTagWeb/loginza&amp;providers_set=vkontakte,facebook&amp;lang=en" style=" position: absolute; top: -200px;" id="loginzaLink" class="loginza">Sign In</a>-->
-                                    </div>
+                                     </div>
                                 </div>
 
                             </div><!-- /.modal-content -->

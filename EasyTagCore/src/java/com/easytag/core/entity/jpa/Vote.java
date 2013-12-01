@@ -12,6 +12,8 @@ import javax.persistence.*;
 @Table(name="votes")
 public class Vote implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private Long userId;
     private Long albumId;
     private VoteType voteType;
@@ -46,5 +48,13 @@ public class Vote implements Serializable {
 
     public VoteType getVoteType() {
         return voteType;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
