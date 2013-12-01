@@ -13,7 +13,7 @@
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
-            <ui:param name="windowTitle" value="Albums - TagsCool"/>
+            <ui:param name="windowTitle" value="Download album - TagsCool"/>
             <ui:param name="user" value="#{currentUserBean.user}"/>
             <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
             <ui:param name="userProfile" value="#{userBean.userProfile}"/>
@@ -22,8 +22,33 @@
             </ui:define>
 
             <ui:define name="main_content">
-                <div>
-                    <img src="http://d38kktuf1gwyxq.cloudfront.net/images/icons/ajax-loader-spinner.gif" class="loading_image" style="display: none;" id="loading_image"/>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="page-header">
+                            Download album <b>#{albumBean.album.name}</b>
+                        </h2>
+                        <ol class="breadcrumb">
+                            <li><a href="users.xhtml">All users</a></li>
+                            <li><a href="#{request.contextPath}/userAlbums.xhtml?id=#{userBean.userId}">#{userBean.userProfile.userFullName}</a></li>
+                            <li><a href="#{request.contextPath}/album.xhtml?id=#{albumBean.albumId}">#{albumBean.album.name}</a></li>
+                            <li class="active">Download</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row" style="padding-left: 20px;">
+                    <div id="albumInfo">
+                        <dl class="dl-horizontal">
+                            <dt>File:</dt> <dd>album-#{albumBean.album.name}.zip</dd>
+                            <dt>Album Name:</dt> <dd>#{albumBean.album.name}</dd>
+                            <dt>Album description:</dt> <dd>#{albumBean.album.description}</dd>
+                            <dt>Key words:</dt> <dd>#{albumBean.album.tags}</dd>
+                        </dl>
+                    </div>
+                    <div id="loading_image" style="display: none;">
+                        <img src="http://d38kktuf1gwyxq.cloudfront.net/images/icons/ajax-loader-spinner.gif" height="30"/>
+                        We are generating your download link...
+                    </div>
+                    <div id="downloadLink"></div>
                 </div>
             </ui:define>
 
@@ -46,7 +71,7 @@
                                 .done(function (response) {
                                     $('#loading_image').hide();
                                     if (response.responseCode === 1) {
-                                        location.href = '#{request.contextPath}/resources/file/download?id=' + response.data.id;
+                                        showDownloadLink(response.data);
                                     }
                                 })
                                 .error(function (e) {
@@ -54,6 +79,14 @@
                                    console.log(e); 
                                 });   
                     });
+                    
+                    function showDownloadLink(file) {
+                        var url = '#{request.contextPath}/resources/file/download?id=' + file.id;
+                        var btn = $('<a class="btn btn-icon btn-success" title="Download file"/>');
+                        btn.attr('href', url);
+                        btn.append('<i class="glyphicon glyphicon-save" /> ' + file.originalName + ' ' + Math.round(file.fileSize/1024/1024*100)/100 + ' MB');
+                        $('#downloadLink').append(btn);
+                    }
                    
                 </script>
             </ui:define>
