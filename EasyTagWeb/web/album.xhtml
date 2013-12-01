@@ -357,6 +357,23 @@
                         });
                     </script>
                 </c:if>
+                <script>
+                    $.get('#{request.contextPath}/resources/album/#{albumBean.albumId}/isVoted')
+                            .done(function (response) {
+                                    if (response.responseCode === 1) {
+                                        if (response.voted === 'like') {
+                                            // add highlited to like
+                                        } else if (response.voted === 'dislike') {
+                                            // add highlited to dislike
+                                        } else {
+                                            // add clickable to like and dislike
+                                        }
+                                    }
+                                })
+                            .error(function (e) {
+                                console.log(e);
+                                });
+                </script>
             </ui:define>
 
         </ui:composition>
