@@ -54,10 +54,12 @@
                             <img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.photo.fileId}"/>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3" id="info">
                             <div id="photoInfoBlock">
-                                <h4 id="photoNameLabel">#{photoBean.photo.name}</h4>
-                                <p>#{photoBean.photo.description}</p>
+                                <h4 id="photoNameLabel" title="Name: #{photoBean.photo.name}">#{photoBean.photo.name}</h4>
+                                <p id="photoDescriptionLabel" title="Description">#{photoBean.photo.description}</p>
+                                <p id="photoTagsLabel" title="Key words"><b>Key words:</b> #{photoBean.photo.tags}</p>
+                                <br/>
                             </div>
                             <div id="tagsBlock">
                                 <h4>Tags</h4>
@@ -234,7 +236,7 @@
 
                         $(function() {
                             if (window.location.hash !== ""){
-                                $('#info').append('<a href="javascript:void(0);" onclick="showAllTags()" class="btn btn-default">Shaw all tags</a>');
+                                $('#info').append('<a href="javascript:void(0);" onclick="showAllTags()" class="btn btn-default">Show all tags</a>');
                             }
                             $('.hs-area img').attr('data-imgdim', ["#{photoBean.photo.width}", "#{photoBean.photo.height}"].join(','));
                             refreshTags();
