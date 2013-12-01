@@ -93,7 +93,7 @@
                             <li><a data-toggle="modal" href="#myModal" class=""  >Sign In</a></li>
                         </c:if>
                         <c:if test="#{loggedIn}">
-                            <li><a href="javascript:void(0);"><b>Welcome, #{userProfile.firstName}</b></a></li>
+                            <li><a href="javascript:void(0);"><b>Welcome, #{userProfile.fullName}</b></a></li>
                             <li><a href="#{request.contextPath}/profile.xhtml" id="myAlbumsButton" >My profile</a></li>
                             <li><a href="#{request.contextPath}/userAlbums.xhtml" id="myAlbumsButton" >My albums</a></li>
                             <li><a href="javascript:void();" id="logoutButton" >Log out</a></li> 
