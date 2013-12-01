@@ -21,11 +21,14 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import com.easytag.json.utils.TagExceptionWrapper;
+import com.easytag.utils.FileUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.ws.rs.core.MediaType;
@@ -298,8 +301,9 @@ public class AlbumResource {
         ZipOutputStream zos = null;
         try {
             zos = new ZipOutputStream(new FileOutputStream(zip));
+            Set<String> fileNames = new HashSet<String>(files.size());
             for (EasyTagFile file : files) {
-                zipFile(zos, file);
+                zipFile(zos, file, fileNames);
             }
         } finally {
             try {
@@ -311,11 +315,32 @@ public class AlbumResource {
             }
         }
     }
+    
+    private static String extractNameWithoutExtension(String name) {
+        if (name.lastIndexOf(".") >= 0) {
+            return name.substring(0, name.lastIndexOf("."));
+        } else return name;
+    } 
+    
+    private static String extractExtension(String name) {
+        if (name.lastIndexOf(".") >= 0) {
+            return name.substring(name.lastIndexOf("."));
+        } else return name;
+    }
 
-    private static final void zipFile(ZipOutputStream zos, EasyTagFile file) throws IOException {
-        String name = file.getOriginalName();
+    private static void zipFile(ZipOutputStream zos, EasyTagFile file, Set<String> fileNames) throws IOException {
+        String name = file.getOriginalName().toLowerCase();
+        if (fileNames.contains(name.toLowerCase())) {
+            int i = 2;
+            String testName = (extractNameWithoutExtension(name) + " " + i + extractExtension(name)).toLowerCase(); 
+            while (fileNames.contains(testName)) {
+                i++;
+            }
+            name = testName;
+        }
         ZipEntry entry = new ZipEntry(name);
         zos.putNextEntry(entry);
+        fileNames.add(name);
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(new File(file.getCurrentPath()));
