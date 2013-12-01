@@ -363,31 +363,33 @@
                     $(function() {
                         $.ajax({type: "GET",
                             url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/isVoted',
-                            success: function(response) {
-                                //                                            if (response.responseCode === 1) {
+                            success: function(response) { 
                                 console.log("got response : " + response.voted);
                                 if (response.voted === 'like') {
-                                    $('#likeButton').css('class', 'icon-thumbs-up highlited');// add highlited to like
-                                    $('#dislikeButton').css('class', 'icon-thumbs-down');
+                                    $('#likeButton').addClass('highlited');// add highlited to like
+                                    $('#dislikeButton').removeClass('highlited');
+                                    $('#dislikeButton').removeClass('clickable');
+                                    $('#likeButton').removeClass('clickable');
                                 } else if (response.voted === 'dislike') {
-                                    $('#likeButton').css('class', 'icon-thumbs-up');
-                                    $('#dislikeButton').css('class', 'icon-thumbs-down highlited');// add highlited to dislike
+                                    $('#likeButton').removeClass('highlited');
+                                    $('#dislikeButton').addClass('highlited');// add highlited to dislike
+                                    $('#dislikeButton').removeClass('clickable');
+                                    $('#likeButton').removeClass('clickable');
                                 } else {
-                                    $('#likeButton').css('class', 'icon-thumbs-up clickable');
-                                    $('#dislikeButton').css('class', 'icon-thumbs-down clickable');// add clickable to like and dislike
+                                    $('#likeButton').addClass('clickable');
+                                    $('#dislikeButton').addClass('clickable');// add clickable to like and dislike
+                                    $('#dislikeButton').removeClass('highlited');
+                                    $('#likeButton').removeClass('highlited');
                                 }
-                                //                                            }
                             },
                             dataType: "json"
                         });
                         $.ajax({type:"GET",
                             url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/getLikes',
                             success: function(response) {
-                                //                                    if (response.responseCode === 1) {
-                                console.log("got response : " + response.likes + " " + response.dislikes);
-                                setLikes(response.likes)
-                                setDislikes(response.dislikes)
-                                //                                    }
+                                console.log("got response : l=" + response.likes + " d=" + response.dislikes);
+                                setLikes(response.likes);
+                                setDislikes(response.dislikes);
                             },
                             dataType: "json"
                         });
@@ -397,49 +399,37 @@
                         $.ajax({type: "GET",
                             url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/isVoted',
                             success: function(response) {
-                                //                                if (response.responseCode === 1) {
-                                console.log("like succeed");
                                 if (response.voted === 'like') {
-                                    console.log("like 1");
                                     $.ajax({type: "GET",
                                         url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/cancelLike',
                                         success: function(response) {
-                                            console.log(response);
-                                            //                                            if (response.responseCode == 1) {
-                                            setLikes(response.likes)
-                                            setDislikes(response.dislikes)
-                                            //                                            }
+                                            setLikes(response.likes);
+                                            setDislikes(response.dislikes);
                                         },
                                         dataType: "json"
                                     });
-                                    $('#likeButton').css('class', 'icon-thumbs-up clickable');
-                                    $('#dislikeButton').css('class', 'icon-thumbs-down clickable');
+                                    $('#likeButton').removeClass('highlited');
+                                    $('#likeButton').addClass('clickable');
+                                    $('#dislikeButton').addClass('clickable');
                                 } else if (response.voted === 'dislike') {
-                                    console.log("like 2");
                                     $('#likeButton').removeClass('highlited');
                                     $('#dislikeButton').addClass('highlited');
+                                    $('#dislikeButton').removeClass('clickable');
+                                    $('#likeButton').removeClass('clickable');
                                 } else {
-                                    console.log("like 3");
                                     $.ajax({type: "GET",
                                         url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/like',
                                         success: function(response) {
-                                            console.log('response = ');
-                                            console.log(response);
-                                            //                                            if (response.responseCode == 1) {
                                             setLikes(response.likes);
                                             setDislikes(response.dislikes);
-                                            //                                            }
                                         },
                                         dataType: "json"
                                     });
-                                    
                                     $('#likeButton').addClass('highlited');
                                     $('#dislikeButton').removeClass('highlited');
-                                    
-                                    //                                    $('#likeButton').css('class', 'icon-thumbs-up highlited');
-                                    //                                    $('#dislikeButton').css('class', 'icon-thumbs-down');
+                                    $('#dislikeButton').removeClass('clickable');
+                                    $('#likeButton').removeClass('clickable');
                                 }
-                                //                                }
                             },
                             dataType: "json"
                         });    
@@ -449,51 +439,37 @@
                         $.ajax({type: "GET",
                             url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/isVoted',
                             success: function(response) {
-                                //                                if (response.responseCode === 1) {
                                 if (response.voted === 'like') {
-                                    
-                                    $('#likeButton').addClass('clickable');
-                                    $('#dislikeButton').addClass('clickable');
-                                    
-                                    //                                    $('#likeButton').css('class', 'icon-thumbs-up clickable');
-                                    //                                    $('#dislikeButton').css('class', 'icon-thumbs-down clickable');
+                                    $('#likeButton').addClass('highlited');
+                                    $('#dislikeButton').removeClass('highlited');
+                                    $('#dislikeButton').removeClass('clickable');
+                                    $('#likeButton').removeClass('clickable');
                                 } else if (response.voted === 'dislike') {
                                     $.ajax({type: "GET",
                                         url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/cancelLike',
                                         success: function(response) {
-                                            console.log(response);
-                                            //                                                            if (response.responseCode === 1) {
-                                            setLikes(response.likes)
-                                            setDislikes(response.dislikes)
-                                            //                                                            }
+                                            setLikes(response.likes);
+                                            setDislikes(response.dislikes);
                                         },
                                         dataType: "json"
                                     });
-                                    
-                                    $('#likeButton').removeClass('highlited');
-                                    $('#dislikeButton').addClass('highlited');
-                                    
-                                    //                                    $('#likeButton').css('class', 'icon-thumbs-up');
-                                    //                                    $('#dislikeButton').css('class', 'icon-thumbs-down highlited');
+                                    $('#dislikeButton').removeClass('highlited');
+                                    $('#dislikeButton').addClass('clickable');
+                                    $('#likeButton').addClass('clickable');
                                 } else {
                                     $.ajax({type: "GET",
                                         url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/dislike',
                                         success: function(response) {
-                                            //                                                            if (response.responseCode === 1) {
-                                            setLikes(response.likes)
-                                            setDislikes(response.dislikes)
-                                            //                                                            }
+                                            setLikes(response.likes);
+                                            setDislikes(response.dislikes);
                                         },
                                         dataType: "json"
                                     });
-                                    
                                     $('#likeButton').removeClass('highlited');
                                     $('#dislikeButton').addClass('highlited');
-                                    
-//                                    $('#likeButton').css('class', 'icon-thumbs-up');
-//                                    $('#dislikeButton').css('class', 'icon-thumbs-down highlited');
+                                    $('#dislikeButton').removeClass('clickable');
+                                    $('#likeButton').removeClass('clickable');
                                 }
-                                //                                }
                             },
                             dataType: "json"
                         });  
