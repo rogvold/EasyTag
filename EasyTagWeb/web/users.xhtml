@@ -100,7 +100,7 @@
                         var item = $('<div class="col-md-2 portfolio-item" />');
                         item.attr("id", "user-" + user.id); 
                         item.append('<a href="userAlbums.xhtml?id=' + user.id + '"><img class="img-responsive" src="#{request.contextPath}/img/user.jpg"/></a>');
-                        item.append('<h3 style="text-align: center; font-size: 16px;"><a href="album.xhtml?id=' + user.id + '">' + user.fullName + '</a></h3>');
+                        item.append('<h3 style="text-align: center; font-size: 16px;"><a href="profile.xhtml?id=' + user.id + '">' + user.fullName + '</a></h3>');
                         //item.append('<p>' + user.description + '</p>');                        
                         return item;
                     }
