@@ -95,9 +95,7 @@ public class JSFHelper {
     }
     
     public Long getCurrentUserId() {
-        return SessionUtils.getUserId(getSession(true));//WTF????
-//        return SessionUtils.getUserId(getSession(false));
-        
+        return SessionUtils.getUserId(getSession(false));
     }
  
     public static FacesMessage addMessage(FacesContext fc, String component, FacesMessage.Severity severity, String summary, String details) {

@@ -50,28 +50,38 @@ public class UserBean implements Serializable {
     }
     
     public void hideEmail(User user){
-        if (user != null && !(this.isCurrent())){
+        if (user == null || user.getId() != getCurrentUserId()){
                 user.setEmail("hidden");
-            }
+        }
     }
     
     public void setUserId(String userId) {
         System.out.println("setUserId = " + userId);
         if (userId == null || userId.isEmpty()) {
+            // initialize with current user if authorized
             this.userId = currentUserBean.getUserId();
-            user = currentUserBean.getUser();            
             System.out.println("... resolved to " + this.userId);
+            if (this.userId == null) {
+                // we are not authorized
+                // full stop...
+                return;
+            }
+            user = currentUserBean.getUser();            
             if (user != null) { // if user logged in
-                userProfile = userMan.getUserProfile(user);
                 hideEmail(user);
+                userProfile = userMan.getUserProfile(user);
             }
             return;
         }
         try {
+            // userId is not empty
+            // try to load this user
             this.userId = Long.parseLong(userId);
-            user = userMan.getUserById(this.userId);             
-            hideEmail(user);
-            userProfile = userMan.getUserProfile(user);            
+            user = userMan.getUserById(this.userId);
+            if (user != null) {
+                hideEmail(user);
+                userProfile = userMan.getUserProfile(user);
+            }
         } catch (Exception ex) {
             this.userId = null;
         }
