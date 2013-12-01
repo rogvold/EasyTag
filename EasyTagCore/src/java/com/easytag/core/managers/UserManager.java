@@ -189,6 +189,7 @@ public class UserManager implements UserManagerLocal {
         if (users == null || users.size() == 0) {
             User u = new User();
             u.setOpenId(openIdKey);
+            u.setUserType(UserType.USER);
 
             User createdUser = em.merge(u);
             UserProfile profile = new UserProfile(createdUser);
