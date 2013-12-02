@@ -276,7 +276,7 @@ public class AlbumResource {
                 throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
             }
             Album album = alMan.getAlbumById(albumId);
-            List<Photo> photos = phMan.getPhotosInAlbum(albumId);
+            List<Photo> photos = phMan.getPhotosInAlbum(albumId, false);
             List<EasyTagFile> photoFiles = new ArrayList<EasyTagFile>(photos.size());
             for (Photo photo : photos) {
                 EasyTagFile easyTagFile = fiMan.findFileById(photo.getFileId());

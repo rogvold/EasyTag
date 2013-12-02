@@ -50,7 +50,7 @@ public class PhotoBean implements Serializable {
         System.out.println("setPhotoId: " + photoId);
         this.photoId = Long.parseLong(photoId);        
         this.photo = photoMan.getPhotoById(this.photoId);
-        this.albPh = photoMan.getPhotosInAlbum(photo.getAlbumId());        
+        this.albPh = photoMan.getPhotosInAlbum(photo.getAlbumId(), false);        
         
         int curr = albPh.indexOf(photo);  //System.out.println("Current phIndex: " + curr);                     
         int next = (curr + 1 == albPh.size())? 0: (curr + 1);        
