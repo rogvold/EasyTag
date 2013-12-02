@@ -37,6 +37,14 @@
                 <library dirs="200">
                     <file>${file.reference.jersey-server.jar}</file>
                 </library>
+                <library dirs="200">
+                    <file>${file.reference.log4j-api-2.0-beta9.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.log4j-core-2.0-beta9.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>

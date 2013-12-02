@@ -83,17 +83,12 @@ public class UserManager implements UserManagerLocal {
     }
 
     private void setEmailToProfile(UserProfile profile, User user, String email) {
-        System.out.println("0");
         profile.setEmail(email);
-        System.out.println("1");
         if (user == null) {
             user = getUserById(profile.getId());
         }
-        System.out.println("2");
         user.setEmail(email);
-        System.out.println("3");
         em.merge(user);
-        System.out.println("4");
     }
 
     @Override

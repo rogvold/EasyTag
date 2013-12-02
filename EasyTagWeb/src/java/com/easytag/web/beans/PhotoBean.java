@@ -8,6 +8,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @ManagedBean
 @ViewScoped
@@ -23,6 +25,7 @@ public class PhotoBean implements Serializable {
     private List<Photo> albPh;
     private List<Photo> row;
     
+    public static final Logger log = LogManager.getLogger(PhotoBean.class.getName());
     
     public Photo getPhoto() {
         return photo;
@@ -47,7 +50,7 @@ public class PhotoBean implements Serializable {
 
 
     public void setPhotoId(String photoId) {
-        System.out.println("setPhotoId: " + photoId);
+        log.trace("setPhotoId: " + photoId);
         this.photoId = Long.parseLong(photoId);        
         this.photo = photoMan.getPhotoById(this.photoId);
         this.albPh = photoMan.getPhotosInAlbum(photo.getAlbumId(), false);        

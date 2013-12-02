@@ -10,6 +10,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @ManagedBean
 @ViewScoped
@@ -24,6 +26,8 @@ public class UserBean implements Serializable {
     @EJB
     private UserManagerLocal userMan;
 
+    public static final Logger log = LogManager.getLogger(UserBean.class.getName());
+    
     @PostConstruct
     private void init() {
         //setUserId(new JSFHelper().getRequest().getParameter("id"));
@@ -56,11 +60,11 @@ public class UserBean implements Serializable {
     }
     
     public void setUserId(String userId) {
-        System.out.println("setUserId = " + userId);
+        log.trace("setUserId = " + userId);
         if (userId == null || userId.isEmpty()) {
             // initialize with current user if authorized
             this.userId = currentUserBean.getUserId();
-            System.out.println("... resolved to " + this.userId);
+            log.trace("... resolved to " + this.userId);
             if (this.userId == null) {
                 // we are not authorized
                 // full stop...
@@ -115,7 +119,7 @@ public class UserBean implements Serializable {
         Long id = null;
         try {
             id = Long.parseLong(userId);
-            System.out.println("userid: " + id);
+            log.trace("userid: " + id);
         } catch (Exception ex) {
         }
         if (id == null) { // || id == this.userId
@@ -125,7 +129,7 @@ public class UserBean implements Serializable {
     }
     
     public String redirectIfNotAuthorized() {
-        System.out.println("UserBean.redirectIfNotAuthorized()");
+        log.trace("UserBean.redirectIfNotAuthorized()");
         JSFHelper helper = new JSFHelper();
         if (helper.getCurrentUserId() == null) {
             //helper.redirect("/index?faces-redirect=true");

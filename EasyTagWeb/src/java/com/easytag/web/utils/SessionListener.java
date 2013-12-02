@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * A simple session listener implementation. Seems to be thread-safe.
@@ -18,6 +19,8 @@ public class SessionListener implements HttpSessionListener {
     public static final String USER_ID_ATTRIBUTE_NAME="userId";
     
     private static final Map<String, HttpSession> map = Collections.synchronizedMap(new HashMap<String, HttpSession>(500));
+    
+    public static final org.apache.logging.log4j.Logger log = LogManager.getLogger(SessionListener.class.getName());
 
     public static boolean isOnline(Long userId) throws Exception{
         if (map == null) {
@@ -180,9 +183,9 @@ public class SessionListener implements HttpSessionListener {
             if (session == null || !isSessionValid(session)) {
                 return;
             }
-            System.out.println("setting session attribute:");
-            System.out.println("attrName = " + attrName);
-            System.out.println("value = " + value);
+            log.trace("setting session attribute:");
+            log.trace("attrName = " + attrName);
+            log.trace("value = " + value);
             session.setAttribute(attrName, value);
         } catch (Exception ex) {
             System.err.println("WARN: setSessionAttribute() failed!\n" + ex);

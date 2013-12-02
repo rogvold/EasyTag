@@ -3,7 +3,6 @@ package com.easytag.core.managers;
 import com.easytag.core.entity.jpa.Album;
 import com.easytag.core.entity.jpa.EasyTagFile;
 import com.easytag.core.entity.jpa.Photo;
-import com.easytag.core.enums.AlbumStatus;
 import com.easytag.core.enums.PhotoStatus;
 import com.easytag.exceptions.TagException;
 import com.easytag.utils.PreviewUtils;

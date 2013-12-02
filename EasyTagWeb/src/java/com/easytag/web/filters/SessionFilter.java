@@ -12,6 +12,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A filter for processing requests, 
@@ -28,6 +30,8 @@ public class SessionFilter implements Filter {
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
+    
+    public static final Logger log = LogManager.getLogger(SessionFilter.class.getName());
     
     public SessionFilter() {
     }
@@ -54,8 +58,8 @@ public class SessionFilter implements Filter {
                    log("doFilter() -> New Session created for IP: " + request.getRemoteAddr());
                 }
             }
-            System.out.println("request parameter map = " + request.getParameterMap());
-            System.out.println("request parameter map size = " + request.getParameterMap().size());
+            log.info("request parameter map = " + request.getParameterMap());
+            log.info("request parameter map size = " + request.getParameterMap().size());
             chain.doFilter(request, response);
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
@@ -170,7 +174,7 @@ public class SessionFilter implements Filter {
     }
     
     public void log(String msg) {
-        System.out.println("SessionFilter: " + msg);  
+        log.info("SessionFilter: " + msg);  
     }
     
     public void log(String msg, Throwable t) {

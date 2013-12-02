@@ -4,7 +4,6 @@ import com.easytag.core.entity.jpa.User;
 import com.easytag.core.managers.UserManagerLocal;
 import com.easytag.exceptions.TagException;
 import com.easytag.web.utils.OpenIdUtils;
-import com.easytag.web.utils.SessionListener;
 import com.easytag.web.utils.SessionUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -34,6 +34,7 @@ public class LoginzaServlet extends HttpServlet {
     UserManagerLocal userMan;
     private transient HttpSession session = null;
 
+    public static final org.apache.logging.log4j.Logger log = LogManager.getLogger(LoginzaServlet.class.getName());
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -53,7 +54,7 @@ public class LoginzaServlet extends HttpServlet {
              * TODO output your page here. You may use following sample code.
              */
             out.println(request.getParameterMap());
-            System.out.println(request.getParameterMap());
+            log.info(request.getParameterMap());
 
 
 //            out.println("<html>");
@@ -107,19 +108,19 @@ public class LoginzaServlet extends HttpServlet {
             session = request.getSession(false);
             // working with get params
 
-            System.out.println("-----------------------------------------------------------");
-            System.out.println("openId -> processRequest");
-            System.out.println("--------------------");
+            log.trace("-----------------------------------------------------------");
+            log.trace("openId -> processRequest");
+            log.trace("--------------------");
 
 
             Map params = request.getParameterMap();
 
-            System.out.println("greetings from servlet! params = " + params);
+            log.info("greetings from servlet! params = " + params);
 
             Iterator i = params.keySet().iterator();
 //            String s = "#";
             String s = "#";
-            System.out.println("wtf s = " + s);
+            log.trace("wtf s = " + s);
 //            int k = 0;
 //            while (i.hasNext()) {
 //
@@ -139,13 +140,13 @@ public class LoginzaServlet extends HttpServlet {
 //            s = "index.xhtml" + s;
             s = "index.xhtml";
 
-            System.out.println("s = " + s);
+            log.trace("s = " + s);
 
             out.println("s = " + s);
             // !! end;
 
             out.println("<html>" + "<head><title> Receipt </title>");
-            System.out.println("<h3>POST PARAMETERS: "
+            log.info("<h3>POST PARAMETERS: "
                     + "token : " + request.getParameter("token") + ""
                     + "");
 
@@ -154,7 +155,7 @@ public class LoginzaServlet extends HttpServlet {
             OpenIdUtils utils = new OpenIdUtils();
             out.println("<br/> extracted id is " + utils.extractIdFromJson(json));
 
-            System.out.println("JSON = " + json);
+            log.info("JSON = " + json);
 
             if (!SessionUtils.isLoggedIn(request)) {
                 out.println("is not signed in. trying to make authorisation; json = " + json);
@@ -162,7 +163,7 @@ public class LoginzaServlet extends HttpServlet {
                     session = SessionUtils.resetSession(request);
 
                     openIdAuthorisation(json);
-                    System.out.println("isSignedIn = " + SessionUtils.isLoggedIn(request));
+                    log.info("isSignedIn = " + SessionUtils.isLoggedIn(request));
                 } catch (TagException ex) {
                     Logger.getLogger(LoginzaServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -190,8 +191,8 @@ public class LoginzaServlet extends HttpServlet {
 //        User user = userMan.openIdAuthorisation(utils.extractOpenId(json));
 
         User user = userMan.openIdAuthorization(utils.extractOpenId(json));
-        System.out.println("openId auth: user = " + user);
-        System.out.println("openIdAuthorisation: session = " + session);
+        log.info("openId auth: user = " + user);
+        log.info("openIdAuthorisation: session = " + session);
 //       session = (HttpSession) facesContext.getExternalContext().getSession(false);
 
 
@@ -222,7 +223,7 @@ public class LoginzaServlet extends HttpServlet {
     }
 
     public String getJson(String token) {
-        System.out.println("getJSON ocuured");
+        log.trace("getJSON ocuured");
 //        if (confMan == null) {
 //            System.out.println("confMan is null!!!!");
 //        }
@@ -234,8 +235,8 @@ public class LoginzaServlet extends HttpServlet {
         String sig = getMD5(token + secret);
         String link = "http://loginza.ru/api/authinfo?token=" + token + "&id=" + ID + "&sig=" + sig;
 
-        System.out.println("getJSON - MD5 succesfull");
-        System.out.println("link = " + link);
+        log.trace("getJSON - MD5 succesfull");
+        log.trace("link = " + link);
 
         try {
             URL url = new URL(link);
@@ -248,7 +249,7 @@ public class LoginzaServlet extends HttpServlet {
                 res += inputLine;
             }
 
-            System.out.println("res - " + res);
+            log.info("res - " + res);
             return res;
         } catch (Exception e) {
         }

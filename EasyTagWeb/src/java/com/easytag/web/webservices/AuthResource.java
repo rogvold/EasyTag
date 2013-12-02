@@ -9,7 +9,6 @@ import com.easytag.json.utils.JsonResponse;
 import com.easytag.json.utils.ResponseConstants;
 import com.easytag.json.utils.SimpleResponseWrapper;
 import com.easytag.web.utils.SessionUtils;
-import com.google.gson.Gson;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +19,7 @@ import javax.ws.rs.core.UriInfo;
 import com.easytag.json.utils.TagExceptionWrapper;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * REST Web Service
@@ -36,6 +36,8 @@ public class AuthResource {
     
     @EJB
     UserManagerLocal userMan;
+    
+    public static final org.apache.logging.log4j.Logger log = LogManager.getLogger(AuthResource.class.getName());
 
     /**
      * Creates a new instance of AuthResource
@@ -52,7 +54,7 @@ public class AuthResource {
                 throw new TagException("Email or password cannot be empty.");
             }
             User user = new User(email, password);
-            System.out.println("userMan = " + userMan);
+            log.trace("userMan = " + userMan);
             User u = userMan.registerUser(user.getEmail(), user.getPassword(), UserType.USER);
             if (u != null) {
                 HttpSession session = SessionUtils.resetSession(req);
@@ -83,7 +85,7 @@ public class AuthResource {
             }
             
             SessionUtils.setUserId(session, user.getId());
-            System.out.println("setting user id to session/ userId = " + user.getId());
+            log.info("setting user id to session/ userId = " + user.getId());
             JsonResponse<User> jr = new JsonResponse<User>(ResponseConstants.OK, null, user);
             return SimpleResponseWrapper.getJsonResponse(jr);
         } catch (TagException e) {

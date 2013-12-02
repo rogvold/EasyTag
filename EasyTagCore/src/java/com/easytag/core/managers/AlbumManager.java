@@ -5,7 +5,6 @@ import com.easytag.core.entity.jpa.Photo;
 import com.easytag.core.entity.jpa.Vote;
 import com.easytag.core.enums.AlbumStatus;
 import com.easytag.core.enums.AlbumType;
-import com.easytag.core.enums.PhotoStatus;
 import com.easytag.core.enums.VoteType;
 import com.easytag.exceptions.TagException;
 import java.util.Collections;
@@ -15,6 +14,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -29,6 +30,8 @@ public class AlbumManager implements AlbumManagerLocal {
     @EJB
     PhotoManagerLocal pMan;
 
+    public static final Logger log = LogManager.getLogger(AlbumManager.class.getName());
+    
     @Override
     public Album getAlbumById(Long albumId) {
         if (albumId == null) {
@@ -76,12 +79,12 @@ public class AlbumManager implements AlbumManagerLocal {
             List<Photo> photos = pMan.getPhotosInAlbum(album.getId(), true);
             for (Photo photo : photos) {
                 pMan.restorePhoto(photo.getId());
-                System.out.println("restoring photo: p = " + photo);
+                log.trace("restoring photo: p = " + photo);
             }
-            System.out.println("restoring album: a = " + album);
+            log.trace("restoring album: a = " + album);
         } else {
             album = new Album(creatorId, name, description, tags, categories, parentId, AlbumStatus.NEW, AlbumType.PRIVATE, avatarSrc);
-            System.out.println("creating new album: a = " + album);
+            log.trace("creating new album: a = " + album);
         }
         return em.merge(album);
 
