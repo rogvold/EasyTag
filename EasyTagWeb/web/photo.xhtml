@@ -51,7 +51,7 @@
                     <div class="row">
 
                         <div class="col-md-9 hs-area">
-                            <img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.photo.fileId}"/>
+                            <a href="?id=#{photoBean.getPhId(2)}"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.photo.fileId}"/></a>
                         </div>
 
                         <div class="col-md-3" id="info">
@@ -168,6 +168,8 @@
                         function appendTag(x, y, w, h, name, id, url) {
                             var query = window.location.hash.substr(1).toLowerCase();
                             var hasTag = (name.toLowerCase().indexOf(query) >= 0);
+                            if (hasTag)
+                                totalTagsShown++;
                             var style = (hasTag && window.location.hash !== "")||
                                     (window.location.hash === "") ? 'border-color: red': 'display: none';
                             console.log("style: " + style);
@@ -196,6 +198,7 @@
                         }
 
                         function appendTags(pId) {
+                            totalTagsShown = 0;
                             $.ajax({
                                 type: "GET",
                                 url: "#{request.contextPath}/resources/Tag/getEasyTags?photoId=" + pId,
@@ -214,6 +217,8 @@
                                         }
                                         $('.hs-area').hotspotter();
                                         $('.hs-wrap').css('left', "+=15"); // hs-area padding
+                                        if (totalTagsShown === 0) 
+                                            showAllTags();
                                     }
                                 },
                                 dataType: "json"

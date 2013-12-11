@@ -115,70 +115,32 @@ public class LoginzaServlet extends HttpServlet {
 
             Map params = request.getParameterMap();
 
-            log.info("greetings from servlet! params = " + params);
-
             Iterator i = params.keySet().iterator();
 //            String s = "#";
             String s = "#";
             log.trace("wtf s = " + s);
-//            int k = 0;
-//            while (i.hasNext()) {
-//
-//                String key = (String) i.next();
-//                if (("code".equals(key) || ("token".equals(key)))) {
-//                    continue;
-//                }
-//                String value = ((String[]) params.get(key))[0];
-//                if (k == 0) {
-//                    s = s + "" + key + "=" + value;
-//                } else {
-//                    s = s + "&" + key + "=" + value;
-//                }
-//                k++;
-//            }
-
-//            s = "index.xhtml" + s;
             s = "index.xhtml";
 
-            log.trace("s = " + s);
-
-            out.println("s = " + s);
-            // !! end;
-
-            out.println("<html>" + "<head><title> Receipt </title>");
             log.info("<h3>POST PARAMETERS: "
                     + "token : " + request.getParameter("token") + ""
                     + "");
 
             String json = getJson(request.getParameter("token"));
-            out.println("<br/> json is " + json);
             OpenIdUtils utils = new OpenIdUtils();
-            out.println("<br/> extracted id is " + utils.extractIdFromJson(json));
 
             log.info("JSON = " + json);
 
-            if (!SessionUtils.isLoggedIn(request)) {
-                out.println("is not signed in. trying to make authorisation; json = " + json);
-                try {
-                    session = SessionUtils.resetSession(request);
+            out.println("is not signed in. trying to make authorisation; json = " + json);
+            try {
+                session = SessionUtils.resetSession(request);
 
-                    openIdAuthorisation(json);
-                    log.info("isSignedIn = " + SessionUtils.isLoggedIn(request));
-                } catch (TagException ex) {
-                    Logger.getLogger(LoginzaServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-//                if (SessionUtils.isSignedIn()) {
-//                    out.println("openIdAuthorisation success... ");
-//                }
-
-                response.sendRedirect(s);
-            } else {
-//                makeBundle(utils.extractIdFromJson(json));
-                response.sendRedirect(s);
+                openIdAuthorisation(json);
+                log.info("isSignedIn = " + SessionUtils.isLoggedIn(request));
+            } catch (TagException ex) {
+                Logger.getLogger(LoginzaServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-
-
+            response.sendRedirect(s);
         } finally {
             out.close();
         }
