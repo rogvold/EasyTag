@@ -72,9 +72,6 @@ public class AuthResource {
     public String login(@Context HttpServletRequest req, @FormParam("email") String email, @FormParam("password") String password) {
         try {
             HttpSession session = SessionUtils.resetSession(req);
-            if (SessionUtils.getUserId(session) != null) {
-                throw new TagException("You should logout first");
-            }
             if (email == null || password == null) {
                 throw new TagException("Login and/or password = null");
             }

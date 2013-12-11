@@ -2,6 +2,7 @@ package com.easytag.web.beans;
 
 import com.easytag.core.entity.jpa.User;
 import com.easytag.core.entity.jpa.UserProfile;
+import com.easytag.core.managers.Application;
 import com.easytag.core.managers.UserManagerLocal;
 import com.easytag.web.utils.JSFHelper;
 import java.io.Serializable;
@@ -130,9 +131,7 @@ public class UserBean implements Serializable {
     
     public String redirectIfNotAuthorized() {
         log.trace("UserBean.redirectIfNotAuthorized()");
-        JSFHelper helper = new JSFHelper();
-        if (helper.getCurrentUserId() == null) {
-            //helper.redirect("/index?faces-redirect=true");
+        if (new JSFHelper().getCurrentUserId() == null) {
             return "/index?faces-redirect=true";
         }
         return null;

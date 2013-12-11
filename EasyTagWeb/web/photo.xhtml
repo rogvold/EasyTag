@@ -16,7 +16,7 @@
 
             <ui:param name="windowTitle" value="Photo - TagsCool"/>
             <ui:param name="user" value="#{currentUserBean.user}"/>
-            <ui:param name="loggedIn" value="#{currentUserBean.userId ne null}"/>
+            <ui:param name="loggedIn" value="#{currentUserBean.loggedIn}"/>
             <ui:param name="userProfile" value="#{currentUserBean.userProfile}"/>
 
             <ui:define name="slider">
@@ -243,15 +243,23 @@
                             $(window).resize(function() {
                                 refreshTags();
                             });
-
+                            arrowsEnabled = true;
                             $(document).bind('keydown', function(e) {
-                                if (e.keyCode === 39) {  //right arrow                                    
+                                if (!arrowsEnabled)
+					return;
+				if (e.keyCode === 39) {  //right arrow                                    
                                     document.location.href = "#{request.contextPath}/photo.xhtml?id=" + #{photoBean.nextId};
                                 }
                                 if (e.keyCode === 37) {  //left arrow                                    
                                     document.location.href = "#{request.contextPath}/photo.xhtml?id=" + #{photoBean.prevId};
                                 }
                             });
+			    $('#editPhotoModal').on('shown.bs.modal', function() {
+        				arrowsEnabled = false;
+    			    });
+			    $('#editPhotoModal').on('hidden.bs.modal', function() {
+        				arrowsEnabled = true;
+    			    });
 
                         });
                         

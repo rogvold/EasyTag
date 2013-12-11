@@ -38,4 +38,6 @@ public interface UserManagerLocal {
     
     public User openIdAuthorization(String openIdKey) throws TagException;
     
+    public UserProfile findProfileByEmail(String email);
+    
 }

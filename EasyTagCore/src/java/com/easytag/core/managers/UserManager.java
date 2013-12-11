@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -196,5 +197,16 @@ public class UserManager implements UserManagerLocal {
         User u = users.get(0);
         return u;
 
+    }
+
+    @Override
+    public UserProfile findProfileByEmail(String email) {
+        try {
+            return em.createQuery("select p from UserProfile p where p.email = :email", UserProfile.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 }
