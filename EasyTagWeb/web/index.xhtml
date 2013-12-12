@@ -83,7 +83,17 @@
                                 Search for fragments by keywords
                             </p>
                         </div>
-                    </div><!-- /.row -->
+
+                    </div>
+
+                    <div class="row" >
+                        <h3 style="text-align: center;">
+                            How it works
+                        </h3>
+                        <div style="text-align: center;">
+                            <iframe width="560" height="315" src="//www.youtube.com/embed/zKhpj7ADw2w" frameborder="0" allowfullscreen="1"></iframe>
+                        </div>
+                    </div>
                 </ui:define>
 
                 <ui:define name="main_footer">
@@ -163,7 +173,7 @@
                                                         <button  class="btn btn-primary" id="registerButton" style="cursor: pointer;">
                                                             Register
                                                         </button>
-                                                            
+
                                                         <span style="padding: 0 20px; color: gray;">or via</span>
 
                                                         <a class="openIdLink" href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fwww.tagscool.com%2FEasyTagWeb%2Floginza&amp;provider=vkontakte&amp;lang=en" >
@@ -178,7 +188,7 @@
                                             </div>
                                         </div>
 
-                                     </div>
+                                    </div>
                                 </div>
 
                             </div><!-- /.modal-content -->
@@ -198,15 +208,51 @@
                         #openIdButtons:hover{
                             text-decoration: none;
                         }
-                        
+
                         .openIdLink:hover{
                             text-decoration: none;
                         }
-                        
+
                     </style>
                     <script>
                         $("#responsive-headline").fitText(2);
                     </script>
+
+                    <!-- Yandex.Metrika informer -->
+                    <div style="display: none;">
+                        <a href="http://metrika.yandex.ru/stat/?id=23244526&amp;from=informer"
+                           target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/23244526/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+                                                            style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" onclick="try{Ya.Metrika.informer({i:this,id:23244526,lang:'ru'});return false}catch(e){}"/></a>
+                    </div>
+                    <!-- /Yandex.Metrika informer -->
+
+                    <!-- Yandex.Metrika counter -->
+                    <script type="text/javascript">
+                        (function (d, w, c) {
+                            (w[c] = w[c] || []).push(function() {
+                                try {
+                                    w.yaCounter23244526 = new Ya.Metrika({id:23244526,
+                                        webvisor:true,
+                                        clickmap:true,
+                                        trackLinks:true,
+                                        accurateTrackBounce:true});
+                                } catch(e) { }
+                            });
+
+                            var n = d.getElementsByTagName("script")[0],
+                            s = d.createElement("script"),
+                            f = function () { n.parentNode.insertBefore(s, n); };
+                            s.type = "text/javascript";
+                            s.async = true;
+                            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+                            if (w.opera == "[object Opera]") {
+                                d.addEventListener("DOMContentLoaded", f, false);
+                            } else { f(); }
+                        })(document, window, "yandex_metrika_callbacks");
+                    </script>
+                    <noscript><div><img src="//mc.yandex.ru/watch/23244526" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+                    <!-- /Yandex.Metrika counter -->
                 </ui:define>
 
             </ui:composition>
