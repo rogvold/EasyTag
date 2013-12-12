@@ -54,6 +54,10 @@ public class UserBean implements Serializable {
         return userProfile;
     }
     
+    public Long getGuestUserId() {
+        return Application.getGuestUserId();
+    }
+    
     public void hideEmail(User user){
         if (user == null || user.getId() != getCurrentUserId()){
                 user.setEmail("hidden");

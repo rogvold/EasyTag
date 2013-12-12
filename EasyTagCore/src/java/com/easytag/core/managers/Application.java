@@ -30,6 +30,9 @@ public class Application {
         if (guestUser != null) {
             guestUserId = guestUser.getId();
             System.out.println("Guest User created. ID = " + guestUserId);
+            UserProfile profile = um.getUserProfile(guestUser);
+            profile.setFirstName("Public");
+            um.updateUserProfile(profile);
         }
     }
     

@@ -90,7 +90,8 @@
                     <ul class="nav navbar-nav navbar-right">                       
                         <li>&nbsp;</li>
                         <c:if test="#{!loggedIn}">
-                            <li><a data-toggle="modal" href="#loginModal" class=""  >Sign In</a></li>
+                            <li><a href="#{request.contextPath}/userAlbums.xhtml">Public Albums</a></li>
+                            <li><a data-toggle="modal" href="#loginModal">Sign In</a></li>
                             <li>
                                 <form class="navbar-form navbar-left" role="search" style="display: inline;" action="#{request.contextPath}/search.xhtml" method="get">
                                     <div class="form-group">
