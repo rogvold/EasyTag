@@ -253,6 +253,12 @@
                 });
                 return o;
             };
+            $.fn.goTo = function() {
+                    $('html, body').animate({
+                        scrollTop: $(this).offset().top + 'px'
+                    }, 'fast');
+                    return this; // for chaining...
+            };
         </script>
         <script src="#{request.contextPath}/js/bootstrap.js"></script>
 <!--        <script src="#{request.contextPath}/js/widget.js"></script>-->

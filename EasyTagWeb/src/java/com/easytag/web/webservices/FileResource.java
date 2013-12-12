@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.imageio.ImageIO;
@@ -155,9 +156,12 @@ public class FileResource {
             if (file == null)
                 return Response.status(Response.Status.NOT_FOUND).build();
             String attachment = StringUtils.isTrue(inline) ? "inline" : "attachment";
-            return Response.ok(new File(file.getCurrentPath()), file.getContentType())
+            File f = new File(file.getCurrentPath());
+            return Response.ok(f, file.getContentType())
                     .header("Content-Disposition", attachment + "; filename=\"" + file.getOriginalName() + "\"")
                     .header("Content-Length", file.getFileSize())
+                    .header("Last-Modified", new Date(f.lastModified()))
+                    .header("Cache-Control", "max-age=86400, must-revalidate")
                     .build();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -172,9 +176,12 @@ public class FileResource {
             if (file == null)
                 return Response.status(Response.Status.NOT_FOUND).build();
             String attachment = StringUtils.isTrue(inline) ? "inline" : "attachment";
-            return Response.ok(new File(file.getCurrentPath()), file.getContentType())
+            File f = new File(file.getCurrentPath());
+            return Response.ok(f, file.getContentType())
                     .header("Content-Disposition", attachment + "; filename=\"" + file.getOriginalName() + "\"")
                     .header("Content-Length", file.getFileSize())
+                    .header("Last-Modified", new Date(f.lastModified()))
+                    .header("Cache-Control", "max-age=86400, must-revalidate")
                     .build();
         } catch (Exception ex) {
             ex.printStackTrace();
