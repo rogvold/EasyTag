@@ -5,7 +5,6 @@ import com.easytag.core.entity.jpa.Photo;
 import com.easytag.core.entity.jpa.Vote;
 import com.easytag.core.enums.AlbumStatus;
 import com.easytag.core.enums.AlbumType;
-import com.easytag.core.enums.PhotoStatus;
 import com.easytag.core.enums.VoteType;
 import com.easytag.exceptions.TagException;
 import java.util.Collections;
@@ -15,6 +14,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -25,10 +26,12 @@ public class AlbumManager implements AlbumManagerLocal {
 
     @PersistenceContext(unitName = "EasyTagCorePU")
     EntityManager em;
-    
+
     @EJB
     PhotoManagerLocal pMan;
 
+    public static final Logger log = LogManager.getLogger(AlbumManager.class.getName());
+    
     @Override
     public Album getAlbumById(Long albumId) {
         if (albumId == null) {
@@ -67,13 +70,24 @@ public class AlbumManager implements AlbumManagerLocal {
 
     @Override
     public Album createAlbum(Long creatorId, String name, String description, String tags, String categories, Long parentId, String avatarSrc) throws TagException {
-        if (getAlbumByUserIdAndName(creatorId, name) != null) {
-            throw new TagException("you have already created album with name " + name);
+        Album album = getAlbumByUserIdAndName(creatorId, name);
+        if (album != null) {
+            if (album.getStatus() != AlbumStatus.DELETED) {
+                throw new TagException("you have already created album with name " + name);
+            }
+            album.setStatus(AlbumStatus.IN_PROGRESS);
+            List<Photo> photos = pMan.getPhotosInAlbum(album.getId(), true);
+            for (Photo photo : photos) {
+                pMan.restorePhoto(photo.getId());
+                log.trace("restoring photo: p = " + photo);
+            }
+            log.trace("restoring album: a = " + album);
+        } else {
+            album = new Album(creatorId, name, description, tags, categories, parentId, AlbumStatus.NEW, AlbumType.PRIVATE, avatarSrc);
+            log.trace("creating new album: a = " + album);
         }
-        Album a = new Album(creatorId, name, description, tags, categories, parentId, AlbumStatus.NEW, AlbumType.PRIVATE, avatarSrc);
-        System.out.println("creating new album: a = " + a);
-        return em.merge(a);
-        
+        return em.merge(album);
+
     }
 
     @Override
@@ -90,17 +104,16 @@ public class AlbumManager implements AlbumManagerLocal {
     @Override
     public void removeAlbum(Long id) throws TagException {
         Album a = getAlbumById(id);
-        if (a == null){
+        if (a == null) {
             throw new TagException("Album is not specified");
         }
-        
-        List<Photo> photos = pMan.getPhotosInAlbum(id);
-        for(Photo p:photos){
-            p.setStatus(PhotoStatus.DELETED);  
-            em.merge(p);
+
+        List<Photo> photos = pMan.getPhotosInAlbum(id, false);
+        for (Photo p : photos) {
+            pMan.deletePhoto(p.getId());
         }
         a.setStatus(AlbumStatus.DELETED);
-        
+
         em.merge(a);
     }
 

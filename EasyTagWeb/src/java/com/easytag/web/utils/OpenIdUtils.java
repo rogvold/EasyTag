@@ -2,6 +2,7 @@ package com.easytag.web.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -9,8 +10,10 @@ import java.util.Map;
  */
 public class OpenIdUtils {
 
+    public static final org.apache.logging.log4j.Logger log = LogManager.getLogger(OpenIdUtils.class.getName());
+    
     public Map<String, String> extractIdFromJson(String json) {
-        System.out.println("extractIdFromJson(): json = " + json);
+        log.info("extractIdFromJson(): json = " + json);
         String s = "";
         int i;
         Map<String, String> map = new HashMap();
@@ -63,7 +66,7 @@ public class OpenIdUtils {
             }
             map.put("mailru", s);
 
-            System.out.println("parsed JSON: map = " + map);
+            log.info("parsed JSON: map = " + map);
 
             return map;
         }

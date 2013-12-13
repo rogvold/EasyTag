@@ -133,7 +133,7 @@ public class PhotoResource {
             if (currentUserId == null) {
                 throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
             }
-            List<Photo> photos = phMan.getPhotosInAlbum(albumId);
+            List<Photo> photos = phMan.getPhotosInAlbum(albumId, false);
             JsonResponse<List<Photo>> jr = new JsonResponse<List<Photo>>(ResponseConstants.OK, null, photos);
             return SimpleResponseWrapper.getJsonResponse(jr);
         } catch (TagException e) {

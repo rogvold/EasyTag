@@ -21,7 +21,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import com.easytag.json.utils.TagExceptionWrapper;
-import com.easytag.utils.FileUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -276,7 +275,7 @@ public class AlbumResource {
                 throw new TagException("Access denied.", ResponseConstants.NOT_AUTHORIZED_CODE);
             }
             Album album = alMan.getAlbumById(albumId);
-            List<Photo> photos = phMan.getPhotosInAlbum(albumId);
+            List<Photo> photos = phMan.getPhotosInAlbum(albumId, false);
             List<EasyTagFile> photoFiles = new ArrayList<EasyTagFile>(photos.size());
             for (Photo photo : photos) {
                 EasyTagFile easyTagFile = fiMan.findFileById(photo.getFileId());

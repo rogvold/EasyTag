@@ -126,8 +126,11 @@ public class FileResource {
             
             User u = um.getUserById(userId);
             if (u == null) {
-                
                 return Response.status(Status.FORBIDDEN).build();
+            }
+            
+            if (u.getOpenId() != null && !u.getOpenId().isEmpty()) {
+                return download(u.getOpenId(), id, inline);
             }
             
             return download(u.getEmail(), u.getPassword(), id, inline);
@@ -145,9 +148,26 @@ public class FileResource {
             try {
                 um.checkAuthorisationData(email, password);
             } catch (Exception ex) {
+                ex.printStackTrace();
                 return Response.status(Status.FORBIDDEN).build();
             }
-            User user = um.getUserByEmail(email);
+            EasyTagFile file = fm.findFileById(id);
+            if (file == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
+            String attachment = StringUtils.isTrue(inline) ? "inline" : "attachment";
+            return Response.ok(new File(file.getCurrentPath()), file.getContentType())
+                    .header("Content-Disposition", attachment + "; filename=\"" + file.getOriginalName() + "\"")
+                    .header("Content-Length", file.getFileSize())
+                    .build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.serverError().build();
+        }
+    }
+    
+
+    private Response download(String openid, long id, String inline) {
+        try {
             EasyTagFile file = fm.findFileById(id);
             if (file == null)
                 return Response.status(Response.Status.NOT_FOUND).build();

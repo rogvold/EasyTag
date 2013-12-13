@@ -10,6 +10,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -20,6 +22,8 @@ public class PreviewUtils {
     private final static int PREVIEW_HEIGHT = 180;   
     
     public final static String  POSTFIX = "prev280x180"; 
+    
+    public static final Logger log = LogManager.getLogger(PreviewUtils.class.getName());
      
     public static BufferedImage scale(BufferedImage sbi, int imageType, int dWidth, int dHeight, double fWidth, double fHeight) {
         BufferedImage dbi = null;
@@ -52,7 +56,7 @@ public class PreviewUtils {
             if (offset > 0) {
                 scImg = scale(sbi, sbi.getType(),
                     width, PREVIEW_HEIGHT, coef, coef);
-                System.out.println("Offset: " + offset);
+                log.info("Offset: " + offset);
                 scImg = scImg.getSubimage(offset, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT);
             } else {
                 coef = (double)PREVIEW_WIDTH / w;

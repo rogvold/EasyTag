@@ -2,6 +2,8 @@ package com.easytag.web.utils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Contains a few useful null-safe static methods for working with http session.
@@ -11,14 +13,14 @@ import javax.servlet.http.HttpSession;
 public class SessionUtils {
 
     public static final String USER_ID_SESSION_ATTR = "userId";
-    //private static final Logger log = Logger.getLogger(SessionUtils.class);
+    private static final Logger log = LogManager.getLogger(SessionUtils.class.getName());
 
     public static <T> T getSessionAttribute(Class<T> clazz, final HttpSession session, String name) {
-        System.out.println("getSessionAttribute occured");
+        log.trace("getSessionAttribute occured");
         if (session == null) {
-            System.out.println("session is null");
+            log.warn("session is null");
         } else {
-            System.out.println("attribute names = " + session.getAttributeNames());
+            log.info("attribute names = " + session.getAttributeNames());
         }
         try {
             if (isSessionValid(session)) {

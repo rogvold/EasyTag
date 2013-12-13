@@ -25,7 +25,7 @@
                 <div class="row" style="">
 
                     <div class="col-lg-12">
-                        <c:if test="#{userBean.current}">
+                        <c:if test="#{userBean.current and currentUserBean.loggedIn}">
                             <h1 class="page-header">
                                 My profile
 
@@ -43,7 +43,7 @@
                                 <a id="btnEditProfile" href="#editProfile" class="btn btn-primary" onclick="editProfile(); return false;" title="Редактировать"><span class="glyphicon glyphicon-edit"></span> Редактировать</a>
                             </div>
                         </c:if>
-                        <c:if test="#{!userBean.current}">
+                        <c:if test="#{!(userBean.current and currentUserBean.loggedIn)}">
                             <h1>
                                 Profile of user 
                                 <span style="font-weight: bold;">#{userBean.userProfile.userFullName}</span>
@@ -72,7 +72,7 @@
                             <dt>Info:</dt> <dd id="infoView">#{userBean.userProfile.description}</dd>
                         </dl>
                     </div>
-                    <c:if test="#{userBean.current}">
+                    <c:if test="#{userBean.current and currentUserBean.loggedIn}">
                         <div id="profileEdit" style="display: none;">
                             <form id="profileInfo">
                                 <input type="text" placeholder="Email" id="Email"  name="email" style="margin-bottom: 20px; display: none; width: 400px;"/>
@@ -108,7 +108,7 @@
             </ui:define>         
 
             <ui:define name="scripts">
-                <c:if test="#{userBean.current}">
+                <c:if test="#{userBean.current and currentUserBean.loggedIn}">
                     <script>
                         //<![CDATA[
                         function editProfile() {

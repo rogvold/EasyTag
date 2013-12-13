@@ -2,6 +2,7 @@ package com.easytag.web.beans;
 
 import com.easytag.core.entity.jpa.User;
 import com.easytag.core.entity.jpa.UserProfile;
+import com.easytag.core.managers.Application;
 import com.easytag.core.managers.UserManagerLocal;
 import com.easytag.web.utils.JSFHelper;
 import java.io.Serializable;
@@ -27,6 +28,11 @@ public class CurrentUserBean implements Serializable {
         if (this.user != null)
             this.userProfile = userMan.getUserProfile(user);
     }
+    
+    public boolean isLoggedIn() {
+        Long currentUserId = new JSFHelper().getCurrentUserId();
+        return currentUserId != null && currentUserId != Application.getGuestUserId();
+    } 
     
     public UserProfile getUserProfile() {
         return this.userProfile;

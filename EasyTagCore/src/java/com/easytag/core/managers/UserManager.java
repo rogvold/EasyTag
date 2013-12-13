@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -83,17 +84,12 @@ public class UserManager implements UserManagerLocal {
     }
 
     private void setEmailToProfile(UserProfile profile, User user, String email) {
-        System.out.println("0");
         profile.setEmail(email);
-        System.out.println("1");
         if (user == null) {
             user = getUserById(profile.getId());
         }
-        System.out.println("2");
         user.setEmail(email);
-        System.out.println("3");
         em.merge(user);
-        System.out.println("4");
     }
 
     @Override
@@ -201,5 +197,16 @@ public class UserManager implements UserManagerLocal {
         User u = users.get(0);
         return u;
 
+    }
+
+    @Override
+    public UserProfile findProfileByEmail(String email) {
+        try {
+            return em.createQuery("select p from UserProfile p where p.email = :email", UserProfile.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 }

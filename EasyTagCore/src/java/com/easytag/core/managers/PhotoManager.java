@@ -3,7 +3,6 @@ package com.easytag.core.managers;
 import com.easytag.core.entity.jpa.Album;
 import com.easytag.core.entity.jpa.EasyTagFile;
 import com.easytag.core.entity.jpa.Photo;
-import com.easytag.core.enums.AlbumStatus;
 import com.easytag.core.enums.PhotoStatus;
 import com.easytag.exceptions.TagException;
 import com.easytag.utils.PreviewUtils;
@@ -41,17 +40,23 @@ public class PhotoManager implements PhotoManagerLocal {
     }
 
     @Override
-    public List<Photo> getPhotosInAlbum(Long albumId) {
-        Query q = em.createQuery("select p from Photo p where p.albumId = :albumId"
-                + " and p.status <> :status"
-                + " order by p.name").setParameter("albumId", albumId).setParameter("status", PhotoStatus.DELETED);
-        List<Photo> list = q.getResultList();
+    public List<Photo> getPhotosInAlbum(Long albumId, boolean includeDeleted) {
+        StringBuilder queryString = new StringBuilder("select p from Photo p where p.albumId = :albumId");
+        if (!includeDeleted) {
+            queryString.append(" and p.status <> :status");
+        }
+        queryString.append(" order by p.name");
+        Query query = em.createQuery(queryString.toString()).setParameter("albumId", albumId);
+        if (!includeDeleted) {
+            query = query.setParameter("status", PhotoStatus.DELETED);
+        }
+        List<Photo> list = query.getResultList();
         if (list == null || list.isEmpty()) {
             return Collections.EMPTY_LIST;
         }
         return list;
     }
-
+    
     @Override
     public Integer getPhotosAmount(Long albumId) throws TagException {
         Query q = em.createQuery("select count(p) from Photo p where p.albumId = :albumId").setParameter("albumId", albumId);
@@ -214,6 +219,17 @@ public class PhotoManager implements PhotoManagerLocal {
         p.setStatus(PhotoStatus.DELETED);
         em.merge(p);
     }
+    
+    @Override
+    public void restorePhoto(Long photoId) throws TagException {
+        Photo p = getPhotoById(photoId);
+        if (p == null){
+            throw new TagException("Photo is not specified");
+        }
+        p.setStatus(PhotoStatus.IN_PROGRESS);
+        em.merge(p);
+    }
+    
 
     @Override
     public Photo updatePhoto(Photo photo) {

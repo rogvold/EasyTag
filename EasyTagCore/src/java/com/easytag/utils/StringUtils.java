@@ -15,6 +15,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 
 /**
@@ -26,6 +28,8 @@ public class StringUtils {
     private String text;
     public static final String EMPTY_STRING = "";
     public static final String RANDOM_STRING = "G12HIJdefgPQRSTUVWXYZabc56hijklmnopqAB78CDEF0KLMNO3rstu4vwxyz9";
+    
+    public static final Logger log = LogManager.getLogger(StringUtils.class.getName());
 
     public StringUtils(String text) {
         this.text = text;
@@ -60,7 +64,7 @@ public class StringUtils {
 
     public List<String> getListOfStrings(String delimeter) {
         try {
-            System.out.println("getListOfStrings: text = " + text);
+            log.info("getListOfStrings: text = " + text);
             StringTokenizer st = new StringTokenizer(this.text, delimeter);
             List<String> list = new ArrayList();
             while (st.hasMoreElements()) {
@@ -69,7 +73,7 @@ public class StringUtils {
 
             return list;
         } catch (Exception e) {
-            System.out.println("getListOfStrings: text = " + this.text + " ; Exception: exc = " + e.toString());
+            log.error("getListOfStrings: text = " + this.text + " ; Exception: exc = " + e.toString());
             return null;
         }
 
