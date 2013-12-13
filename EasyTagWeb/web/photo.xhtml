@@ -48,7 +48,7 @@
 
                     </div>
 
-                    <div class="row">
+                    <div class="row" style="min-height: 500px;">
 
                         <div class="col-md-9 hs-area">
                             <a href="?id=#{photoBean.getPhId(2)}"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.photo.fileId}"/></a>
@@ -240,6 +240,7 @@
                         }
 
                         $(function() {
+                            $('#main-content').goTo();
                             if (window.location.hash !== ""){
                                 $('#info').append('<a href="javascript:void(0);" onclick="showAllTags(); $(this).hide()" class="btn btn-default">Show all tags</a>');
                             }
@@ -265,7 +266,7 @@
 			    $('#editPhotoModal').on('hidden.bs.modal', function() {
         				arrowsEnabled = true;
     			    });
-
+                            
                         });
                         
                         $('#saveButton').click(function() {
