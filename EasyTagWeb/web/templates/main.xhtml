@@ -91,28 +91,21 @@
                         <li>&nbsp;</li>
                         <c:if test="#{!loggedIn}">
                             <li><a href="#{request.contextPath}/userAlbums.xhtml">Public Albums</a></li>
-                            <li><a data-toggle="modal" href="#loginModal">Sign In</a></li>
-                            <li>
-                                <form class="navbar-form navbar-left" role="search" style="display: inline;" action="#{request.contextPath}/search.xhtml" method="get">
-                                    <div class="form-group">
-                                        <input title="Search photos by tag" type="text" name="q" class="form-control" placeholder="Search"/>
-                                    </div>                                
-                                </form>
-                            </li>
+                            <li><a data-toggle="modal" href="#loginModal" onclick="yaCounter23244526.reachGoal('signIn_click');" >Sign In</a></li>
                         </c:if>
                         <c:if test="#{loggedIn}">
                             <li><a href="#{request.contextPath}/profile.xhtml"><b>Welcome, #{userProfile.fullName}</b></a></li>
                             <li><a href="#{request.contextPath}/profile.xhtml" id="myAlbumsButton" >My profile</a></li>
                             <li><a href="#{request.contextPath}/userAlbums.xhtml" id="myAlbumsButton" >My albums</a></li>
                             <li><a href="javascript:void();" id="logoutButton" >Log out</a></li> 
-                            <li>
-                                <form class="navbar-form navbar-left" role="search" style="display: inline;" action="#{request.contextPath}/search.xhtml" method="get">
-                                    <div class="form-group">
-                                        <input title="Search photos by tag" type="text" name="q" class="form-control" placeholder="Search"/>
-                                    </div>                                
-                                </form>
-                            </li>
                         </c:if>
+                        <li>
+                            <form class="navbar-form navbar-left" role="search" style="display: inline;" action="#{request.contextPath}/search.xhtml" method="get">
+                                <div class="form-group">
+                                    <input title="Search photos by tag" type="text" name="q" class="form-control" placeholder="Search"/>
+                                </div>                                
+                            </form>
+                        </li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container -->
@@ -141,7 +134,7 @@
         </div><!-- /.container -->
 
         <ui:insert name="dialogs">Dialogs</ui:insert>
-        
+
         <!-- Modal -->
         <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
             <div class="modal-dialog" style="width: 340px; padding-top: 100px;" >
@@ -225,7 +218,7 @@
                                 </div>
                             </div>
 
-                         </div>
+                        </div>
                     </div>
 
                 </div><!-- /.modal-content -->
@@ -254,10 +247,10 @@
                 return o;
             };
             $.fn.goTo = function() {
-                    $('html, body').animate({
-                        scrollTop: $(this).offset().top + 'px'
-                    }, 'fast');
-                    return this; // for chaining...
+                $('html, body').animate({
+                    scrollTop: $(this).offset().top + 'px'
+                }, 'fast');
+                return this; // for chaining...
             };
         </script>
         <script src="#{request.contextPath}/js/bootstrap.js"></script>
@@ -275,11 +268,11 @@
 
             //]]>    
         </script>
-        
+
         <c:if test="#{!loggedIn}">
-        <script src="http://loginza.ru/js/widget.js" type="text/javascript"></script>
+            <script src="http://loginza.ru/js/widget.js" type="text/javascript"></script>
         </c:if>
-        
+
         <ui:insert name="scripts">Scripts</ui:insert>
 
         <script>
@@ -294,6 +287,44 @@
             ga('send', 'pageview');
             //]]>
         </script>
+
+
+        <!-- Yandex.Metrika informer -->
+        <div style="display: none;">
+            <a href="http://metrika.yandex.ru/stat/?id=23244526&amp;from=informer"
+               target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/23244526/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+                                                style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" onclick="try{Ya.Metrika.informer({i:this,id:23244526,lang:'ru'});return false}catch(e){}"/></a>
+        </div>
+        <!-- /Yandex.Metrika informer -->
+
+        <!-- Yandex.Metrika counter -->
+        <script type="text/javascript">
+            (function (d, w, c) {
+                (w[c] = w[c] || []).push(function() {
+                    try {
+                        w.yaCounter23244526 = new Ya.Metrika({id:23244526,
+                            webvisor:true,
+                            clickmap:true,
+                            trackLinks:true,
+                            accurateTrackBounce:true});
+                    } catch(e) { }
+                });
+
+                var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+                s.type = "text/javascript";
+                s.async = true;
+                s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+                if (w.opera == "[object Opera]") {
+                    d.addEventListener("DOMContentLoaded", f, false);
+                } else { f(); }
+            })(document, window, "yandex_metrika_callbacks");
+        </script>
+        <noscript><div><img src="//mc.yandex.ru/watch/23244526" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <!-- /Yandex.Metrika counter -->
+
     </h:body>
 
 </html>
