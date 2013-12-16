@@ -284,7 +284,7 @@
                     function createItem(photo) {
                         var item = $('<div class="col-md-3 portfolio-item imageSub" style="display: inline-block;" />');
                         item.attr("id", "photo-" + photo.id);
-                        item.append('<a title="' + ((photo.description == undefined) ? 'description is not specified' : photo.description) + '" href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
+                        item.append('<a name="photo'+photo.id+'" title="' + ((photo.description === undefined) ? 'description is not specified' : photo.description) + '" href="#{request.contextPath}/photo.xhtml?id=' + photo.id + '"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=' + photo.previewId + '"/></a>');
                         item.append('<div class="blackbg"></div>');
                         item.append('<div class="label">' + photo.name + '</div>');
 
@@ -366,9 +366,7 @@
                                     progress + '%'
                                 );
                                     console.log("progress=" + progress);
-                                    //                                            if (progress >= 100) {
-                                    //                                                onUploadFinished();
-                                    //                                            }
+                                }
                                 }
                             }).prop('disabled', !$.support.fileInput)
                             .parent().addClass($.support.fileInput ? undefined : 'disabled');
