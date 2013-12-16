@@ -52,9 +52,13 @@
 
                         <div class="col-md-9 hs-area">
                             <a href="?id=#{photoBean.getPhId(2)}"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.photo.fileId}"/></a>
+
                         </div>
 
                         <div class="col-md-3" id="info">
+                            <div id="vk_like">
+
+                            </div>
                             <div id="photoInfoBlock">
                                 <h4 id="photoNameLabel" title="Name: #{photoBean.photo.name}">#{photoBean.photo.name}</h4>
                                 <p id="photoDescriptionLabel" title="Description">#{photoBean.photo.description}</p>
@@ -77,7 +81,7 @@
                         <div class="col-lg-12">
                             <h3 class="page-header">Nearby photo</h3>
                         </div>
-                        
+
                         <div class="col-sm-3 col-xs-6 imageSub">
                             <a href="#{request.contextPath}/photo.xhtml?id=#{photoBean.getPhId(0)}">
                                 <img class="img-responsive img-customer" src="#{request.contextPath}/resources/file/download?id=#{photoBean.getPreviewId(0)}"/>
@@ -155,6 +159,16 @@
 
             <ui:define name="scripts">
                 <c:if test="#{photoBean.photo ne null}">
+                    <script type="text/javascript" src="//vk.com/js/api/openapi.js?97"></script>
+                    <script type="text/javascript">
+                        VK.init({
+                            apiId: 4063340,
+                            onlyWidgets: true
+                        });
+                    </script>
+                    <script type="text/javascript">
+                        VK.Widgets.Like('vk_like');
+                    </script>
                     <style type="text/css">
                         .img-customer {
                             margin-bottom: 0px;
@@ -171,11 +185,11 @@
                             if (hasTag)
                                 totalTagsShown++;
                             var style = (hasTag && window.location.hash !== "")||
-                                    (window.location.hash === "") ? 'border-color: red': 'display: none';
+                                (window.location.hash === "") ? 'border-color: red': 'display: none';
                             console.log("style: " + style);
                             $('.hs-area').append('<div class="hs-wrap ' + id + '">\n\
                                 <div class="red-spot" style="' + style +
-                                    '" data-coord="' + x + ',' + y + '" \n\
+                                '" data-coord="' + x + ',' + y + '" \n\
                                 data-dim="' + w + ',' + h + ',0" data-activeon="hover">\n\
                                 </div><div class="tt-wrap"><div class="tip-tooltip" data-anim="goin" \n\
                                 data-dir="top">' + name + '</div></div></div>');
@@ -184,17 +198,17 @@
                                 $('.' + id + ' .red-spot').wrap('<a href="' + url + '" target="_blank"></a>');
                             }
                             var li = $('<li style="cursor:default"/>').text(name).appendTo('#tagList')
-                                    .bind('mouseover', function() {
-                                        $(this).css('color', 'red');
-                                        $('.' + id + ' .red-spot').addClass('active');
-                                        $('.' + id + ' .tt-wrap').css('display', 'block');
-                                    })
-                                    .bind('mouseout', function() {
-                                        $(this).css('color', 'black')
-                                        $('.' + id + ' .red-spot').removeClass('active')
-                                        $('.' + id + ' .tt-wrap').css('display', 'none');
-                                    });
-                             if (style === 'border-color: red' && window.location.hash !== "") li.css('font-weight', 'bold') 
+                            .bind('mouseover', function() {
+                                $(this).css('color', 'red');
+                                $('.' + id + ' .red-spot').addClass('active');
+                                $('.' + id + ' .tt-wrap').css('display', 'block');
+                            })
+                            .bind('mouseout', function() {
+                                $(this).css('color', 'black')
+                                $('.' + id + ' .red-spot').removeClass('active')
+                                $('.' + id + ' .tt-wrap').css('display', 'none');
+                            });
+                            if (style === 'border-color: red' && window.location.hash !== "") li.css('font-weight', 'bold') 
                         }
 
                         function appendTags(pId) {
@@ -208,12 +222,12 @@
                                         spots = responseText.data;
                                         for (var i = 0; i < spots.length; i++) {
                                             appendTag(spots[i].x,
-                                                    spots[i].y,
-                                                    spots[i].width,
-                                                    spots[i].height,
-                                                    spots[i].name,
-                                                    spots[i].id,
-                                                    spots[i].externalUrl);
+                                            spots[i].y,
+                                            spots[i].width,
+                                            spots[i].height,
+                                            spots[i].name,
+                                            spots[i].id,
+                                            spots[i].externalUrl);
                                         }
                                         $('.hs-area').hotspotter();
                                         $('.hs-wrap').css('left', "+=15"); // hs-area padding
@@ -252,20 +266,20 @@
                             arrowsEnabled = true;
                             $(document).bind('keydown', function(e) {
                                 if (!arrowsEnabled)
-					return;
-				if (e.keyCode === 39) {  //right arrow                                    
+                                    return;
+                                if (e.keyCode === 39) {  //right arrow                                    
                                     document.location.href = "#{request.contextPath}/photo.xhtml?id=" + #{photoBean.nextId};
                                 }
                                 if (e.keyCode === 37) {  //left arrow                                    
                                     document.location.href = "#{request.contextPath}/photo.xhtml?id=" + #{photoBean.prevId};
                                 }
                             });
-			    $('#editPhotoModal').on('shown.bs.modal', function() {
-        				arrowsEnabled = false;
-    			    });
-			    $('#editPhotoModal').on('hidden.bs.modal', function() {
-        				arrowsEnabled = true;
-    			    });
+                            $('#editPhotoModal').on('shown.bs.modal', function() {
+                                arrowsEnabled = false;
+                            });
+                            $('#editPhotoModal').on('hidden.bs.modal', function() {
+                                arrowsEnabled = true;
+                            });
                             
                         });
                         
@@ -276,13 +290,13 @@
                                 return false;
                             }
                             $.post('#{request.contextPath}/resources/Photo/update', {data: JSON.stringify(a)})
-                                    .done(function(data) {
-                                        console.log(data);
-                                        if (data.responseCode === 1) {
-                                            $('#editPhotoModal').modal('hide');
-                                            window.location.reload();
-                                        }
-                                    });
+                            .done(function(data) {
+                                console.log(data);
+                                if (data.responseCode === 1) {
+                                    $('#editPhotoModal').modal('hide');
+                                    window.location.reload();
+                                }
+                            });
                             return false;
                         });
                         $('#editPhotoModal').on('shown', function () {
