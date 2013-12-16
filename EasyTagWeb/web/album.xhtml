@@ -59,7 +59,7 @@
                         <div class="col-lg-3" style="margin-bottom: 20px;">
                             <form style="display: inline;" action="#{request.contextPath}/resources/file/upload" method="POST" enctype="multipart/form-data">
                                 <span class="btn btn-primary fileinput-button #{userBean.getDisabledClass(userBean.current)}" title="Добавить фотографии...">
-                                    <i class="glyphicon glyphicon-plus"></i> Добавить...
+                                    <i class="glyphicon glyphicon-plus"></i> Upload...
                                     <input type="file" id="fileupload" name="file" multiple="true"/>
                                 </span>    
                                 <input type="hidden" name="album_id" value="#{albumBean.albumId}" />
@@ -68,7 +68,7 @@
                             <a href="#editAlbumModal" data-toggle="modal" class="btn btn-primary #{userBean.getDisabledClass(userBean.current)}" title="Редактировать альбом...">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </a>
-                               <a href="#" class="btn btn-primary" onclick=" resetPhotosList();
+                            <a href="#" class="btn btn-primary" onclick=" resetPhotosList();
                                    return false;" title="Обновить"><span class="glyphicon glyphicon-refresh"></span></a>
                         </div>
                     </div>
@@ -497,6 +497,10 @@
                         $('#dislikesNumber').text(dislikes);
                     };
                 </script>
+
+
+                
+
             </ui:define>
 
         </ui:composition>

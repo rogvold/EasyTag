@@ -9,7 +9,7 @@
         <f:viewAction action="#{userBean.redirectIfNotAuthorized}" />
         <f:viewAction action="#{userBean.setUserId(null)}"/>
     </f:metadata>
-    
+
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
@@ -25,7 +25,7 @@
                 <div class="row">
 
                     <div class="col-lg-12">
-                         <div class="col-lg-12" style="margin-top: 20px; margin-bottom: 20px">
+                        <div class="col-lg-12" style="margin-top: 20px; margin-bottom: 20px">
                             <div class="input-group" style="width: 100%">
                                 <input id="query" type="text" class="form-control" placeholder="Search query"/>                                
                             </div>     
@@ -56,38 +56,38 @@
                 <script>
                     function requestPhotosList(url) {
                         $.get(url)
-                                .done(function(data) {
-                                    console.log(data);
-                                    if (data.responseCode === 1) {
-                                        var photos = [];
-                                        photos = data.data;
-                                        var n = 1;
-                                        var row = null;
-                                        var container = $('#main-content');
-                                        for (var i in photos) {
-                                            console.log(photos[i]);
-                                            if (row === null) {
-                                                row = $('<div class="row result" />');
-                                            }
-                                            row.append(createItem(photos[i]));
-                                            if ((n++) % 4 === 0) {
-                                                console.log("break");
-                                                container.append(row);
-                                                row = null;
-                                            }
-                                        }
-                                        if (n === 1) {
-                                            row = $('<div class="row result"/>');
-                                            row.append('<p style="padding-left:30px;">No photos to show.</p>');
-                                        }
-                                        if (row !== null) {
-                                            container.append(row);
-                                        }
+                        .done(function(data) {
+                            console.log(data);
+                            if (data.responseCode === 1) {
+                                var photos = [];
+                                photos = data.data;
+                                var n = 1;
+                                var row = null;
+                                var container = $('#main-content');
+                                for (var i in photos) {
+                                    console.log(photos[i]);
+                                    if (row === null) {
+                                        row = $('<div class="row result" />');
                                     }
-                                })
-                                .fail(function() {
-                                    alert("error");
-                                });
+                                    row.append(createItem(photos[i]));
+                                    if ((n++) % 4 === 0) {
+                                        console.log("break");
+                                        container.append(row);
+                                        row = null;
+                                    }
+                                }
+                                if (n === 1) {
+                                    row = $('<div class="row result"/>');
+                                    row.append('<p style="padding-left:30px;">No photos to show.</p>');
+                                }
+                                if (row !== null) {
+                                    container.append(row);
+                                }
+                            }
+                        })
+                        .fail(function() {
+                            alert("error");
+                        });
                     }
 
                     function createItem(photo) {
@@ -104,8 +104,8 @@
                 <script>
                     function getURLParameter(name) {
                         var ret = decodeURI(
-                            (RegExp(name + '=' + '(.+?)(&amp;|$)').exec(location.search)||[,null])[1]
-                        );  
+                        (RegExp(name + '=' + '(.+?)(&amp;|$)').exec(location.search)||[,null])[1]
+                    );  
                         return ret === 'null' ? '': ret;
                     }
                     
@@ -124,6 +124,9 @@
                         requestPhotosList('#{request.contextPath}/resources/Photo/findPhotos?q=' + getURLParameter('q'));
                     });
                 </script>
+
+
+
             </ui:define>
 
         </ui:composition>

@@ -178,7 +178,7 @@
                         
                         item.append('<a title="' + album.description +'" href="album.xhtml?id=' + album.id + '"><img class="img-responsive" src="#{request.contextPath}/img/folder.png"/></a>');
                         item.append('<h4 style="text-align: center;"  ><a href="album.xhtml?id=' + album.id + '">' + album.name + '</a></h4>');
-//                        item.append('<p>' + album.description + '</p>');                        
+                        //                        item.append('<p>' + album.description + '</p>');                        
                         return item;
                     }
                     
@@ -202,6 +202,7 @@
                         }
                     </script>
                 </c:if>
+
             </ui:define>
 
         </ui:composition>
