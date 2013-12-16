@@ -15,7 +15,7 @@
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
-            <ui:param name="windowTitle" value="Album - TagsCool"/>
+            <ui:param name="windowTitle" value="#{albumBean.album.name} - TagsCool"/>
             <ui:param name="user" value="#{currentUserBean.user}"/>
             <ui:param name="loggedIn" value="#{currentUserBean.loggedIn}"/>
             <ui:param name="userProfile" value="#{currentUserBean.userProfile}"/>

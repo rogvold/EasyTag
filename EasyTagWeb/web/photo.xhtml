@@ -14,7 +14,7 @@
     <h:body>
         <ui:composition template="templates/main.xhtml">
 
-            <ui:param name="windowTitle" value="Photo - TagsCool"/>
+            <ui:param name="windowTitle" value="#{photoBean.photo.name} - #{albumBean.album.name} - TagsCool"/>
             <ui:param name="user" value="#{currentUserBean.user}"/>
             <ui:param name="loggedIn" value="#{currentUserBean.loggedIn}"/>
             <ui:param name="userProfile" value="#{currentUserBean.userProfile}"/>
@@ -48,7 +48,7 @@
 
                     </div>
 
-                    <div class="row" style="min-height: 500px;">
+                    <div class="row" style="min-height: 300px;">
 
                         <div class="col-md-9 hs-area">
                             <a href="?id=#{photoBean.getPhId(2)}"><img class="img-responsive" src="#{request.contextPath}/resources/file/download?id=#{photoBean.photo.fileId}"/></a>
