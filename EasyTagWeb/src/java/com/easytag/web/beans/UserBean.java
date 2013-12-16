@@ -5,6 +5,7 @@ import com.easytag.core.entity.jpa.UserProfile;
 import com.easytag.core.managers.Application;
 import com.easytag.core.managers.UserManagerLocal;
 import com.easytag.web.utils.JSFHelper;
+import com.easytag.web.utils.SessionListener;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -118,6 +119,10 @@ public class UserBean implements Serializable {
         }
         Long id = Long.parseLong(userId);
         return (id == this.userId) ? "": "disabled";        
+    }
+    
+    public int getActiveSessionsCount() {
+        return SessionListener.getTotalActiveSessions();
     }
     
     public User findById(String userId) {
