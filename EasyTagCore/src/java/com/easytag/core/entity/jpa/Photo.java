@@ -28,7 +28,8 @@ public class Photo implements Serializable {
     private Long fileId;
     private Long previewId;
     private Long height; 
-    private Long width;       
+    private Long width;   
+    private Long original_id;    
 
     public Photo() {
     }
@@ -133,6 +134,14 @@ public class Photo implements Serializable {
     public void setHeight(Long height) {
         this.height = height;
     }   
+
+    public Long getOriginal_id() {
+        return original_id;
+    }
+
+    public void setOriginal_id(Long original_id) {
+        this.original_id = original_id;
+    }
     
     @Override
     public int hashCode() {

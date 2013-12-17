@@ -141,19 +141,29 @@ public class PhotoManager implements PhotoManagerLocal {
         String path = etf.getCurrentPath();        
         String prevPath = path.substring(0, path.lastIndexOf(".")) 
                 + PreviewUtils.POSTFIX + path.substring(path.lastIndexOf("."));
-        
+        String defPath = path.substring(0, path.lastIndexOf(".")) 
+                + PreviewUtils.DEFAULT_POSTFIX + path.substring(path.lastIndexOf("."));
+                
         String name = etf.getOriginalName();
         String prevName = name.substring(0, name.lastIndexOf(".")) 
                 + PreviewUtils.POSTFIX + name.substring(name.lastIndexOf("."));
+        String defName = name.substring(0, name.lastIndexOf(".")) 
+                + PreviewUtils.DEFAULT_POSTFIX + name.substring(name.lastIndexOf("."));
         
         try {
             PreviewUtils.makePreview(path, prevPath);
+            System.out.println("vima: I'm here");
+            PreviewUtils.makeDefaultView(path, defPath);
         } catch (Exception e) {            
             throw new TagException("can't make a preview");
         }
         
+        EasyTagFile defaultFile = fMan.addFile(etf.getUserId(), defName, defPath, etf.getContentType());
         EasyTagFile prevFile = fMan.addFile(etf.getUserId(), prevName, prevPath, etf.getContentType());
         p.setPreviewId(prevFile.getId());  
+        p.setOriginal_id(p.getFileId());
+        p.setFileId(defaultFile.getId());
+        
         
         em.merge(p);
     }

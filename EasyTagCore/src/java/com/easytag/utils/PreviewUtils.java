@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -20,8 +21,10 @@ import org.apache.logging.log4j.Logger;
 public class PreviewUtils {
     private final static int PREVIEW_WIDTH = 280;
     private final static int PREVIEW_HEIGHT = 180;   
+    private final static int DEFAULT_WIDTH = 848;
     
     public final static String  POSTFIX = "prev280x180"; 
+    public final static String  DEFAULT_POSTFIX = "_default";
     
     public static final Logger log = LogManager.getLogger(PreviewUtils.class.getName());
      
@@ -67,5 +70,25 @@ public class PreviewUtils {
         
         File outputfile = new File(distFile);
         ImageIO.write(scImg, "jpg", outputfile);              
+    }
+    
+    public static void makeDefaultView(String srcFile, String distFile) throws IOException {
+        File imgF = new File(srcFile);        
+        BufferedImage sbi = ImageIO.read(imgF);  
+        int w = sbi.getWidth();
+        int h = sbi.getHeight();
+        BufferedImage scImg;
+        double coef;
+        coef = (double)DEFAULT_WIDTH / w;
+        
+        if (coef > 1){            
+            FileUtils.copyFile(imgF, new File(distFile));
+        } else {
+            int height = (int)Math.round(h * coef);
+            scImg = scale(sbi, sbi.getType(),
+                DEFAULT_WIDTH, height, coef, coef);
+            File outputfile = new File(distFile);
+            ImageIO.write(scImg, "jpg", outputfile);            
+        }          
     }
 }
