@@ -130,7 +130,7 @@
             <footer>
                 <div class="row">
                         <div class="col-lg-12">
-                            <p>Users online: #{userBean.activeSessionsCount}</p>
+                            <p>Users in last 30 minutes: #{userBean.activeSessionsCount}</p>
                         </div>
                 </div>
                 <ui:insert name="main_footer">Main footer</ui:insert>
@@ -251,9 +251,12 @@
                 });
                 return o;
             };
-            $.fn.goTo = function() {
+            $.fn.goTo = function(offset) {
+                var pxOffset = offset;
+                if (pxOffset === undefined)
+                    pxOffset = 0;
                 $('html, body').animate({
-                    scrollTop: $(this).offset().top + 'px'
+                    scrollTop: ($(this).offset().top + pxOffset) + 'px'
                 }, 'fast');
                 return this; // for chaining...
             };

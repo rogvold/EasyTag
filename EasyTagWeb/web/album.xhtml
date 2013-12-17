@@ -200,10 +200,21 @@
                                 var photos = [];
                                 photos = data.data;
                                 callback(photos);
+                                goToPhoto();
                             }
                         })
                         .fail(function() {
                             alert("error");
+                        });
+                    }
+                    
+                    function goToPhoto() {
+                        $('.photos img').ready(function() {
+                            var hash = location.hash;
+                            if (hash !== undefined) {
+                                hash = hash.substring(1);
+                                $('a[name="'+ hash + '"]').goTo(-60);
+                            }
                         });
                     }
 
@@ -291,7 +302,7 @@
                         var isCurrent = #{userBean.current};
                         if (isCurrent) {
                             item.append('<div class="label deleteButton" style="top: 0">\n\
-                                                        <a href="#" class="btn btn-danger label" \n\
+                                                            <a href="#" class="btn btn-danger label" \n\
                                                             onclick=" deletePhoto(' + photo.id + '); \n\
                                                             return false;" title="Delete">\n\
                                                             <span class="glyphicon glyphicon-remove">\n\
@@ -366,7 +377,6 @@
                                     progress + '%'
                                 );
                                     console.log("progress=" + progress);
-                                }
                                 }
                             }).prop('disabled', !$.support.fileInput)
                             .parent().addClass($.support.fileInput ? undefined : 'disabled');
