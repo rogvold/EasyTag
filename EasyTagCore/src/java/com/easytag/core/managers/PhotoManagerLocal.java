@@ -29,6 +29,8 @@ public interface PhotoManagerLocal {
     
     //TODO find by tag
     public List<Photo> findPhotosByTagName(String query);
+    
+    public List<Photo> findPhotosInAlbum(String query, Long albumId);
         
     //TODO deletePhoto       
     public void deletePhoto(Long photoId) throws TagException;

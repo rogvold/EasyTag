@@ -177,6 +177,24 @@ public class PhotoResource {
         }
     }
     
+    @GET
+    @Path("findPhotosLocally")
+    public String findPhotosInAlbum(@Context HttpServletRequest req, @QueryParam("id") Long albumId, @QueryParam("q") String query) {
+        try {
+            HttpSession session = req.getSession(false);
+            Long currentUserId = SessionUtils.getUserId(session);
+
+            if (currentUserId == null) {
+                throw new TagException("you sholud login first", ResponseConstants.NOT_AUTHORIZED_CODE);
+            }
+            List<Photo> photos = phMan.findPhotosInAlbum(query, albumId);                    
+            JsonResponse<List<Photo>> jr = new JsonResponse<List<Photo>>(ResponseConstants.OK, null, photos);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException e) {
+            return TagExceptionWrapper.wrapException(e);
+        }
+    }
+    
     @POST
     @Path("addPhotos")
     public String addPhotos(@Context HttpServletRequest req, @FormParam("data") String data, @QueryParam("albumId") Long albumId) {

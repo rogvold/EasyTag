@@ -385,6 +385,16 @@
                 </c:if>
                 <script>
                     $(function() {
+                        $('#localSearchCheckbox').css('display','table-cell');
+                        $('#localSearchCheckbox input[type="checkbox"]').bind('change', function() {
+                            var checked =  $('#localSearchCheckbox input[type="checkbox"]').prop('checked');
+                            if (checked) {
+                                $('#localSearchId').val('#{albumBean.albumId}');
+                            } else {
+                                $('#localSearchId').val('');
+                            }
+                            console.log($('#localSearchId').val());
+                        });
                         $.ajax({type: "GET",
                             url: '#{request.contextPath}/resources/album/#{albumBean.albumId}/isVoted',
                             success: function(response) { 

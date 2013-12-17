@@ -167,6 +167,15 @@ public class PhotoManager implements PhotoManagerLocal {
         
         em.merge(p);
     }
+    
+    private static final String SELECT_PHOTO_BY_TAGS = "select distinct p from "
+                    + "Photo p, EasyTag e where LOWER(e.name) like LOWER(:query) "
+                    + "and p.status <> :status "
+                    + "and p.id = e.photoId";
+    
+    private static final String SELECT_PHOTO_BY_NAME = "select p from "
+                    + "Photo p where LOWER(p.name) "                
+                    + "like LOWER(:query) and p.status <> :status";
 
     @Override
     public List<Photo> findPhotosByTagName(String query) {
@@ -177,15 +186,10 @@ public class PhotoManager implements PhotoManagerLocal {
         String[] words = query.split("\\s+");
         
         List<Photo> currTag, currName, diff;
-        Query q = em.createQuery("select distinct p from "
-                    + "Photo p, EasyTag e where LOWER(e.name) like LOWER(:query) "
-                    + "and p.status <> :status "
-                    + "and p.id = e.photoId")
+        Query q = em.createQuery(SELECT_PHOTO_BY_TAGS)
                     .setParameter("query", "%" + words[0] + "%").setParameter("status", PhotoStatus.DELETED);            
         List<Photo> list = q.getResultList();
-        q = em.createQuery("select p from "
-                    + "Photo p where LOWER(p.name) "                
-                    + "like LOWER(:query) and p.status <> :status")
+        q = em.createQuery(SELECT_PHOTO_BY_NAME)
                     .setParameter("query", "%" + words[0] + "%").setParameter("status", PhotoStatus.DELETED);
         currName = q.getResultList();
         diff = new ArrayList<Photo>(list);
@@ -195,15 +199,10 @@ public class PhotoManager implements PhotoManagerLocal {
         
         
         for(int i = 1; i < words.length; i++){        
-            q = em.createQuery("select distinct p from "
-                    + "Photo p, EasyTag e where LOWER(e.name) like LOWER(:query) "
-                    + "and p.status <> :status "
-                    + "and p.id = e.photoId")
+            q = em.createQuery(SELECT_PHOTO_BY_TAGS)
                     .setParameter("query", "%" + words[i] + "%").setParameter("status", PhotoStatus.DELETED);
             currTag = q.getResultList();
-            q = em.createQuery("select p from "
-                    + "Photo p where LOWER(p.name) "
-                    + "like LOWER(:query) and p.status <> :status")
+            q = em.createQuery(SELECT_PHOTO_BY_NAME)
                     .setParameter("query", "%" + words[i] + "%").setParameter("status", PhotoStatus.DELETED);
             currName = q.getResultList();
             diff = new ArrayList<Photo>(currTag);
@@ -219,7 +218,50 @@ public class PhotoManager implements PhotoManagerLocal {
         }
         return list;
     }
-
+    
+    @Override
+    public List<Photo> findPhotosInAlbum(String query, Long albumId) {
+        if (query == null || query.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+                
+        String[] words = query.split("\\s+");
+        
+        List<Photo> currTag, currName, diff;
+        Query q = em.createQuery(SELECT_PHOTO_BY_TAGS + " and p.albumId = :albumId")
+                    .setParameter("query", "%" + words[0] + "%").setParameter("albumId", albumId).setParameter("status", PhotoStatus.DELETED);            
+        List<Photo> list = q.getResultList();
+        q = em.createQuery(SELECT_PHOTO_BY_NAME + " and p.albumId = :albumId")
+                    .setParameter("query", "%" + words[0] + "%").setParameter("albumId", albumId).setParameter("status", PhotoStatus.DELETED);
+        currName = q.getResultList();
+        diff = new ArrayList<Photo>(list);
+        diff.retainAll(currName);
+        currName.removeAll(diff);
+        list.addAll(currName);     
+        
+        
+        for(int i = 1; i < words.length; i++){        
+            q = em.createQuery(SELECT_PHOTO_BY_TAGS + " and p.albumId = :albumId")
+                    .setParameter("query", "%" + words[i] + "%").setParameter("albumId", albumId).setParameter("status", PhotoStatus.DELETED);
+            currTag = q.getResultList();
+            q = em.createQuery(SELECT_PHOTO_BY_NAME + " and p.albumId = :albumId")
+                    .setParameter("query", "%" + words[i] + "%").setParameter("albumId", albumId).setParameter("status", PhotoStatus.DELETED);
+            currName = q.getResultList();
+            diff = new ArrayList<Photo>(currTag);
+            diff.retainAll(currName);
+            currName.removeAll(diff);
+            currTag.addAll(currName);            
+            list.retainAll(currTag);
+        }     
+        
+       
+        if (list == null || list.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+        return list;
+    }
+    
+    
     @Override
     public void deletePhoto(Long photoId) throws TagException {
         Photo p = getPhotoById(photoId);

@@ -109,19 +109,32 @@
                         return ret === 'null' ? '': ret;
                     }
                     
+                    function searchInAlbum(albumId, query){
+                        if (albumId === "") {
+                            requestPhotosList('#{request.contextPath}/resources/Photo/findPhotos?q=' + query);
+                        } else {
+                            requestPhotosList('#{request.contextPath}/resources/Photo/findPhotosLocally?id=' + albumId + '&amp;q=' + query);
+                        }
+                    }                     
+                    
                     $(function() {
+                        albumId = null;                    
                         $('#query').bind('keydown', function (e) {
                             if (e.keyCode === 13) {
+                                console.log("albumId: " + albumId);
                                 $('.result').remove();
                                 var query = $('#query').val();                                    
-                                window.history.replaceState({q: query}, "Search - TagsCool", "/EasyTagWeb/search.xhtml?q=" + query);
-                                console.log("param q: " + getURLParameter('q'));
-                                requestPhotosList('#{request.contextPath}/resources/Photo/findPhotos?q=' + query);
+                                var postfix = (albumId === "")? "" :"&amp;id=" + albumId;
+                                window.history.replaceState({q: query}, "Search - TagsCool", "/EasyTagWeb/search.xhtml?q=" + query + postfix);                                
+                                searchInAlbum(albumId, query);
                             }                              
                         });
                         $('#query').val(getURLParameter('q'));
+                        albumId = getURLParameter('id');
+                        q = getURLParameter('q');
                         
-                        requestPhotosList('#{request.contextPath}/resources/Photo/findPhotos?q=' + getURLParameter('q'));
+                        searchInAlbum(albumId, q);
+                            
                     });
                 </script>
 
