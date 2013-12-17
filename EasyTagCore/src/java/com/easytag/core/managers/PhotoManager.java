@@ -294,11 +294,11 @@ public class PhotoManager implements PhotoManagerLocal {
     }
     
     private static final String SELECT_PHOTO_WITHOUT_DEFAULT_VIEW = "select p from "
-                    + "Photo p where p.fileId = p.original_id";
+                    + "Photo p where p.fileId = p.original_id and p.status <> :deleted";
     
     @Override
     public void generateDefaultViews() throws TagException {
-        Query q = em.createQuery(SELECT_PHOTO_WITHOUT_DEFAULT_VIEW);            
+        Query q = em.createQuery(SELECT_PHOTO_WITHOUT_DEFAULT_VIEW).setParameter("deleted", PhotoStatus.DELETED);            
         List<Photo> list = q.getResultList();
         for(Photo p: list){
             EasyTagFile etf = fMan.findFileById(p.getFileId());
@@ -312,8 +312,9 @@ public class PhotoManager implements PhotoManagerLocal {
 
             try {                
                 PreviewUtils.makeDefaultView(path, defPath);
-            } catch (Exception e) {            
-                throw new TagException("can't make a defaultView");
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new TagException("can't make a defaultView for id="+p.getId() + ": " + e.getMessage());
             }
 
             EasyTagFile defaultFile = fMan.addFile(etf.getUserId(), defName, defPath, etf.getContentType());                                    
@@ -343,7 +344,7 @@ public class PhotoManager implements PhotoManagerLocal {
             try {                
                 PreviewUtils.makePreview(path, prevPath);
             } catch (Exception e) {            
-                throw new TagException("can't make a preView");
+                throw new TagException("can't make a preview for photo " + p.getId() + ": " + e.getMessage());
             }
 
             EasyTagFile prevFile = fMan.addFile(etf.getUserId(), prevName, prevPath, etf.getContentType());                                    
