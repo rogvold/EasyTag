@@ -408,7 +408,7 @@ or ant -Dj2ee.platform.classpath=&lt;server_classpath&gt; (where no properties f
                     </fileset>
                 </union>
                 <taskdef classname="org.testng.TestNGAntTask" classpath="${run.test.classpath}" name="testng"/>
-                <testng classfilesetref="test.set" failureProperty="tests.failed" listeners="org.testng.reporters.VerboseReporter" methods="${testng.methods.arg}" mode="${testng.mode}" outputdir="${build.test.results.dir}" suitename="EasyTagCore" testname="TestNG tests" workingDir="${basedir}">
+                <testng classfilesetref="test.set" failureProperty="tests.failed" methods="${testng.methods.arg}" mode="${testng.mode}" outputdir="${build.test.results.dir}" suitename="EasyTagCore" testname="TestNG tests" workingDir="${basedir}">
                     <xmlfileset dir="${build.test.classes.dir}" includes="@{testincludes}"/>
                     <propertyset>
                         <propertyref prefix="test-sys-prop."/>
@@ -796,22 +796,26 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${file.reference.gson-2.2.4.jar}" todir="${build.classes.dir}"/>
         <copyfiles files="${file.reference.log4j-api-2.0-beta9.jar}" todir="${build.classes.dir}"/>
         <copyfiles files="${file.reference.log4j-core-2.0-beta9.jar}" todir="${build.classes.dir}"/>
+        <copyfiles files="${file.reference.commons-io-2.4.jar}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
         <basename file="${file.reference.gson-2.2.4.jar}" property="manifest.file.reference.gson-2.2.4.jar"/>
         <basename file="${file.reference.log4j-api-2.0-beta9.jar}" property="manifest.file.reference.log4j-api-2.0-beta9.jar"/>
         <basename file="${file.reference.log4j-core-2.0-beta9.jar}" property="manifest.file.reference.log4j-core-2.0-beta9.jar"/>
+        <basename file="${file.reference.commons-io-2.4.jar}" property="manifest.file.reference.commons-io-2.4.jar"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 "/>
+            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 "/>
             <attribute name="jar-1-Extension-Name" value="${manifest.file.reference.gson-2.2.4.jar}"/>
             <attribute name="jar-2-Extension-Name" value="${manifest.file.reference.log4j-api-2.0-beta9.jar}"/>
             <attribute name="jar-3-Extension-Name" value="${manifest.file.reference.log4j-core-2.0-beta9.jar}"/>
+            <attribute name="jar-4-Extension-Name" value="${manifest.file.reference.commons-io-2.4.jar}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
         <copyfiles files="${file.reference.gson-2.2.4.jar}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.log4j-api-2.0-beta9.jar}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.log4j-core-2.0-beta9.jar}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.commons-io-2.4.jar}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">

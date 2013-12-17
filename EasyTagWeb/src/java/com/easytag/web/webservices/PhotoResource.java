@@ -160,6 +160,34 @@ public class PhotoResource {
     }
     
     @GET
+    @Path("generateDefaultViews")
+    public String generateDefaultViews(@Context HttpServletRequest req) {
+        try {
+            HttpSession session = req.getSession(false);          
+            
+            phMan.generateDefaultViews();
+            JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException e) {
+            return TagExceptionWrapper.wrapException(e);
+        }
+    }
+    
+    @GET
+    @Path("generatePreViews")
+    public String generatePreviews(@Context HttpServletRequest req) {
+        try {
+            HttpSession session = req.getSession(false);          
+            
+            phMan.generatePreViews();
+            JsonResponse<String> jr = new JsonResponse<String>(ResponseConstants.OK, null, ResponseConstants.YES);
+            return SimpleResponseWrapper.getJsonResponse(jr);
+        } catch (TagException e) {
+            return TagExceptionWrapper.wrapException(e);
+        }
+    }
+    
+    @GET
     @Path("findPhotos")
     public String findPhotosByTagName(@Context HttpServletRequest req,  @QueryParam("q") String query) {
         try {

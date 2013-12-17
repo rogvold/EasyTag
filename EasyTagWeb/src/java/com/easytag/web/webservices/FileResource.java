@@ -104,7 +104,7 @@ public class FileResource {
                 throw new IllegalStateException("Unable to create a database record for the foto.");
             }
             
-            pm.generatePreview(photo);
+            pm.generatePreviewAndDefaultView(photo);
             return Response.ok(SimpleResponseWrapper.getJsonResponse(new JsonResponse<Photo>(ResponseConstants.OK, null, photo))).build();
         } catch (Exception ex) {
             ex.printStackTrace();

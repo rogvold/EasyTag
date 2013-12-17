@@ -134,7 +134,7 @@ public class PhotoManager implements PhotoManagerLocal {
     }   
     
     @Override
-    public void generatePreview(Photo p) throws TagException {
+    public void generatePreviewAndDefaultView(Photo p) throws TagException {
         
         EasyTagFile etf = fMan.findFileById(p.getFileId());
         
@@ -292,4 +292,64 @@ public class PhotoManager implements PhotoManagerLocal {
         em.persist(photo);
         return photo;
     }
+    
+    private static final String SELECT_PHOTO_WITHOUT_DEFAULT_VIEW = "select p from "
+                    + "Photo p where p.fileId = p.original_id";
+    
+    @Override
+    public void generateDefaultViews() throws TagException {
+        Query q = em.createQuery(SELECT_PHOTO_WITHOUT_DEFAULT_VIEW);            
+        List<Photo> list = q.getResultList();
+        for(Photo p: list){
+            EasyTagFile etf = fMan.findFileById(p.getFileId());
+            String path = etf.getCurrentPath();                    
+            String defPath = path.substring(0, path.lastIndexOf(".")) 
+                    + PreviewUtils.DEFAULT_POSTFIX + path.substring(path.lastIndexOf("."));
+
+            String name = etf.getOriginalName();            
+            String defName = name.substring(0, name.lastIndexOf(".")) 
+                    + PreviewUtils.DEFAULT_POSTFIX + name.substring(name.lastIndexOf("."));
+
+            try {                
+                PreviewUtils.makeDefaultView(path, defPath);
+            } catch (Exception e) {            
+                throw new TagException("can't make a defaultView");
+            }
+
+            EasyTagFile defaultFile = fMan.addFile(etf.getUserId(), defName, defPath, etf.getContentType());                                    
+            p.setFileId(defaultFile.getId());
+            
+            em.merge(p);
+        }
+    }
+    
+    private static final String SELECT_PHOTO_WITHOUT_PREVIEW = "select p from "
+                    + "Photo p where p.fileId = p.previewId";
+    
+    @Override
+    public void generatePreViews() throws TagException {
+        Query q = em.createQuery(SELECT_PHOTO_WITHOUT_PREVIEW);            
+        List<Photo> list = q.getResultList();
+        for(Photo p: list){
+            EasyTagFile etf = fMan.findFileById(p.getFileId());
+            String path = etf.getCurrentPath();                    
+            String prevPath = path.substring(0, path.lastIndexOf(".")) 
+                    + PreviewUtils.POSTFIX + path.substring(path.lastIndexOf("."));
+
+            String name = etf.getOriginalName();            
+            String prevName = name.substring(0, name.lastIndexOf(".")) 
+                    + PreviewUtils.POSTFIX + name.substring(name.lastIndexOf("."));
+
+            try {                
+                PreviewUtils.makePreview(path, prevPath);
+            } catch (Exception e) {            
+                throw new TagException("can't make a preView");
+            }
+
+            EasyTagFile prevFile = fMan.addFile(etf.getUserId(), prevName, prevPath, etf.getContentType());                                    
+            p.setPreviewId(prevFile.getId());
+            
+            em.merge(p);
+        }
+    } 
 }

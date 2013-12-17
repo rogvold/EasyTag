@@ -8,6 +8,7 @@
             <included-library dirs="200">file.reference.gson-2.2.4.jar</included-library>
             <included-library dirs="200">file.reference.log4j-api-2.0-beta9.jar</included-library>
             <included-library dirs="200">file.reference.log4j-core-2.0-beta9.jar</included-library>
+            <included-library dirs="200">file.reference.commons-io-2.4.jar</included-library>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

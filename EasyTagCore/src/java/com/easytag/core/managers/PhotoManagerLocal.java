@@ -25,7 +25,7 @@ public interface PhotoManagerLocal {
     
     public Album getAlbumByPhotoId(Long photoId) throws TagException;
     
-    public void generatePreview(Photo p) throws TagException;
+    public void generatePreviewAndDefaultView(Photo p) throws TagException; //TODO 
     
     //TODO find by tag
     public List<Photo> findPhotosByTagName(String query);
@@ -38,4 +38,8 @@ public interface PhotoManagerLocal {
     public void restorePhoto(Long photoId) throws TagException;
 
     public Photo updatePhoto(Photo originalPhoto);
+    
+    public void generateDefaultViews() throws TagException; 
+    
+    public void generatePreViews() throws TagException; 
 }
